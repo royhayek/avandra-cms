@@ -70,16 +70,14 @@ export const USERS_TABLE_DATA = [
 export const PUBLICATIONS_REPORTS_DATA = [
   {
     id: 1,
-    reason:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    reason: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     reporter: "Jon Doe",
     date: "27/05/2022 4:16 PM",
     status: 0,
   },
   {
     id: 2,
-    reason:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    reason: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     reporter: "Jon Doe",
     date: "27/05/2022 4:16 PM",
     status: 1,
@@ -89,8 +87,7 @@ export const PUBLICATIONS_REPORTS_DATA = [
 export const ACCOUNNTS_REPORTS_DATA = [
   {
     id: 1,
-    reason:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    reason: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     reporter: "Jon Doe",
     reportedUser: "Mary Smith",
     date: "27/05/2022 4:16 PM",
@@ -98,8 +95,7 @@ export const ACCOUNNTS_REPORTS_DATA = [
   },
   {
     id: 2,
-    reason:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+    reason: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
     reporter: "Jon Doe",
     reportedUser: "Mary Smith",
     date: "27/05/2022 4:16 PM",
@@ -110,7 +106,7 @@ export const ACCOUNNTS_REPORTS_DATA = [
 export const CATEGORIES_TABLE_DATA = [
   {
     id: 1,
-    title: "Programming",
+    name: "Programming",
     image: {
       fileName: "test1.png",
       url: "https://i.pravatar.cc/300",
@@ -121,7 +117,7 @@ export const CATEGORIES_TABLE_DATA = [
   },
   {
     id: 2,
-    title: "Technology",
+    name: "Technology",
     image: {
       fileName: "test2.png",
       url: "https://i.pravatar.cc/300",
@@ -132,7 +128,7 @@ export const CATEGORIES_TABLE_DATA = [
   },
   {
     id: 3,
-    title: "Trading",
+    name: "Trading",
     image: {
       fileName: "tes3.png",
       url: "https://i.pravatar.cc/300",
@@ -143,7 +139,7 @@ export const CATEGORIES_TABLE_DATA = [
   },
   {
     id: 4,
-    title: "Education",
+    name: "Education",
     image: {
       fileName: "test4.png",
       url: "https://i.pravatar.cc/300",

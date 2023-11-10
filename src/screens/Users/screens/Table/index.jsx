@@ -1,51 +1,64 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useEffect, useState } from "react";
+import { /* useSelector, */ useDispatch } from "react-redux";
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
 import { Box, Chip, Grid, IconButton, Typography } from "@mui/material";
-import Card from "components/Card";
-import DataTable from "components/DataTable";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import DataTable from "components/DataTable";
+import Card from "components/Card";
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
-import { USERS_TABLE_DATA } from "data.js";
-import { useCommonStyles } from "lib/styles";
-import useStyles from "./styles.js";
-
+import { /* getUsers, */ userActions } from "redux/user/slice";
+import { useCommonStyles } from "lib/styles/index.ts";
+import { USERS_TABLE_DATA } from "data";
+import * as api from "redux/user/api";
+import useStyles from "./styles.ts";
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
+const Table = () => {
+  // --------------------------------------------------------- //
+  // ------------------------ Redux -------------------------- //
+  const dispatch = useDispatch();
+  const updateUsers = useCallback(payload => dispatch(userActions.update(payload)), [dispatch]);
 
+  // const users = useSelector(getUsers);
+  // ----------------------- /Redux -------------------------- //
+  // --------------------------------------------------------- //
 
-const Table = (props) => {
-// --------------------------------------------------------- //
-// ------------------------ Static ------------------------- //
+  // --------------------------------------------------------- //
+  // ------------------------ Statics ------------------------ //
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = { ...styles, ...commonStyles };
-// ----------------------- /Static ------------------------- //
-// --------------------------------------------------------- //
 
-// --------------------------------------------------------- //
-// ----------------------- Callbacks ----------------------- //
+  // eslint-disable-next-line no-unused-vars
+  const [loading, setLoading] = useState(false);
+  // ----------------------- /Statics ------------------------ //
+  // --------------------------------------------------------- //
+
+  // --------------------------------------------------------- //
+  // ----------------------- Callbacks ----------------------- //
+  const fetchUsers = useCallback(() => {
+    setLoading(true);
+    api
+      .getUsers()
+      .then(({ data }) => updateUsers({ users: data?.data }))
+      .finally(() => setLoading(false));
+  }, [updateUsers]);
+
   const renderStatusCell = useCallback(
     ({ value }) => {
-      return (
-        <Chip
-          label={value}
-          color="success"
-          size="small"
-          classes={{ label: classes.statusLabel }}
-        />
-      );
+      return <Chip label={value} color="success" size="small" classes={{ label: classes.statusLabel }} />;
     },
-    [classes.statusLabel]
+    [classes.statusLabel],
   );
 
   const renderRowActions = useCallback(
@@ -64,28 +77,24 @@ const Table = (props) => {
         </Box>
       );
     },
-    [classes.actionBtn, classes.rowActionBtns]
+    [classes.actionBtn, classes.rowActionBtns],
   );
 
   const getTableHeaders = useCallback(() => {
     return [
       { field: "id", headerName: "ID", flex: 0.5 },
-      { field: "firstName", headerName: "First name", flex: 1 },
-      { field: "lastName", headerName: "Last name", flex: 1 },
+      { field: "firstName", headerName: "First Name", flex: 1 },
+      {
+        flex: 1,
+        field: "lastName",
+        headerName: "Last Name",
+        sortable: false,
+      },
       {
         flex: 0.5,
         field: "status",
         headerName: "Status",
         renderCell: renderStatusCell,
-      },
-      {
-        flex: 1,
-        field: "fullName",
-        headerName: "Full name",
-        description: "This column has a value getter and is not sortable.",
-        sortable: false,
-        valueGetter: (params) =>
-          `${params.row.firstName || ""} ${params.row.lastName || ""}`,
       },
       {
         flex: 0.7,
@@ -96,17 +105,25 @@ const Table = (props) => {
       },
     ];
   }, [renderRowActions, renderStatusCell]);
-// ---------------------- /Callbacks ----------------------- //
-// --------------------------------------------------------- //
+  // ---------------------- /Callbacks ----------------------- //
+  // --------------------------------------------------------- //
 
-// --------------------------------------------------------- //
-// ----------------------- Renderers ----------------------- //
+  // --------------------------------------------------------- //
+  // ------------------------ Effects ------------------------ //
+  useEffect(() => {
+    fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  // ----------------------- /Effects ------------------------ //
+  // --------------------------------------------------------- //
+
+  // --------------------------------------------------------- //
+  // ----------------------- Renderers ----------------------- //
   const renderLarge = useMemo(() => {
-    const data = USERS_TABLE_DATA,
-      columns = getTableHeaders();
+    const columns = getTableHeaders();
 
     const tableProps = {
-      data,
+      data: USERS_TABLE_DATA,
       columns,
       pageSize: 25,
     };
@@ -120,15 +137,13 @@ const Table = (props) => {
         <Card className={classes.card}>
           <Grid container spacing={3}>
             <Grid item xs={12} sm={12} md={12}>
-              <DataTable {...tableProps} />
+              <DataTable tableProps={tableProps} />
             </Grid>
           </Grid>
         </Card>
       </>
     );
   }, [classes.card, classes.header, getTableHeaders]);
-
-
 
   return renderLarge;
 };

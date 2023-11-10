@@ -1,47 +1,50 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import React, { memo, useMemo } from "react";
+import React, { useMemo } from "react";
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
 import { Box, Divider } from "@mui/material";
 import {
-  GridToolbarColumnsButton,
-  GridToolbarContainer,
   GridToolbarExport,
-  GridToolbarFilterButton,
+  GridToolbarContainer,
   GridToolbarQuickFilter,
+  GridToolbarFilterButton,
+  GridToolbarColumnsButton,
 } from "@mui/x-data-grid";
-//----------------------------------------------------//
-//------------------- UTILITIES ----------------------//
-//----------------------------------------------------//
-import useStyles from "./styles";
-
+// ------------------------------------------------------------ //
+// ------------------------- Utilities ------------------------ //
+// ------------------------------------------------------------ //
+import useStyles from "./styles.ts";
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
-
-const CustomPagination = memo(() => {
+const CustomPagination = () => {
+  // --------------------------------------------------------- //
+  // ----------------------- Statics ------------------------- //
   const classes = useStyles();
+  // ---------------------- /Statics ------------------------- //
+  // --------------------------------------------------------- //
 
-  //----------------------------------------------------//
-  //-------------------- RENDERERS ---------------------//
+  // --------------------------------------------------------- //
+  // ----------------------- Renderers ----------------------- //
   const renderSearchField = useMemo(
-    () => <GridToolbarQuickFilter className={classes.quickFilter} />,
-    [classes.quickFilter]
+    () => (
+      <GridToolbarQuickFilter
+        hiddenLabel
+        variant="filled"
+        className={classes.quickFilter}
+        InputProps={{ disableUnderline: true }}
+        inputProps={{ style: { fontWeight: 500 } }}
+      />
+    ),
+    [classes.quickFilter],
   );
 
   const renderDivider = useMemo(
-    () => (
-      <Divider
-        flexItem
-        variant="middle"
-        orientation="vertical"
-        className={classes.divider}
-      />
-    ),
-    [classes.divider]
+    () => <Divider flexItem variant="middle" orientation="vertical" className={classes.divider} />,
+    [classes.divider],
   );
 
   const renderTableActions = useMemo(
@@ -54,10 +57,8 @@ const CustomPagination = memo(() => {
         <GridToolbarExport />
       </Box>
     ),
-    [classes.toolbarEndBtnsContainer, renderDivider]
+    [classes.toolbarEndBtnsContainer, renderDivider],
   );
-  //------------------- /RENDERERS ---------------------//
-  //----------------------------------------------------//
 
   return (
     <GridToolbarContainer>
@@ -65,6 +66,6 @@ const CustomPagination = memo(() => {
       {renderTableActions}
     </GridToolbarContainer>
   );
-});
+};
 
 export default CustomPagination;

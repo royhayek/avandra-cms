@@ -3,51 +3,42 @@
 // ------------------------------------------------------------ //
 import React, { useMemo } from "react";
 import PT from "prop-types";
+import _ from "lodash";
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
-import { DataGrid } from "@mui/x-data-grid";
-import CustomToolbar from "./CustomToolbar";
 import CustomPagination from "./CustomPagination";
+import CustomToolbar from "./CustomToolbar";
+import { DataGrid } from "@mui/x-data-grid";
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
 import { useIsSmall } from "helpers";
-import useStyles from "./styles.js";
-import _ from "lodash";
-
+import useStyles from "./styles.ts";
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
-
-
-const DataTable = ({
-  data,
-  columns,
-  options: { withoutHeader },
-  ...tableProps
-}) => {
-// --------------------------------------------------------- //
-// ------------------------ Static ------------------------- //
+const DataTable = ({ tableProps: { data, columns, options }, ...rest }) => {
+  // --------------------------------------------------------- //
+  // ------------------------ Statics ------------------------ //
   const classes = useStyles();
   const isSmall = useIsSmall();
-// ----------------------- /Static ------------------------- //
-// --------------------------------------------------------- //
+  // ----------------------- /Statics ------------------------ //
+  // --------------------------------------------------------- //
 
-  //----------------------------------------------------//
-  //------------------- RENDER VARS --------------------//
-  const finalColumns = useMemo(
-    () => _.map(columns, (c) => ({ ...c, flex: isSmall ? 0 : c.flex })),
-    [columns, isSmall]
-  );
-  //------------------ /RENDER VARS --------------------//
-  //----------------------------------------------------//
+  // --------------------------------------------------------- //
+  // --------------------- Renderers Vars -------------------- //
+  const finalColumns = useMemo(() => _.map(columns, c => ({ ...c, flex: isSmall ? 0 : c.flex })), [columns, isSmall]);
+  // -------------------- /Renderers Vars -------------------- //
+  // --------------------------------------------------------- //
 
+  // --------------------------------------------------------- //
+  // ----------------------- Renderers ----------------------- //
   return (
     <DataGrid
       autoHeight
       rows={data}
-      pageSize={5}
+      pageSize={10}
       columns={finalColumns}
       headerHeight={40}
       rowsPerPageOptions={[5]}
@@ -74,7 +65,7 @@ const DataTable = ({
         filterFormOperatorInput: classes.filterFormOperatorInput,
       }}
       components={{
-        Toolbar: withoutHeader ? null : CustomToolbar,
+        Toolbar: options?.withoutHeader ? null : CustomToolbar,
         Pagination: CustomPagination,
       }}
       componentsProps={{
@@ -83,22 +74,22 @@ const DataTable = ({
           quickFilterProps: { debounceMs: 500 },
         },
       }}
-      {...tableProps}
+      {...rest}
     />
   );
 };
 
 DataTable.propTypes = {
-  data: PT.array.isRequired,
-  columns: PT.array.isRequired,
-  options: PT.object,
+  tableProps: PT.object.isRequired,
 };
 
 DataTable.defaultProps = {
-  data: [],
-  columns: [],
-  options: {
-    withoutHeader: false,
+  tableProps: {
+    data: [],
+    columns: [],
+    options: {
+      withoutHeader: false,
+    },
   },
 };
 

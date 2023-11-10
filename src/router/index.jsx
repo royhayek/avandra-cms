@@ -1,34 +1,36 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import React, { useMemo } from "react";
 import { Route, Switch } from "react-router-dom";
+// import { useSelector } from "react-redux";
+import React, { useMemo } from "react";
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
+import MainLayout from "components/MainLayout";
 import { Box } from "@mui/material";
 import SubRouter from "./SubRouter";
 import NoMatch from "./NoMatch";
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
+// import { getUserRole, getUserAuthenticated } from "redux/user/slice";
+import useStyles from "./styles.ts";
 import config from "./Config";
-import useStyles from "./styles";
-
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
-
-const Router = (props) => {
-// --------------------------------------------------------- //
-// ------------------------ Static ------------------------- //
+const Router = props => {
+  // --------------------------------------------------------- //
+  // ------------------------ Statics ------------------------ //
   const classes = useStyles();
-// ----------------------- /Static ------------------------- //
-// --------------------------------------------------------- //
+  // ----------------------- /Statics ------------------------ //
+  // --------------------------------------------------------- //
 
   //----------------------------------------------------//
   //---------------------- REDUX -----------------------//
-
+  const role = "admin"; // useSelector(getUserRole);
+  const authenticated = true; // useSelector(getUserAuthenticated);
   //--------------------- /REDUX -----------------------//
   //----------------------------------------------------//
 
@@ -37,7 +39,7 @@ const Router = (props) => {
   const renderRoute = useMemo(() => {
     try {
       // TODO: replace "admin" with the dynamic role
-      const _routes = config["admin"].routes;
+      const _routes = config[role].routes;
 
       const _router = (
         <Switch>
@@ -53,7 +55,7 @@ const Router = (props) => {
       console.log("Error in [Router - renderRoute] :: ", err);
       return null;
     }
-  }, []);
+  }, [role]);
   //------------------- /RENDERERS ---------------------//
   //----------------------------------------------------//
 
@@ -61,9 +63,17 @@ const Router = (props) => {
     <>
       {/* Header */}
 
-      <Box component="section" style={{ flex: 1 }} className={classes.content}>
-        {renderRoute}
-      </Box>
+      {authenticated ? (
+        <MainLayout>
+          <Box component="section" style={{ flex: 1 }} className={classes.content}>
+            {renderRoute}
+          </Box>
+        </MainLayout>
+      ) : (
+        <Box component="section" style={{ flex: 1 }} className={classes.content}>
+          {renderRoute}
+        </Box>
+      )}
 
       {/* Footer */}
     </>

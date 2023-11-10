@@ -12,7 +12,8 @@ const SchemaHelpers = {
     uniforms: {
       type: "text",
       className: classNames(classes.formControl),
-      variant: "outlined",
+      variant: "filled",
+      InputProps: { ...uniformsProps.InputProps, disableUnderline: true },
       ...uniformsProps,
     },
   }),
@@ -30,6 +31,8 @@ const SchemaHelpers = {
     type: String,
     ...schemaProps,
     uniforms: {
+      variant: "filled",
+      disableUnderline: true,
       ...uniformsProps,
     },
   }),
@@ -41,11 +44,7 @@ const SchemaHelpers = {
       ...uniformsProps,
     },
   }),
-  password: (
-    classes = {},
-    schemaProps = {},
-    { show = false, name = "password", toggle, ...uniformsProps } = {}
-  ) => ({
+  password: (classes = {}, schemaProps = {}, { show = false, name = "password", toggle, ...uniformsProps } = {}) => ({
     type: String,
     label: false,
     // regEx: SimpleSchema.RegEx.Password,
@@ -53,23 +52,20 @@ const SchemaHelpers = {
     uniforms: {
       type: show ? "text" : "password",
       fullWidth: true,
+      variant: "filled",
       className: classes.formControl,
-      variant: "outlined",
       autoComplete: "current-password",
       InputProps: {
+        ...uniformsProps.InputProps,
+        disableUnderline: true,
         endAdornment: (
           <InputAdornment position="end">
             <IconButton
               aria-label="Toggle password visibility"
               onClick={() => _.isFunction(toggle) && toggle(name)}
               tabIndex={-1}
-              size="medium"
-            >
-              {show ? (
-                <VisibilityOff color="primary" />
-              ) : (
-                <Visibility color="primary" />
-              )}
+              size="medium">
+              {show ? <VisibilityOff color="primary" /> : <Visibility color="primary" />}
             </IconButton>
           </InputAdornment>
         ),

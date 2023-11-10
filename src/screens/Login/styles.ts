@@ -1,11 +1,8 @@
-import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { Theme } from "@mui/material";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  //----------------------------------------------------//
-  //-------------------- COMPONENT ---------------------//
-  //----------------------------------------------------//
-  container: {
+ container: {
     flex: 1,
     height: "100vh",
     display: "flex",

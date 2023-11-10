@@ -1,47 +1,43 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo } from "react";
+import _ from "lodash";
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
-import { Grid, Typography } from "@mui/material";
+import CustomArea from "../../components/Charts/CustomArea";
+import { Grid, Typography, useTheme } from "@mui/material";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import PeopleIcon from "@mui/icons-material/People";
-import DnsIcon from "@mui/icons-material/Dns";
-import Card from "../../components/Card";
-import StatsCard from "./components/StatsCard";
 import BarChart from "../../components/Charts/Bar";
 import DataTable from "../../components/DataTable";
-import CustomArea from "../../components/Charts/CustomArea";
+import StatsCard from "./components/StatsCard";
+import DnsIcon from "@mui/icons-material/Dns";
+import Card from "../../components/Card";
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
-import {
-  BAR_CHART_DATA,
-  CHART_DATA,
-  DASHBOARD_TABLE_DATA,
-} from "../../data.js";
-import { useCommonStyles } from "lib/styles";
-import useStyles from "./styles.js";
-
+import { CHART_DATA, BAR_CHART_DATA, DASHBOARD_TABLE_DATA } from "../../data";
+import { useCommonStyles } from "lib/styles/index.ts";
+import useStyles from "./styles.ts";
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
-
 const Dashboard = () => {
   // --------------------------------------------------------- //
-  // ------------------------ Static ------------------------- //
+  // ----------------------- Statics ------------------------- //
+  const theme = useTheme();
   const styles = useStyles();
   const commonSyles = useCommonStyles();
   const classes = { ...styles, ...commonSyles };
-  // ----------------------- /Static ------------------------- //
+  // ---------------------- /Statics ------------------------- //
   // --------------------------------------------------------- //
 
   // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
-  const getTableHeaders = useCallback(() => {
-    return [
+  // --------------------- Renderers Vars -------------------- //
+  const tableHeaders = useMemo(
+    () => [
       { field: "id", headerName: "ID", width: 70 },
       { field: "firstName", headerName: "First name", width: 130 },
       { field: "lastName", headerName: "Last name", width: 130 },
@@ -52,23 +48,50 @@ const Dashboard = () => {
         description: "This column has a value getter and is not sortable.",
         sortable: false,
         width: 160,
-        valueGetter: (params) =>
-          `${params.row.firstName || ""} ${params.row.lastName || ""}`,
+        valueGetter: params => `${params.row.firstName || ""} ${params.row.lastName || ""}`,
       },
-    ];
-  }, []);
-  // ---------------------- /Callbacks ----------------------- //
+    ],
+    [],
+  );
+
+  const summaryCardsData = useMemo(
+    () => [
+      {
+        title: "Users",
+        icon: <PeopleIcon />,
+        padding: theme.spacing(0),
+        value: 100,
+      },
+      {
+        title: "Categories",
+        icon: <DnsIcon />,
+        padding: theme.spacing(0),
+        value: 20,
+      },
+      {
+        title: "Posts",
+        icon: <ListAltIcon />,
+        padding: theme.spacing(0),
+        value: 1000,
+      },
+      {
+        title: "Reports",
+        icon: <DnsIcon />,
+        padding: theme.spacing(0),
+        value: 10,
+      },
+    ],
+    [theme],
+  );
+  // -------------------- /Renderers Vars -------------------- //
   // --------------------------------------------------------- //
 
   // --------------------------------------------------------- //
   // ----------------------- Renderers ----------------------- //
   const renderContent = useMemo(() => {
-    const data = DASHBOARD_TABLE_DATA,
-      columns = getTableHeaders();
-
     const tableProps = {
-      data,
-      columns,
+      data: DASHBOARD_TABLE_DATA,
+      columns: tableHeaders,
       options: {
         withoutHeader: true,
       },
@@ -80,25 +103,14 @@ const Dashboard = () => {
         </Typography>
 
         <Grid container spacing={4}>
-          <Grid item xs={12} sm={12} md={3}>
-            <StatsCard title="Users" icon={<PeopleIcon />} value={100} />
-          </Grid>
-          <Grid item xs={12} sm={12} md={3}>
-            <StatsCard title="Categories" icon={<DnsIcon />} value={20} />
-          </Grid>
-          <Grid item xs={12} sm={12} md={3}>
-            <StatsCard title="Posts" icon={<ListAltIcon />} value={20} />
-          </Grid>
-          <Grid item xs={12} sm={12} md={3}>
-            <StatsCard title="Categories" icon={<DnsIcon />} value={20} />
-          </Grid>
+          {_.map(summaryCardsData, ({ title, icon, padding, value }) => (
+            <Grid item key={title} xs={12} sm={12} md={3}>
+              <StatsCard icon={icon} title={title} value={value} padding={padding} />
+            </Grid>
+          ))}
+
           <Grid item xs={12} sm={12} md={8}>
             <Card className={classes.card}>
-              {/* <Button variant="contained" disableElevation>
-                Month
-              </Button>
-              <Button>Week</Button>
-              <Button>Year</Button> */}
               <Typography variant="subtitle1">Traffic</Typography>
               <CustomArea data={CHART_DATA} height={350} />
             </Card>
@@ -118,7 +130,7 @@ const Dashboard = () => {
         </Grid>
       </>
     );
-  }, [classes.card, classes.header, getTableHeaders]);
+  }, [tableHeaders, summaryCardsData, classes.header, classes.card]);
 
   return renderContent;
 };

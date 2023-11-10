@@ -22,6 +22,12 @@ export const routes = [
     hasSub: true,
   },
   {
+    key: "user",
+    path: "/user/:detail?",
+    component: Screens.User,
+    hasSub: true,
+  },
+  {
     key: "categories",
     path: "/categories/:detail?",
     component: Screens.Categories,

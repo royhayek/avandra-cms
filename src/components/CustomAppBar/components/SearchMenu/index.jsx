@@ -1,71 +1,54 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import React, { useCallback } from "react";
+import React, { /* useCallback, */ useMemo } from "react";
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import ListAltIcon from "@mui/icons-material/ListAlt";
+import { Box, Divider, InputAdornment, TextField, Typography } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
-import useStyles from "./styles.js";
-
+import useStyles from "./styles.ts";
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
-
 const SearchMenu = () => {
-// --------------------------------------------------------- //
-// ------------------------ Static ------------------------- //
+  // --------------------------------------------------------- //
+  // ----------------------- Statics ------------------------- //
   const classes = useStyles();
-// ----------------------- /Static ------------------------- //
-// --------------------------------------------------------- //
+  // ---------------------- /Statics ------------------------- //
+  // --------------------------------------------------------- //
 
-  //----------------------------------------------------//
-  //---------------------- STATE -----------------------//
+  // --------------------------------------------------------- //
+  // ---------------------- Callbacks ------------------------ //
+  // const handleMarkAllAsRead = useCallback(() => {
+  //   // TODO: handle mark all as read button
+  // }, []);
 
-  //--------------------- /STATE -----------------------//
-  //----------------------------------------------------//
+  // const handleViewAll = useCallback(() => {
+  //   // TODO: handle view all button
+  // }, []);
+  // ---------------------- /Callbacks ----------------------- //
+  // --------------------------------------------------------- //
 
-  //----------------------------------------------------//
-  //------------------- CALLBACKS ----------------------//
-  const handleMarkAllAsRead = useCallback(() => {
-    // TODO: handle mark all as read button
-  }, []);
-
-  const handleViewAll = useCallback(() => {
-    // TODO: handle view all button
-  }, []);
-// ---------------------- /Callbacks ----------------------- //
-// --------------------------------------------------------- //
-
-// --------------------------------------------------------- //
-// ----------------------- Renderers ----------------------- //
-  const renderSearchInput = useCallback(() => {
-    return (
+  // --------------------------------------------------------- //
+  // ----------------------- Renderers ----------------------- //
+  const renderSearchInput = useMemo(
+    () => (
       <TextField
         InputProps={{
           startAdornment: (
-            <InputAdornment>
+            <InputAdornment position="start">
               <SearchRoundedIcon />
             </InputAdornment>
           ),
         }}
       />
-    );
-  }, []);
-
+    ),
+    [],
+  );
 
   return (
     <Box className={classes.container}>
@@ -73,7 +56,7 @@ const SearchMenu = () => {
         <Typography>Search</Typography>
       </Box>
       <Divider />
-      <Box className={classes.body}>{renderSearchInput()}</Box>
+      <Box className={classes.body}>{renderSearchInput}</Box>
     </Box>
   );
 };

@@ -3,11 +3,7 @@ import SchemaHelpers from "../common";
 import _ from "lodash";
 import { statusesList } from "lib/config";
 
-export const addCategorySchema = (
-  classes = {},
-  state = {},
-  { show, name, toggle, ...calback }
-) => {
+export const addCategorySchema = (classes = {}, state = {}, { show, name, toggle, ...calback }) => {
   try {
     const config = {
       statusesList: _.map(statusesList, ({ value, label }) => ({
@@ -24,15 +20,15 @@ export const addCategorySchema = (
           optional: false,
           defaultValue: null,
         },
-        {}
+        {},
       ),
-      title: SchemaHelpers.text(
+      name: SchemaHelpers.text(
         classes,
         {
-          label: "Title",
+          label: "Name",
           optional: false,
         },
-        {}
+        {},
       ),
       description: SchemaHelpers.text(
         classes,
@@ -40,14 +36,14 @@ export const addCategorySchema = (
         {
           multiline: true,
           rows: 7,
-        }
+        },
       ),
       status: SchemaHelpers.select(
         classes,
         { label: "Status", optional: false, defaultValue: 1 },
         {
           options: config.statusesList,
-        }
+        },
       ),
     });
   } catch (err) {

@@ -1,11 +1,8 @@
-import { Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { Theme } from "@mui/material";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  //----------------------------------------------------//
-  //-------------------- COMPONENT ---------------------//
-  //----------------------------------------------------//
-  modal: {
+ modal: {
     top: "50%",
     left: "50%",
     padding: 24,
@@ -17,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: "column",
     justifyContent: "space-between",
     transform: "translate(-50%, -50%)",
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.background.paper,
     [theme.breakpoints.down("sm")]: {
       width: "80%",
       height: "35%",

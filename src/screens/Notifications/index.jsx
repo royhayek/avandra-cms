@@ -1,19 +1,15 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import  { createElement } from "react";
-
+import { createElement } from "react";
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
-import * as Screens from "./screens";
-
+import * as Screens from "./components";
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
-
-
-const Notifications = (props) => {
+const Notifications = props => {
   const {
     match: {
       params: { detail = "table" },
@@ -22,9 +18,7 @@ const Notifications = (props) => {
   } = props;
 
   let _detail = String(detail).toLocaleLowerCase();
-  let Component = Screens[_detail]
-    ? createElement(Screens[_detail], { history })
-    : null;
+  let Component = Screens[_detail] ? createElement(Screens[_detail], { history }) : null;
 
   return Component;
 };
