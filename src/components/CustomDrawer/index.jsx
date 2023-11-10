@@ -1,11 +1,11 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import _ from "lodash";
 import React, { useCallback } from "react";
 import classNames from "classnames";
-import _ from "lodash";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //

@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: "pointer",
   },
   fileInput: {
-    display: "none"
-  }
+    display: "none",
+  },
 }));
 
 export default useStyles;
