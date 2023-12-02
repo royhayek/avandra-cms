@@ -1,13 +1,13 @@
-import { makeStyles } from "@mui/styles";
-import { Theme } from "@mui/material";
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material';
 
 const useStyles = makeStyles((theme: Theme) => ({
   header: {
     gap: 2,
-    display: "flex",
-    alignItems: "center",
-    marginBottom: theme.spacing(4),
-  },
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: theme.spacing(4)
+  }
 }));
 
 export default useStyles;

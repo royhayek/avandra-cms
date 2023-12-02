@@ -1,37 +1,32 @@
-import SimpleSchema from "simpl-schema";
-import SchemaHelpers from "../common";
-import Ajv from "ajv";
+import SimpleSchema from 'simpl-schema';
+import SchemaHelpers from '../common';
+import Ajv from 'ajv';
 
 const ajv = new Ajv({ allErrors: true, useDefaults: true, $data: true });
-ajv.addKeyword("uniforms");
+ajv.addKeyword('uniforms');
 
-export const userProfileSchema = (
-  classes = {},
-  state = {},
-  { show, name, toggle, ...calback }
-) => {
+export const userProfileSchema = (classes = {}, _, { show, toggle }) => {
   try {
     return new SimpleSchema({
-      name: SchemaHelpers.text(
+      name: SchemaHelpers.text(classes, { label: 'Name', optional: false }, {}),
+      email: SchemaHelpers.text(classes, { label: 'Email', optional: false }, {}),
+      currentPassword: SchemaHelpers.password(
         classes,
-        {
-          label: "Username",
-          optional: false,
-        },
-        {}
-      ),
-      email: SchemaHelpers.text(
-        classes,
-        { label: "Email", optional: false },
-        {}
+        { label: 'Current Password', optional: true },
+        { show: show.current, name: 'currentPassword', toggle }
       ),
       password: SchemaHelpers.password(
         classes,
-        { label: "Password", optional: false },
-        { show, name, toggle }
+        { label: 'New Password', optional: true },
+        { show: show.new, name: 'password', toggle }
       ),
+      confPassword: SchemaHelpers.password(
+        classes,
+        { label: 'Confirm New Password', optional: true },
+        { show: show.confirmation, name: 'confPassword', toggle }
+      )
     });
   } catch (err) {
-    console.debug("SCHEMA ERROR ::: ", err);
+    console.debug('SCHEMA ERROR ::: ', err);
   }
 };

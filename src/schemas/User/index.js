@@ -1,37 +1,25 @@
-import SimpleSchema from "simpl-schema";
-import SchemaHelpers from "../common";
-import Ajv from "ajv";
+import SimpleSchema from 'simpl-schema';
+import SchemaHelpers from '../common';
+import Ajv from 'ajv';
 
 const ajv = new Ajv({ allErrors: true, useDefaults: true, $data: true });
-ajv.addKeyword("uniforms");
+ajv.addKeyword('uniforms');
 
-export const addUserSchema = (
-  classes = {},
-  state = {},
-  { show, name, toggle, ...calback }
-) => {
+export const addUserSchema = (classes = {}, _, { show, name, toggle }) => {
   try {
     return new SimpleSchema({
       name: SchemaHelpers.text(
         classes,
         {
-          label: "Username",
-          optional: false,
+          label: 'Username',
+          optional: false
         },
         {}
       ),
-      email: SchemaHelpers.text(
-        classes,
-        { label: "Email", optional: false },
-        {}
-      ),
-      password: SchemaHelpers.password(
-        classes,
-        { label: "Password", optional: false },
-        { show, name, toggle }
-      ),
+      email: SchemaHelpers.text(classes, { label: 'Email', optional: false }, {}),
+      password: SchemaHelpers.password(classes, { label: 'Password', optional: false }, { show, name, toggle })
     });
   } catch (err) {
-    console.debug("SCHEMA ERROR ::: ", err);
+    console.debug('SCHEMA ERROR ::: ', err);
   }
 };

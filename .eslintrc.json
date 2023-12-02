@@ -1,49 +1,142 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint",
-      "react",
-      "react-hooks",
-      "eslint-plugin-import",
-      "prettier"
-    ],
     "env": {
-      "browser": true
+        "browser": true,
+        "es2021": true,
+        "jest": true,
+        "node": true
     },
     "extends": [
-      "plugin:@typescript-eslint/recommended",
-      "plugin:react/recommended",
-      "plugin:prettier/recommended"
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:react/recommended",
+        "plugin:prettier/recommended",
+        "plugin:import/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "plugin:react-hooks/recommended",
+        "plugin:react-redux/recommended",
+        "plugin:storybook/recommended"
     ],
+    "overrides": [],
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "project": [
-        "jsconfig.json"
-      ],
-      "ecmaVersion": 2020,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-      }
+        "ecmaVersion": "latest",
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "import",
+        "react-redux",
+        "react-hooks"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        },
+        "import/resolver": {
+            "typescript": {},
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
+            }
+        }
     },
     "rules": {
-      "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-unused-vars": "off",
-      "react/jsx-filename-extension": [
-        "warn",
-        {
-          "extensions": [
-            ".jsx",
-            ".tsx"
-          ]
-        }
-      ],
-      "react/prop-types": "off",
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn"
-    },
-    "settings": {
-      "react": {
-        "version": "detect"
-      }
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "import/no-named-as-default": "off",
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "auto"
+            },
+            {
+                "usePrettierrc": true
+            }
+        ],
+        "padding-line-between-statements": [
+            "warn",
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "return"
+            },
+            {
+                "blankLine": "always",
+                "prev": "export",
+                "next": "*"
+            },
+            {
+                "blankLine": "always",
+                "prev": "multiline-block-like",
+                "next": "*"
+            },
+            {
+                "blankLine": "always",
+                "prev": "multiline-const",
+                "next": "*"
+            },
+            {
+                "blankLine": "always",
+                "prev": "multiline-expression",
+                "next": "*"
+            },
+            {
+                "blankLine": "always",
+                "prev": "multiline-let",
+                "next": "*"
+            },
+            {
+                "blankLine": "always",
+                "prev": "multiline-var",
+                "next": "*"
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "multiline-block-like"
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "multiline-const"
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "multiline-expression"
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "multiline-let"
+            },
+            {
+                "blankLine": "always",
+                "prev": "*",
+                "next": "multiline-var"
+            }
+        ],
+        "react-redux/useSelector-prefer-selectors": "warn",
+        "@typescript-eslint/ban-ts-comment": "off"
     }
-  }
+}
