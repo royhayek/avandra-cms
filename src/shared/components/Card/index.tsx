@@ -6,7 +6,7 @@ import React, { MouseEvent, ReactNode } from 'react';
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
-import { Card as MUICard, CardProps as MUICardProps } from '@mui/material';
+import { Card as MUICard, CardProps as MUICardProps, SxProps } from '@mui/material';
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
@@ -18,9 +18,10 @@ interface CardProps extends MUICardProps {
   children?: ReactNode;
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
   className?: string;
+  sx?: SxProps;
 }
 
-const Card: React.FC<CardProps> = ({ children, onClick, className }) => {
+const Card: React.FC<CardProps> = ({ children, onClick, className, sx }) => {
   // --------------------------------------------------------- //
   // ------------------------ Static ------------------------- //
   const classes = useStyles();
@@ -30,7 +31,7 @@ const Card: React.FC<CardProps> = ({ children, onClick, className }) => {
   // --------------------------------------------------------- //
   // ----------------------- Renderers ----------------------- //
   return (
-    <MUICard elevation={0} className={classNames(classes.card, className)} onClick={onClick}>
+    <MUICard elevation={0} className={classNames(classes.card, className)} onClick={onClick} sx={sx}>
       {children}
     </MUICard>
   );

@@ -5,7 +5,7 @@ import createFilter from 'redux-persist-transform-filter';
 import { Action, AnyAction, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage/session';
 import authReducer from '../redux/services/auth/slice';
-import { reducer as dataReducer } from 'redux/reducer';
+import { reducer as dataReducers } from 'redux/reducer';
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
 
 const localStorageFilter = createFilter('services', ['ui', 'config'], ['ui', 'config']);
@@ -14,8 +14,6 @@ const persistStorageConfig = {
   key: 'mui-cms',
   storage,
   timeout: 0,
-  // blacklist: ["data", "auth"],
-  // whitelist: ["services"],
   transforms: [localStorageFilter]
 };
 
@@ -26,6 +24,16 @@ const persistSessionConfig = {
 };
 
 const sessionReducer = persistReducer(persistSessionConfig, authReducer);
+
+const persistDataConfig = {
+  key: 'data',
+  whitelist: ['user'],
+  blacklist: ['users', 'category', 'dashboard'],
+  storage,
+  timeout: 0
+};
+
+const dataReducer = persistReducer(persistDataConfig, dataReducers);
 
 const persistedReducer = persistCombineReducers(persistStorageConfig, {
   services: servicesReducer,

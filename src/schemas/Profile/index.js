@@ -5,7 +5,7 @@ import Ajv from 'ajv';
 const ajv = new Ajv({ allErrors: true, useDefaults: true, $data: true });
 ajv.addKeyword('uniforms');
 
-export const userProfileSchema = (classes = {}, _, { show, toggle }) => {
+export const userProfileSchema = (classes = {}, { show }, { toggle }) => {
   try {
     return new SimpleSchema({
       name: SchemaHelpers.text(classes, { label: 'Name', optional: false }, {}),

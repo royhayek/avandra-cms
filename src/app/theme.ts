@@ -158,6 +158,17 @@ export const getCustomTheme = (isRTL = true, type: PaletteMode = 'light') => {
             color: type === 'light' ? '#8E8E8E' : '#818182'
           }
         }
+      },
+      MuiTextField: {
+        styleOverrides: {
+          root: {
+            '& .MuiInputBase-root.Mui-disabled:before': {
+              color: 'black',
+              fontSize: '16px',
+              borderBottom: 'none'
+            }
+          }
+        }
       }
     }
   });

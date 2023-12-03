@@ -8,6 +8,7 @@ import { authActions } from '../../redux/services/auth/slice';
 import { store } from 'app/store';
 import _ from 'lodash';
 import { userActions } from 'redux/user/slice';
+import { useEffect, useState } from 'react';
 
 export const useWidth = () => {
   const theme = useTheme();
@@ -66,11 +67,31 @@ export const customizer = (objVal: object, srcVal: string) => {
 // Create a "selector creator" that uses lodash.isequal instead of ===
 export const createDeepEqualSelector = createSelectorCreator(defaultMemoize, _.isEqual);
 
+const getOrientation = () => window.screen.orientation.type;
+
+const useScreenOrientation = () => {
+  const [orientation, setOrientation] = useState(getOrientation());
+
+  const updateOrientation = () => {
+    setOrientation(getOrientation());
+  };
+
+  useEffect(() => {
+    window.addEventListener('orientationchange', updateOrientation);
+
+    return () => {
+      window.removeEventListener('orientationchange', updateOrientation);
+    };
+  }, []);
+
+  return orientation;
+};
+
 export const useIsSmall = () => {
   const width = useWidth();
-  // const orientation = useScreenOrientation();
+  const orientation = useScreenOrientation();
 
-  return !!width.match(/xs|sm/) || !!width.match(/md/); //&& !!orientation.match(/portrait/));
+  return !!width.match(/xs|sm/) || (!!width.match(/md/) && !!orientation.match(/portrait/));
 };
 
 export const logout = (reason: string) => {

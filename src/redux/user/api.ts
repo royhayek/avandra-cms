@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { ProfileProps } from './types';
+import { ProfileModelProps } from './types';
 
 export const getUserInfo = (payload: unknown) => axios.get('user', { params: payload });
 
-export const getUsers = () => axios.get('users');
-
-export const updateUser = (payload: ProfileProps) => axios.post('users/update', payload);
+export const updateUser = (payload: ProfileModelProps) => axios.post('users/update', payload);

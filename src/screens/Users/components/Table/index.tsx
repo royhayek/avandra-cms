@@ -2,7 +2,10 @@
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
 import React, { useMemo, useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+import _ from 'lodash';
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
@@ -10,18 +13,18 @@ import { Box, Chip, Grid, IconButton, Typography } from '@mui/material';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import Button from 'shared/components/Buttons/Primary';
 import DataTable from 'shared/components/DataTable';
 import Card from 'shared/components/Card';
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
+import { getUsers, getUsersError, getUsersLoading } from 'redux/users/slice';
+import { deleteUserAction, getUsersList } from 'redux/users/thunks';
 import { AppThunkDispatch, useAppSelector } from 'app/store';
-import { getUsers, getUsersError, getUsersLoading } from 'redux/user/slice';
 import { statusesList } from 'shared/constants/statuses';
 import { useCommonStyles } from 'shared/assets/styles';
-import { getUsersList } from 'redux/user/thunks';
 import useStyles from './styles';
-import _ from 'lodash';
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
@@ -39,6 +42,7 @@ const Table = () => {
 
   // --------------------------------------------------------- //
   // ------------------------ Statics ------------------------ //
+  const history = useHistory();
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = { ...styles, ...commonStyles };
@@ -50,6 +54,35 @@ const Table = () => {
   const fetchUsers = useCallback(() => {
     dispatch(getUsersList());
   }, [dispatch]);
+
+  const handleEditUser = useCallback((row) => history.push(`/users/form`, row), [history]);
+
+  const handleDelete = useCallback(
+    ({ closeToast, _id }) => {
+      closeToast();
+      dispatch(deleteUserAction(_id));
+      fetchUsers();
+    },
+    [dispatch, fetchUsers]
+  );
+
+  const CloseButton = useCallback(
+    (props) => <Button onClick={() => handleDelete(props)} sx={{ padding: '4px 12px' }} text="Yes" />,
+    [handleDelete]
+  );
+
+  const handleDeleteUser = useCallback(
+    ({ _id }) => {
+      toast('Would you like to delete this user?', {
+        autoClose: false,
+        closeOnClick: true,
+        position: 'top-center',
+        style: { alignItems: 'center', width: 400 },
+        closeButton: (props) => <CloseButton _id={_id} {...props} />
+      });
+    },
+    [CloseButton]
+  );
 
   const renderRoleCell = useCallback(
     ({ value }) => <Typography variant="body2">{value.charAt(0).toUpperCase() + value.slice(1)}</Typography>,
@@ -73,12 +106,12 @@ const Table = () => {
   );
 
   const renderRowActions = useCallback(
-    () => (
+    ({ row }) => (
       <Box className={classes.rowActionBtns}>
-        <IconButton className={classes.actionBtn}>
+        <IconButton className={classes.actionBtn} onClick={() => handleDeleteUser(row)}>
           <DeleteRoundedIcon fontSize="small" color="error" />
         </IconButton>
-        <IconButton className={classes.actionBtn}>
+        <IconButton className={classes.actionBtn} onClick={() => handleEditUser(row)}>
           <EditRoundedIcon fontSize="small" color="primary" />
         </IconButton>
         <IconButton className={classes.actionBtn}>
@@ -86,7 +119,7 @@ const Table = () => {
         </IconButton>
       </Box>
     ),
-    [classes.actionBtn, classes.rowActionBtns]
+    [classes.actionBtn, classes.rowActionBtns, handleDeleteUser, handleEditUser]
   );
 
   const getTableHeaders = useCallback(() => {

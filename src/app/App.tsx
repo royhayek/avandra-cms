@@ -37,9 +37,10 @@ const App = () => {
           draggable
           newestOnTop
           hideProgressBar
+          autoClose={2000}
           theme={themeType}
           closeButton={false}
-          closeOnClick={false}
+          closeOnClick={true}
         />
       </Box>
     </ThemeProvider>

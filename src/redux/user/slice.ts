@@ -1,11 +1,10 @@
 import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
-import { getUsersList, updateUserAction } from './thunks';
+import { updateProfileAction } from './thunks';
 import { UserInitialState } from './types';
 import { RootState } from 'app/store';
 
 export const initialState: UserInitialState = {
-  user: {},
-  users: [],
+  data: {},
   loading: false,
   error: null
 };
@@ -22,32 +21,17 @@ export const userSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(getUsersList.pending, (state) => {
+    builder.addCase(updateProfileAction.pending, (state) => {
       state.loading = true;
     });
 
-    builder.addCase(getUsersList.fulfilled, (state, action) => {
+    builder.addCase(updateProfileAction.fulfilled, (state, action) => {
       state.error = null;
       state.loading = false;
-      state.users = action.payload;
+      state.data = action.payload.user;
     });
 
-    builder.addCase(getUsersList.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    });
-
-    builder.addCase(updateUserAction.pending, (state) => {
-      state.loading = true;
-    });
-
-    builder.addCase(updateUserAction.fulfilled, (state, action) => {
-      state.error = null;
-      state.loading = false;
-      state.user = action.payload.user;
-    });
-
-    builder.addCase(updateUserAction.rejected, (state, action) => {
+    builder.addCase(updateProfileAction.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
     });
@@ -64,12 +48,10 @@ export default userSlice.reducer;
 // ------------------------------------------------------------ //
 const _user = (state: RootState) => state.data.user;
 
-export const getUser = createSelector(_user, (data) => data.user);
+export const getUser = createSelector(_user, (data) => data.data);
 
-export const getUsers = createSelector(_user, (data) => data.users);
+export const getUserRole = createSelector(_user, (data) => data?.data?.role);
 
-export const getUserRole = createSelector(_user, (data) => data?.user.role);
+export const getUserError = createSelector(_user, (data) => data.error);
 
-export const getUsersError = createSelector(_user, (data) => data.error);
-
-export const getUsersLoading = createSelector(_user, (data) => data.loading);
+export const getUserLoading = createSelector(_user, (data) => data.loading);

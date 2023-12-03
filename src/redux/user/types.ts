@@ -1,16 +1,17 @@
 import { UserProps } from 'shared/types/User';
 
 export interface UserInitialState {
-  user: UserProps;
-  users: UserProps[] | null;
+  data: UserProps;
   loading: boolean;
   error: unknown | string | null;
 }
 
 export interface ProfileModelProps {
-  id: string;
+  _id: string;
   name: string;
   email: string;
+  role?: string;
+  status?: boolean;
   password?: string | undefined;
   currentPassword?: string | undefined;
   confPassword?: string | undefined;

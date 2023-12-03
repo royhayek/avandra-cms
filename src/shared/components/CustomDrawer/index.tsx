@@ -1,7 +1,7 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
@@ -14,10 +14,11 @@ import UserDropdown from 'shared/components/UserDropdown';
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
-import { getLayout, uiActions } from 'redux/services/ui/slice';
+import { getDrawerSelectedItem, uiActions } from 'redux/services/ui/slice';
 import { useIsSmall } from 'shared/utils';
 import config from 'app/router/Config';
 import useStyles from './styles.ts';
+import { useAppSelector } from 'app/store.ts';
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
@@ -40,10 +41,10 @@ const CustomDrawer = ({ open, setOpen }: CustomDrawerProps) => {
 
   // --------------------------------------------------------- //
   // ------------------------ Redux -------------------------- //
-  const layout = useSelector(getLayout);
-
   const dispatch = useDispatch();
-  const updateLayout = useCallback((payload) => dispatch(uiActions.updateLayout(payload)), [dispatch]);
+  const updateLayout = useCallback((payload) => dispatch(uiActions.update(payload)), [dispatch]);
+
+  const selectItem = useAppSelector(getDrawerSelectedItem);
   // ----------------------- /Redux -------------------------- //
   // --------------------------------------------------------- //
 
@@ -72,7 +73,7 @@ const CustomDrawer = ({ open, setOpen }: CustomDrawerProps) => {
         {_routes.map((item) => (
           <ListItem key={item.key} disablePadding sx={{ display: 'block' }} onClick={() => history.push(item.path)}>
             <ListItemButton
-              selected={_.isEqual(layout?.drawer?.selectedItem, item?.key)}
+              selected={_.isEqual(selectItem, item?.key)}
               onClick={() => handleListItemClick(item.key)}
               className={classNames(classes.listItemButton, { open })}>
               <ListItemIcon color="inherit" className={classNames(classes.listItemIcon, { open })}>

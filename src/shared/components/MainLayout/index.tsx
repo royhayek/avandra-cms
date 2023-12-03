@@ -11,6 +11,7 @@ import { Box } from '@mui/material';
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
+import { useIsSmall } from 'shared/utils';
 import useStyles from './styles.ts';
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
@@ -23,8 +24,9 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   // --------------------------------------------------------- //
   // ------------------------ Static ------------------------- //
   const classes = useStyles();
+  const isSmall = useIsSmall();
 
-  const [openDrawer, setOpenDrawer] = useState(true);
+  const [openDrawer, setOpenDrawer] = useState(isSmall ? false : true);
   // ----------------------- /Static ------------------------- //
   // --------------------------------------------------------- //
 

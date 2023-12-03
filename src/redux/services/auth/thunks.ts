@@ -10,7 +10,7 @@ export const loginAction = createAsyncThunk(
       const { email, password } = args;
       const response = await login({ email, password });
 
-      dispatch(userActions.update({ user: response.data.user }));
+      dispatch(userActions.update({ data: response.data.user }));
 
       return response.data;
     } catch (error: any) {

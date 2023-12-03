@@ -1,31 +1,45 @@
 // ------------------------------------------------------------ //
 // ------------------------- Packages ------------------------- //
 // ------------------------------------------------------------ //
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import _ from 'lodash';
 // ------------------------------------------------------------ //
 // ------------------------ Components ------------------------ //
 // ------------------------------------------------------------ //
-import CustomArea from '../../shared/components/Charts/CustomArea/index.tsx';
+import CustomArea from 'shared/components/Charts/CustomArea';
 import { Grid, Typography, useTheme } from '@mui/material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import BarChart from 'shared/components/Charts/Bar';
+import DataTable from 'shared/components/DataTable';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChart from '../../shared/components/Charts/Bar/index.tsx';
-import DataTable from '../../shared/components/DataTable/index.tsx';
-import StatsCard from './components/StatsCard/index.tsx';
+import StatsCard from './components/StatsCard';
 import DnsIcon from '@mui/icons-material/Dns';
-import Card from '../../shared/components/Card/index.tsx';
+import Card from 'shared/components/Card';
 // ------------------------------------------------------------ //
 // ------------------------- Utilities ------------------------ //
 // ------------------------------------------------------------ //
-import { CHART_DATA, BAR_CHART_DATA, DASHBOARD_TABLE_DATA } from '../../shared/constants/mock.ts';
-import { useCommonStyles } from 'shared/assets/styles/index.ts';
-import useStyles from './styles.ts';
+import { CHART_DATA, BAR_CHART_DATA, DASHBOARD_TABLE_DATA } from 'shared/constants/mock';
+import { getUserAuthenticated } from 'redux/services/auth/slice';
+import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { getDashboardList } from 'redux/dashboard/thunks';
+import { useCommonStyles } from 'shared/assets/styles';
+import { getDashboard } from 'redux/dashboard/slice';
+import useStyles from './styles';
 // ------------------------------------------------------------ //
 // ------------------------- Component ------------------------ //
 // ------------------------------------------------------------ //
 
 const Dashboard = () => {
+  // --------------------------------------------------------- //
+  // ------------------------ Redux -------------------------- //
+  const dispatch = useDispatch<AppThunkDispatch>();
+
+  const authenticated = useAppSelector(getUserAuthenticated);
+  const dashboard = useAppSelector(getDashboard);
+  // ----------------------- /Redux -------------------------- //
+  // --------------------------------------------------------- //
+
   // --------------------------------------------------------- //
   // ----------------------- Statics ------------------------- //
   const theme = useTheme();
@@ -33,6 +47,15 @@ const Dashboard = () => {
   const commonSyles = useCommonStyles();
   const classes = { ...styles, ...commonSyles };
   // ---------------------- /Statics ------------------------- //
+  // --------------------------------------------------------- //
+
+  // --------------------------------------------------------- //
+  // ------------------------ Effects ------------------------ //
+  useEffect(() => {
+    authenticated && dispatch(getDashboardList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authenticated]);
+  // ----------------------- /Effects ------------------------ //
   // --------------------------------------------------------- //
 
   // --------------------------------------------------------- //
@@ -55,13 +78,15 @@ const Dashboard = () => {
     []
   );
 
-  const summaryCardsData = useMemo(
-    () => [
+  const summaryCardsData = useMemo(() => {
+    const { usersCount } = dashboard;
+
+    return [
       {
         title: 'Users',
         icon: <PeopleIcon />,
         padding: theme.spacing(0),
-        value: 100
+        value: usersCount
       },
       {
         title: 'Categories',
@@ -81,60 +106,58 @@ const Dashboard = () => {
         padding: theme.spacing(0),
         value: 10
       }
-    ],
-    [theme]
-  );
+    ];
+  }, [dashboard, theme]);
   // -------------------- /Renderers Vars -------------------- //
   // --------------------------------------------------------- //
 
   // --------------------------------------------------------- //
   // ----------------------- Renderers ----------------------- //
-  const renderContent = useMemo(() => {
-    const tableProps = {
+  const tableProps = useMemo(
+    () => ({
       data: DASHBOARD_TABLE_DATA,
       columns: tableHeaders,
       options: {
         withoutHeader: true
       }
-    };
+    }),
+    [tableHeaders]
+  );
 
-    return (
-      <>
-        <Typography variant="h5" className={classes.header}>
-          Dashboard
-        </Typography>
+  return (
+    <>
+      <Typography variant="h5" className={classes.header}>
+        Dashboard
+      </Typography>
 
-        <Grid container spacing={4}>
-          {_.map(summaryCardsData, ({ title, icon, padding, value }) => (
-            <Grid item key={title} xs={12} sm={12} md={3}>
-              <StatsCard icon={icon} title={title} value={value} padding={padding} />
-            </Grid>
-          ))}
+      <Grid container spacing={4}>
+        {_.map(summaryCardsData, ({ title, icon, padding, value }) => (
+          <Grid item key={title} xs={12} sm={12} md={3}>
+            <StatsCard icon={icon} title={title} value={value} padding={padding} />
+          </Grid>
+        ))}
 
-          <Grid item xs={12} sm={12} md={8}>
-            <Card>
-              <Typography variant="subtitle1">Traffic</Typography>
-              <CustomArea data={CHART_DATA} height={350} />
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={12} md={4}>
-            <Card>
-              <Typography variant="subtitle1">Devices</Typography>
-              <BarChart data={BAR_CHART_DATA} height={350} />
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <Card>
-              <Typography variant="subtitle1">Latest Posts</Typography>
-              <DataTable {...tableProps} />
-            </Card>
-          </Grid>
+        <Grid item xs={12} sm={12} md={8}>
+          <Card>
+            <Typography variant="subtitle1">Traffic</Typography>
+            <CustomArea data={CHART_DATA} height={350} />
+          </Card>
         </Grid>
-      </>
-    );
-  }, [tableHeaders, summaryCardsData, classes.header]);
-
-  return renderContent;
+        <Grid item xs={12} sm={12} md={4}>
+          <Card>
+            <Typography variant="subtitle1">Devices</Typography>
+            <BarChart data={BAR_CHART_DATA} height={350} />
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Card>
+            <Typography variant="subtitle1">Latest Posts</Typography>
+            <DataTable {...tableProps} />
+          </Card>
+        </Grid>
+      </Grid>
+    </>
+  );
 };
 
 export default Dashboard;
