@@ -1,5 +1,6 @@
 // Theme
-import { makeStyles, Theme } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material';
 
 // Styles
 
@@ -26,6 +27,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderBottom: '0 !important',
     padding: '0px 16px !important',
     '&:focus': {
+      outline: 'none !important'
+    },
+    '&:focus-within': {
       outline: 'none !important'
     }
   },

@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
 import { useHistory } from 'react-router-dom';
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 // Components
 import Card from 'shared/components/Card';

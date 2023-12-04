@@ -18,7 +18,7 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   // Statics
   const classes = useStyles();
 
- // Renderers
+  // Renderers
   if (active && payload && payload.length) {
     return (
       <Card className={classes.container}>

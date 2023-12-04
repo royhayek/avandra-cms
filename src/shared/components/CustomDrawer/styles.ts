@@ -1,9 +1,9 @@
 // Theme
-import { makeStyles, Theme } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material';
 
 // Utilities
 import { appBarHeight } from '../CustomAppBar/styles';
-import { light_colors } from 'shares/assets/theme/colors';
 
 // Styles
 const drawerWidth = 256;
@@ -40,7 +40,7 @@ export default makeStyles((theme: Theme) => ({
       justifyContent: 'initial'
     },
     '&.Mui-selected': {
-      color: light_colors.white,
+      color: theme.colors.white,
       background: theme.palette.primary.main
     }
   },

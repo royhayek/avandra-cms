@@ -3,12 +3,14 @@ import _ from 'lodash';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import React, { useMemo, useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import Card from 'shared/components/Card';
+import Menu from 'shared/components/Menu';
 import DataTable from 'shared/components/DataTable';
 import Button from 'shared/components/Buttons/Primary';
+import { Block, Check /* Visibility */ } from '@mui/icons-material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
@@ -16,11 +18,12 @@ import { Box, Chip, Grid, IconButton, Typography } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
+import { UserProps } from 'shared/types/User';
 import { useCommonStyles } from 'shared/assets/styles';
 import { statusesList } from 'shared/constants/statuses';
 import { AppThunkDispatch, useAppSelector } from 'app/store';
-import { deleteUserAction, getUsersList } from 'redux/users/thunks';
 import { getUsers, getUsersError, getUsersLoading } from 'redux/users/slice';
+import { deleteUserAction, getUsersList, updateUserAction } from 'redux/users/thunks';
 
 // Component
 
@@ -37,6 +40,9 @@ const Table = () => {
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = { ...styles, ...commonStyles };
+
+  const [menuData, setMenuData] = useState<UserProps>();
+  const [actionsAnchorEl, setActionsAnchorEl] = useState<HTMLElement | null | undefined>();
 
   // Callbacks
   const fetchUsers = useCallback(() => {
@@ -58,6 +64,13 @@ const Table = () => {
     (props) => <Button onClick={() => handleDelete(props)} sx={{ padding: '4px 12px' }} text="Yes" />,
     [handleDelete]
   );
+
+  const handleActionsMenuClose = useCallback(() => setActionsAnchorEl(null), []);
+
+  const handleActionsMenuClick = useCallback((row, event) => {
+    setMenuData(row);
+    setActionsAnchorEl(event.currentTarget);
+  }, []);
 
   const handleDeleteUser = useCallback(
     ({ _id }) => {
@@ -85,8 +98,8 @@ const Table = () => {
         <Chip
           size="small"
           label={status?.label}
-          sx={{ backgroundColor: status?.color, color: 'white' }}
           classes={{ label: classes.statusLabel }}
+          sx={{ backgroundColor: status?.color, color: 'white' }}
         />
       );
     },
@@ -102,12 +115,12 @@ const Table = () => {
         <IconButton className={classes.actionBtn} onClick={() => handleEditUser(row)}>
           <EditRoundedIcon fontSize="small" color="primary" />
         </IconButton>
-        <IconButton className={classes.actionBtn}>
+        <IconButton className={classes.actionBtn} onClick={(event) => handleActionsMenuClick(row, event)}>
           <MoreVertRoundedIcon fontSize="small" color="primary" />
         </IconButton>
       </Box>
     ),
-    [classes.actionBtn, classes.rowActionBtns, handleDeleteUser, handleEditUser]
+    [classes.actionBtn, classes.rowActionBtns, handleActionsMenuClick, handleDeleteUser, handleEditUser]
   );
 
   const getTableHeaders = useCallback(() => {
@@ -132,6 +145,18 @@ const Table = () => {
     ];
   }, [renderRoleCell, renderRowActions, renderStatusCell]);
 
+  const handleSuspendClick = useCallback(() => {
+    dispatch(updateUserAction({ ...menuData, status: !menuData?.status }));
+    setActionsAnchorEl(null);
+    setTimeout(() => fetchUsers(), 200);
+    // toast.success(`Account ${menuData?.status ? 'Deactivated' : 'Activated'} successfully`);
+  }, [dispatch, fetchUsers, menuData]);
+
+  // const handleViewProfileClick = useCallback(() => {
+  //   console.debug('[handleViewProfileClick] :: ');
+  //   setActionsAnchorEl(null);
+  // }, []);
+
   // Effects
   useEffect(() => {
     fetchUsers();
@@ -147,6 +172,25 @@ const Table = () => {
     pageSize: 25
   };
 
+  const actionsMenuItems = useMemo(() => {
+    const isActive = menuData?.status;
+
+    return [
+      {
+        key: isActive ? 'suspend' : 'activate',
+        label: isActive ? 'Suspend account' : 'Activate account',
+        icon: isActive ? <Block fontSize="small" /> : <Check fontSize="small" />,
+        onClick: handleSuspendClick
+      }
+      // {
+      //   key: 'profile',
+      //   label: 'View Profile',
+      //   icon: <Visibility fontSize="small" />,
+      //   onClick: handleViewProfileClick
+      // }
+    ];
+  }, [handleSuspendClick, menuData?.status]);
+
   // Renderers
   return (
     <>
@@ -161,6 +205,14 @@ const Table = () => {
           </Grid>
         </Grid>
       </Card>
+
+      <Menu
+        id="actions-menu"
+        items={actionsMenuItems}
+        anchorEl={actionsAnchorEl}
+        open={Boolean(actionsAnchorEl)}
+        onClose={handleActionsMenuClose}
+      />
     </>
   );
 };

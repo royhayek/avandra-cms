@@ -1,5 +1,6 @@
 // Theme
-import { makeStyles, Theme } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material';
 
 // Colors
 import { light_colors } from 'shared/assets/theme/colors';

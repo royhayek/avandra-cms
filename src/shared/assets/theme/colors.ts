@@ -36,7 +36,7 @@ export const light_colors = {
   primary: '#33B37D',
   secondary: '#949494',
   textPrimary: '#2C384AF2',
-  background: '#FAFAFA',
+  background: '#F8F8F8',
   divider: '#F7F7F7',
   paper: '#FFFFFF',
   green: '#0B5563',

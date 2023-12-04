@@ -7,8 +7,9 @@ import { Menu as MUIMenu, MenuItem, Typography, MenuProps as MUIMenuProps } from
 // Interfaces
 interface MenuItemData {
   key: string;
-  onClick: () => void;
   label: string;
+  icon: JSX.Element;
+  onClick: () => void;
 }
 
 interface MenuProps extends MUIMenuProps {
@@ -25,9 +26,12 @@ const Menu = ({ id, items, customContent, anchorEl, onClose, ...props }: MenuPro
   <MUIMenu id={id} anchorEl={anchorEl} onClose={onClose} {...props}>
     {customContent
       ? customContent
-      : items?.map(({ key, onClick, label }) => (
-          <MenuItem key={key} onClick={onClick}>
-            <Typography variant="body2">{label}</Typography>
+      : items?.map(({ key, onClick, label, icon }) => (
+          <MenuItem key={key} onClick={onClick} sx={{ my: 0.5 }}>
+            {icon}
+            <Typography variant="body2" sx={{ ml: 1 }}>
+              {label}
+            </Typography>
           </MenuItem>
         ))}
   </MUIMenu>

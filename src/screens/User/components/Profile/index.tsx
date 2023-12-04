@@ -9,7 +9,7 @@ import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 
 // Components
 import Card from 'shared/components/Card';
-import { Box, Grid, Typography } from '@mui/material';
+import { Avatar, Box, Grid, Typography, useTheme } from '@mui/material';
 import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
 import SubmitField from 'shared/components/Controls/SubmitField';
 
@@ -30,7 +30,8 @@ const Profile = () => {
   const user = useAppSelector(getUser);
   const isUsersLoading = useAppSelector(getUserLoading);
 
-  // Statics
+  // Staticsc
+  const theme = useTheme();
   const styles = useStyles();
   const formStyles = useFormStyles();
   const commonStyles = useCommonStyles();
@@ -120,8 +121,17 @@ const Profile = () => {
       <Card>
         {schema ? (
           <AutoForm ref={form} placeholder schema={schema} model={model} onSubmit={handleSubmit}>
-            <Grid container columnSpacing={2} rowGap={6} m={1}>
-              <Grid item xs={12} sm={12} md={6}>
+            <Grid container flexDirection="row" justifyContent="center">
+              <Avatar
+                alt={user?.name}
+                variant="rounded"
+                src="/static/images/avatar/1.jpg"
+                sx={{ fontSize: theme.typography.h4.fontSize, color: theme.colors.white, width: 100, height: 100 }}
+              />
+            </Grid>
+
+            <Grid container columnSpacing={2} my={4}>
+              <Grid item xs={12} sm={12} md={6} mb={2}>
                 <Typography>Information</Typography>
 
                 <AutoField name="name" />
@@ -129,8 +139,6 @@ const Profile = () => {
                 <AutoField name="email" />
                 <ErrorField name="email" />
               </Grid>
-
-              <Grid item xs={12} sm={12} md={6}></Grid>
 
               <Grid item xs={12} sm={12} md={6}>
                 <Typography>Password</Typography>

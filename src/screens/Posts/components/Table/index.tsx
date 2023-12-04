@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import React, { useMemo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 // Components
 import Card from 'shared/components/Card';

@@ -31,7 +31,7 @@ const BarChart = ({ data, width = '99%', height = '100%' }: BarChartProps) => {
     <ResponsiveContainer width={width} height={height}>
       <MUIBarChart data={data}>
         <CartesianGrid horizontal vertical={false} stroke={theme.palette.divider} />
-        
+
         <XAxis
           dataKey="name"
           axisLine={false}

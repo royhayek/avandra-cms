@@ -1,5 +1,6 @@
 // Theme
-import { makeStyles, Theme } from '@mui/styles';
+import { makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material';
 
 // Styles
 
@@ -8,7 +9,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     marginBottom: theme.spacing(4),
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   itemContainer: {
     padding: 16,
