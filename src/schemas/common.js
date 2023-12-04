@@ -1,9 +1,14 @@
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { IconButton, InputAdornment } from '@mui/material';
-import ImageField from 'shared/components/Controls/ImageField';
-import classNames from 'classnames';
-import React from 'react';
+// Packages
 import _ from 'lodash';
+import React from 'react';
+import classNames from 'classnames';
+
+// Components
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import ImageField from 'shared/components/Controls/ImageField';
+
+// Helpers
 
 const SchemaHelpers = {
   text: (classes = {}, schemaProps, uniformsProps) => ({

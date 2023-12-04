@@ -1,21 +1,18 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
 import { createElement } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
+
+// Components
 import * as Screens from './components';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Interfaces
 interface MatchParams {
   detail?: string;
 }
 
 type PostsProps = RouteComponentProps<MatchParams>;
 
+// Component
 const Posts = (props: PostsProps) => {
   const {
     match: {

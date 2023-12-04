@@ -1,61 +1,47 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import React, { useCallback } from 'react';
-import classNames from 'classnames';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Drawer, Hidden, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
+
+// Components
 import UserDropdown from 'shared/components/UserDropdown';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { getDrawerSelectedItem, uiActions } from 'redux/services/ui/slice';
-import { useIsSmall } from 'shared/utils';
+import { Drawer, Hidden, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
 import config from 'app/router/Config';
-import useStyles from './styles.ts';
-import { useAppSelector } from 'app/store.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { useIsSmall } from 'shared/utils';
+import { useAppSelector } from 'app/store';
+import { getUserRole } from 'redux/user/slice';
+import { getDrawerSelectedItem, uiActions } from 'redux/services/ui/slice';
+
+// Component
 interface CustomDrawerProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CustomDrawer = ({ open, setOpen }: CustomDrawerProps) => {
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Redux
+  const dispatch = useDispatch();
+  const updateLayout = useCallback((payload) => dispatch(uiActions.update(payload)), [dispatch]);
+
+  const role = useAppSelector(getUserRole);
+  const selectItem = useAppSelector(getDrawerSelectedItem);
+
+  // Statics
   const classes = useStyles();
   const history = useHistory();
   const isSmall = useIsSmall();
 
-  // TODO: replace "admin" with the dynamic role
-  const _routes = config['admin'].drawerItems;
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
+  const _routes = config[role].drawerItems;
 
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
-  const dispatch = useDispatch();
-  const updateLayout = useCallback((payload) => dispatch(uiActions.update(payload)), [dispatch]);
-
-  const selectItem = useAppSelector(getDrawerSelectedItem);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
-
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const handleListItemClick = useCallback((key) => updateLayout({ drawer: { selectedItem: key } }), [updateLayout]);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <Drawer
       open={open}
@@ -71,7 +57,7 @@ const CustomDrawer = ({ open, setOpen }: CustomDrawerProps) => {
           </ListItem>
         </Hidden>
         {_routes.map((item) => (
-          <ListItem key={item.key} disablePadding sx={{ display: 'block' }} onClick={() => history.push(item.path)}>
+          <ListItem key={item.key} onClick={() => history.push(item.path)} sx={{ display: 'block' }} disablePadding>
             <ListItemButton
               selected={_.isEqual(selectItem, item?.key)}
               onClick={() => handleListItemClick(item.key)}

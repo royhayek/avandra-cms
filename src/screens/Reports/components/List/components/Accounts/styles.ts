@@ -1,5 +1,7 @@
-import { Theme } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+// Theme
+import { makeStyles, Theme } from '@mui/styles';
+
+// Styles
 
 const useStyles = makeStyles((theme: Theme) => ({
   header: {

@@ -1,37 +1,28 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import { Route, Switch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+// Packages
 import React, { useMemo } from 'react';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import MainLayout from '../../shared/components/MainLayout';
-import { Box } from '@mui/material';
-import SubRouter from './SubRouter';
+import { useSelector } from 'react-redux';
+import { Route, Switch } from 'react-router-dom';
+
+// Components
 import NoMatch from './NoMatch';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { getUserAuthenticated } from 'redux/services/auth/slice';
-import { getUserRole } from 'redux/user/slice';
-import { useAppSelector } from 'app/store';
+import SubRouter from './SubRouter';
+import { Box } from '@mui/material';
+import MainLayout from '../../shared/components/MainLayout';
+
+// Utilities
 import config from './Config';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { useAppSelector } from 'app/store';
+import { getUserRole } from 'redux/user/slice';
+import { getUserAuthenticated } from 'redux/services/auth/slice';
+
+// Component
 
 const Router = () => {
-  //----------------------------------------------------//
-  //---------------------- REDUX -----------------------//
+  // Redux
   const role = useAppSelector(getUserRole);
   const authenticated = useSelector(getUserAuthenticated);
-  //--------------------- /REDUX -----------------------//
-  //----------------------------------------------------//
 
-  //----------------------------------------------------//
-  //------------------- RENDERERS ----------------------//
+  // Renderers
   const renderRoute = useMemo(() => {
     try {
       // TODO: replace "admin" with the dynamic role
@@ -53,8 +44,6 @@ const Router = () => {
       return null;
     }
   }, [role]);
-  //------------------- /RENDERERS ---------------------//
-  //----------------------------------------------------//
 
   return (
     <>

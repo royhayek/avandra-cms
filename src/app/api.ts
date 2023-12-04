@@ -1,7 +1,10 @@
+// Packages
 import axios from 'axios';
 import moment from 'moment';
-import 'moment-timezone';
 import { stringify } from 'qs';
+import 'moment-timezone';
+
+// Utilities
 import { store } from './store';
 import { logout } from 'shared/utils';
 

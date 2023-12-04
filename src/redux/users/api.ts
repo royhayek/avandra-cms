@@ -1,5 +1,10 @@
+// Packages
 import axios from 'axios';
+
+// Utilities
 import { UserProps } from 'shared/types/User';
+
+// Calls
 
 export const getUsers = () => axios.get('users');
 

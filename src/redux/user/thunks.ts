@@ -1,7 +1,12 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ProfileModelProps } from './types';
+// Packages
 import { toast } from 'react-toastify';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
+// Utilities
 import { updateUser } from './api';
+import { ProfileModelProps } from './types';
+
+// Actions
 
 export const updateProfileAction = createAsyncThunk(
   'user/update',

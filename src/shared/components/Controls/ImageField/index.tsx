@@ -1,24 +1,19 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import { FieldProps, connectField } from 'uniforms';
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import classNames from 'classnames';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Box, IconButton, Input, InputLabel, Typography } from '@mui/material';
+import classNames from 'classnames';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { FieldProps, connectField } from 'uniforms';
+
+// Components
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useCommonStyles } from 'shared/assets/styles/index.ts';
-import useStyles from './styles.ts';
-import { extractBlobUrl } from 'shared/utils/index.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { Box, IconButton, Input, InputLabel, Typography } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
+import { extractBlobUrl } from 'shared/utils';
+import { useCommonStyles } from 'shared/assets/styles';
+
+// Component
 interface ImageFieldProps {
   label?: string;
   onChange: (file: File | void) => void;
@@ -31,19 +26,14 @@ interface ImageFieldProps {
 type CombinedProps = FieldProps<string, ImageFieldProps>;
 
 const ImageField = ({ label, onChange, value, error, required }: CombinedProps) => {
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = { ...commonStyles, ...styles };
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // --------------------- Renderers Vars -------------------- //
-  // Asynchronously get the URL
+  // Renderers Vars
   useEffect(() => {
     const fetchUrl = async () => {
       if (value && typeof value === 'string' && value.includes('blob')) {
@@ -61,11 +51,8 @@ const ImageField = ({ label, onChange, value, error, required }: CombinedProps) 
   }, [value]);
 
   const hasError = useMemo(() => !_.isEmpty(error), [error]);
-  // -------------------- /Renderers Vars -------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <Box>
       <InputLabel htmlFor="file-input" error={hasError}>

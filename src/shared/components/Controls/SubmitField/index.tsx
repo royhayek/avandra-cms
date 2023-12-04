@@ -1,7 +1,11 @@
+// Packages
 import React from 'react';
 import { useForm } from 'uniforms';
+
+// Components
 import RegularButton from 'shared/components/Buttons/Primary';
 
+// Component
 interface SubmitFieldProps {
   title?: string;
   loading?: boolean;

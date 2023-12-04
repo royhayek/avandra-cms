@@ -1,29 +1,20 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
 import React, { useCallback } from 'react';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Avatar, Box, Button, Divider, Typography } from '@mui/material';
+
+// Components
 import ListAltIcon from '@mui/icons-material/ListAlt';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
+import { Avatar, Box, Button, Divider, Typography } from '@mui/material';
+
+// Utilities
 import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Component
 
 const NotificationsMenu = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const classes = useStyles();
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  //----------------------------------------------------//
-  //------------------- CALLBACKS ----------------------//
+  // Callbacks
   const handleMarkAllAsRead = useCallback(() => {
     // TODO: handle mark all as read button
   }, []);
@@ -31,13 +22,10 @@ const NotificationsMenu = () => {
   const handleViewAll = useCallback(() => {
     // TODO: handle view all button
   }, []);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
-  const renderNotificationItem = useCallback(() => {
-    return (
+  // Renderers
+  const renderNotificationItem = useCallback(
+    () => (
       <Box className={classes.notificationItemCard}>
         <Box>
           <Typography variant="body2">Mary Smith added a new post</Typography>
@@ -49,8 +37,9 @@ const NotificationsMenu = () => {
           <ListAltIcon fontSize="small" />
         </Avatar>
       </Box>
-    );
-  }, [classes.avatar, classes.notificationItemCard]);
+    ),
+    [classes.avatar, classes.notificationItemCard]
+  );
 
   return (
     <Box className={classes.container}>

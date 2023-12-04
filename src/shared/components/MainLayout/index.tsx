@@ -1,37 +1,28 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
 import React, { useState, ReactNode } from 'react';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
+
+// Components
+import { Box } from '@mui/material';
 import CustomAppBar from '../CustomAppBar';
 import CustomDrawer from '../CustomDrawer';
-import { Box } from '@mui/material';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
+
+// Utilities
+import useStyles from './styles';
 import { useIsSmall } from 'shared/utils';
-import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Component
 interface MainLayoutProps {
   children: ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-  // --------------------------------------------------------- //
-  // ------------------------ Static ------------------------- //
+  // Statics
   const classes = useStyles();
   const isSmall = useIsSmall();
 
   const [openDrawer, setOpenDrawer] = useState(isSmall ? false : true);
-  // ----------------------- /Static ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <div className={classes.root}>
       <CustomAppBar open={openDrawer} setOpen={setOpenDrawer} />

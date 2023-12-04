@@ -1,20 +1,18 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
 import { createElement } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
+
+// Utilities
 import * as Screens from './components';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Interfaces
 interface MatchParams {
   detail?: string;
 }
 
 type CategoriesProps = RouteComponentProps<MatchParams>;
+
+// Component
 
 const Categories = (props: CategoriesProps) => {
   const {

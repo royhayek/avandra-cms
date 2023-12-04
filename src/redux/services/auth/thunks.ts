@@ -1,7 +1,12 @@
+// Packages
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
+
+// Utilities
 import { login } from './api';
 import { userActions } from 'redux/user/slice';
+
+// Actions
 
 export const loginAction = createAsyncThunk(
   'auth/login',

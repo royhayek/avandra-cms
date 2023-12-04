@@ -1,4 +1,7 @@
+// Packages
 import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
+
+// Utilities
 import { AuthInitialState } from './types';
 import { loginAction } from './thunks';
 import { RootState } from 'app/store';

@@ -1,4 +1,7 @@
+// Packages
 import React from 'react';
+
+// Components
 import * as Screens from 'screens';
 import DnsIcon from '@mui/icons-material/Dns';
 import PeopleIcon from '@mui/icons-material/People';

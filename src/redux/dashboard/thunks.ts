@@ -1,6 +1,11 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getDashboardData } from './api';
+// Packages
 import { toast } from 'react-toastify';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
+// Utilities
+import { getDashboardData } from './api';
+
+// Actions
 
 export const getDashboardList = createAsyncThunk('dashboard/getData', async (_, { rejectWithValue }) => {
   try {

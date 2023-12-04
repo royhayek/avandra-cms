@@ -1,8 +1,11 @@
+// Packages
 import _ from 'lodash';
 import SimpleSchema from 'simpl-schema';
-import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import * as schemas from './exports';
 // import regExpObj from "simpl-schema/dist/regExp";
+import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
+
+// Utilities
+import * as schemas from './exports';
 
 SimpleSchema.extendOptions(['uniforms']);
 

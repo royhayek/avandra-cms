@@ -1,31 +1,23 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import { useTheme } from '@mui/material';
+// Packages
 import React from 'react';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Area, XAxis, YAxis, Tooltip, AreaChart, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { useTheme } from '@mui/material';
+
+// Components
 import CustomTooltip from '../CustomTooltip';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { Area, XAxis, YAxis, Tooltip, AreaChart, CartesianGrid, ResponsiveContainer } from 'recharts';
+
+// Component
 interface CustomAreaProps {
-  data: Array<{ name: string; pv: number; uv: number }>;
   width?: string | number;
   height: string | number;
+  data: Array<{ name: string; pv: number; uv: number }>;
 }
 
 const CustomArea = ({ data, width = '99%', height = '100%' }: CustomAreaProps) => {
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
   const theme = useTheme();
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <ResponsiveContainer width={width} height={height}>
       <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -39,6 +31,7 @@ const CustomArea = ({ data, width = '99%', height = '100%' }: CustomAreaProps) =
             <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
           </linearGradient>
         </defs> */}
+
         <XAxis
           dataKey="name"
           axisLine={false}
@@ -56,8 +49,11 @@ const CustomArea = ({ data, width = '99%', height = '100%' }: CustomAreaProps) =
             color: theme.palette.secondary.main
           }}
         />
+
         <CartesianGrid horizontal vertical={false} stroke={theme.palette.divider} />
+
         <Tooltip content={<CustomTooltip />} wrapperStyle={{ outline: 'none' }} />
+
         <Area type="monotone" dataKey="uv" stroke="#8a8a8a" fillOpacity={1} fill="url(#colorUv)" strokeWidth={2} />
         <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" strokeWidth={2} />
       </AreaChart>

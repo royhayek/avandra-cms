@@ -1,7 +1,12 @@
-import SimpleSchema from 'simpl-schema';
-import SchemaHelpers from '../../common';
+// Packages
 import _ from 'lodash';
+import SimpleSchema from 'simpl-schema';
+
+// Utilities
+import SchemaHelpers from '../../common';
 import { statusesList } from 'shared/constants/statuses';
+
+// Schema
 
 export const generalSettingsSchema = (classes = {}) => {
   try {

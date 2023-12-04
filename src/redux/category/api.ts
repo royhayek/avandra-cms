@@ -1,5 +1,10 @@
-import { CategoryProps } from 'shared/types/Category';
+// Packages
 import axios from 'axios';
+
+// Utilities
+import { CategoryProps } from 'shared/types/Category';
+
+// Calls
 
 export const getCategories = () => axios.get('category');
 

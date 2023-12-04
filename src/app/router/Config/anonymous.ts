@@ -1,3 +1,4 @@
+// Components
 import * as Screens from 'screens';
 
 export const routes = [

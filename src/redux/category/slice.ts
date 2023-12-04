@@ -1,6 +1,9 @@
+// Packages
 import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
-import { CategoryProps } from 'shared/types/Category';
+
+// Utilities
 import { RootState } from 'app/store';
+import { CategoryProps } from 'shared/types/Category';
 
 interface CcategoryInitialState {
   categories: Array<CategoryProps>;
@@ -14,10 +17,6 @@ export const categorySlice = createSlice({
   name: 'category',
   initialState,
   reducers: {
-    // Redux Toolkit allows us to write "mutating" logic in reducers. It
-    // doesn't actually mutate the state because it uses the Immer library,
-    // which detects changes to a "draft state" and produces a brand new
-    // immutable state based off those changes
     update: (state, action) => {
       state = { ...state, ...action.payload };
     },

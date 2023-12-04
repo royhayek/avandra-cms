@@ -1,26 +1,21 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
-import { toast } from 'react-toastify';
-import { DeepPartial } from 'redux';
+// Packages
 import classNames from 'classnames';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
-import RegularButton from 'shared/components/Buttons/Primary';
+import { DeepPartial } from 'redux';
+import { toast } from 'react-toastify';
+import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+// Components
 import { Box, Typography } from '@mui/material';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
-import useStyles from './styles.ts';
+import RegularButton from 'shared/components/Buttons/Primary';
+import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
+
+// Utilities
 import getSchema from 'schemas';
-//----------------------------------------------------//
-//------------------- COMPONENT ----------------------//
-//----------------------------------------------------//
+import useStyles from './styles';
+import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+
+// Interfaces
 interface ResetPasswordProps {
   toggle: () => void;
 }
@@ -29,26 +24,24 @@ interface ResetPasswordForm {
   email: string;
 }
 
+// Component
+
 const ResetPassword = ({ toggle }: ResetPasswordProps) => {
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
+  const styles = useStyles();
+  const formStyles = useFormStyles();
+  const commonStyles = useCommonStyles();
+  const classes = useMemo(() => ({ ...styles, ...formStyles, ...commonStyles }), [commonStyles, formStyles, styles]);
+
   const form = useRef<BaseForm<
     DeepPartial<ResetPasswordForm>,
     BaseFormProps<DeepPartial<ResetPasswordForm>>,
     BaseFormState<DeepPartial<ResetPasswordForm>>
   > | null>(null);
 
-  const styles = useStyles();
-  const formStyles = useFormStyles();
-  const commonStyles = useCommonStyles();
-  const classes = useMemo(() => ({ ...styles, ...formStyles, ...commonStyles }), [commonStyles, formStyles, styles]);
-
   const [schema, setSchema] = useState<Bridge>();
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const setSchemaDef = useCallback(() => {
     try {
       setSchema(getSchema('resetPassSchema', {}, {}, {}));
@@ -61,21 +54,14 @@ const ResetPassword = ({ toggle }: ResetPasswordProps) => {
     console.debug('[handleSubmit] :: ', { model });
     toast.success('Reset request sent successfully');
   }, []);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setSchemaDef();
   }, []);
   /* eslint-enable react-hooks/exhaustive-deps */
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  //----------------------------------------------------//
-  //------------------- RENDERERES ---------------------//
+  // Renderers
   const renderHeader = useMemo(
     () => (
       <>

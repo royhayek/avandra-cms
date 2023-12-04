@@ -1,10 +1,12 @@
-import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
+// Theme
+import { makeStyles, Theme } from '@mui/styles';
+
+// Styles
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    borderRadius: 0,
-    border: 'none'
+    border: 'none',
+    borderRadius: 0
   },
   columnHeader: {
     padding: '0px 16px !important'

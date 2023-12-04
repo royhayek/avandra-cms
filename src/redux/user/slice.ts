@@ -1,7 +1,10 @@
+// Packages
 import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
-import { updateProfileAction } from './thunks';
-import { UserInitialState } from './types';
+
+// Utilities
 import { RootState } from 'app/store';
+import { UserInitialState } from './types';
+import { updateProfileAction } from './thunks';
 
 export const initialState: UserInitialState = {
   data: {},

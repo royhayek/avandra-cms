@@ -1,3 +1,4 @@
+// Utilities
 import { UserProps } from 'shared/types/User';
 
 export interface UserInitialState {

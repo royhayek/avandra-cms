@@ -1,6 +1,11 @@
-import SimpleSchema from 'simpl-schema';
-import SchemaHelpers from '../common';
+// Packages
 import Ajv from 'ajv';
+import SimpleSchema from 'simpl-schema';
+
+// Utilities
+import SchemaHelpers from '../common';
+
+// Schema
 
 const ajv = new Ajv({ allErrors: true, useDefaults: true, $data: true });
 ajv.addKeyword('uniforms');

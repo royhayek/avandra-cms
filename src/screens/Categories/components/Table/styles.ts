@@ -1,6 +1,10 @@
+// Theme
+import { makeStyles, Theme } from '@mui/styles';
+
+// Colors
 import { light_colors } from 'shared/assets/theme/colors';
-import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
+
+// Styles
 
 const useStyles = makeStyles((theme: Theme) => ({
   header: {

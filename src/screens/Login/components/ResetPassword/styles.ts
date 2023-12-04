@@ -1,5 +1,7 @@
-import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
+// Theme
+import { makeStyles, Theme } from '@mui/styles';
+
+// Styles
 
 const useStyles = makeStyles((theme: Theme) => ({
   modal: {
@@ -20,9 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       height: '35%'
     },
     [theme.breakpoints.only('md')]: {
+      padding: 24,
       width: '40%',
-      height: '30%',
-      padding: 24
+      height: '30%'
     }
   }
 }));

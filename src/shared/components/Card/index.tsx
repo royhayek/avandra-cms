@@ -1,37 +1,28 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
 import classNames from 'classnames';
 import React, { MouseEvent, ReactNode } from 'react';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
+
+// Components
 import { Card as MUICard, CardProps as MUICardProps, SxProps } from '@mui/material';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Utilities
+import useStyles from './styles';
+
+// Component
 interface CardProps extends MUICardProps {
+  sx?: SxProps;
+  className?: string;
   children?: ReactNode;
   onClick?: (event: MouseEvent<HTMLDivElement>) => void;
-  className?: string;
-  sx?: SxProps;
 }
 
 const Card: React.FC<CardProps> = ({ children, onClick, className, sx }) => {
-  // --------------------------------------------------------- //
-  // ------------------------ Static ------------------------- //
+  // Statics
   const classes = useStyles();
-  // ----------------------- /Static ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
-    <MUICard elevation={0} className={classNames(classes.card, className)} onClick={onClick} sx={sx}>
+    <MUICard className={classNames(classes.card, className)} elevation={0} onClick={onClick} sx={sx}>
       {children}
     </MUICard>
   );

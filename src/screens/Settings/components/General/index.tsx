@@ -1,30 +1,24 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { toast } from 'react-toastify';
-import { DeepPartial } from 'redux';
+// Packages
 import getSchema from 'schemas';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
-import Button from 'shared/components/Buttons/Primary';
-import { Box, Grid, Typography } from '@mui/material';
+import { DeepPartial } from 'redux';
+import { toast } from 'react-toastify';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
+
+// Components
 import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+import { Box, Grid, Typography } from '@mui/material';
+import Button from 'shared/components/Buttons/Primary';
+import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
+
+// Utilities
 import useStyles from './styles';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+
+// Component
 
 const General = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const styles = useStyles();
   const formStyles = useFormStyles();
   const commonStyles = useCommonStyles();
@@ -37,11 +31,8 @@ const General = () => {
   > | null>(null);
 
   const [schema, setSchema] = useState<Bridge>();
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const setSchemaDef = useCallback(() => {
     try {
       setSchema(getSchema('generalSettingsSchema', {}, {}, {}));
@@ -54,21 +45,14 @@ const General = () => {
     console.debug('[handleSubmit] :: ', { model });
     toast.success('Category added successfully');
   }, []);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setSchemaDef();
   }, []);
   /* eslint-enable react-hooks/exhaustive-deps */
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <>
       <Box className={classes.header}>

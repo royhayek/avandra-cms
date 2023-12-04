@@ -1,14 +1,17 @@
+// Packages
+import _ from 'lodash';
+import { useEffect, useState } from 'react';
 import { defaultMemoize, createSelectorCreator } from 'reselect';
 import { Breakpoint, useMediaQuery, useTheme } from '@mui/material';
 // import useScreenOrientation from "react-hook-screen-orientation";
-import { logout as logoutApi } from '../../redux/services/auth/api';
-import { authActions } from '../../redux/services/auth/slice';
-// import { useMediaQuery } from "@mui/material";
-// import { useTheme } from "@mui/material";
+
+// Utilities
 import { store } from 'app/store';
-import _ from 'lodash';
 import { userActions } from 'redux/user/slice';
-import { useEffect, useState } from 'react';
+import { authActions } from 'redux/services/auth/slice';
+import { logout as logoutApi } from 'redux/services/auth/api';
+
+// Helpers
 
 export const useWidth = () => {
   const theme = useTheme();

@@ -1,5 +1,10 @@
+// Packages
 import axios from 'axios';
+
+// Utilities
 import { ProfileModelProps } from './types';
+
+// Calls
 
 export const getUserInfo = (payload: unknown) => axios.get('user', { params: payload });
 

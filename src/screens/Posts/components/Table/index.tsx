@@ -1,34 +1,25 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useMemo, useCallback } from 'react';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Avatar, Box, Chip, Grid, IconButton, Typography } from '@mui/material';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import React, { useMemo, useCallback } from 'react';
+
+// Components
+import Card from 'shared/components/Card';
 import DataTable from 'shared/components/DataTable';
-import Card from 'shared/components/Card/index.tsx';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { POSTS_TABLE_DATA } from 'shared/constants/mock';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { Avatar, Box, Chip, Grid, IconButton, Typography } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
 import { statusesList } from 'shared/constants/statuses';
-import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { POSTS_TABLE_DATA } from 'shared/constants/mock';
+
+// Component
 
 const Table = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const classes = useStyles();
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const renderImage = useCallback(({ value }) => <Avatar alt="image" src={value.url} />, []);
 
   const renderStatusCell = useCallback(
@@ -56,8 +47,8 @@ const Table = () => {
     [classes.actionBtn]
   );
 
-  const getTableHeaders = useCallback(() => {
-    return [
+  const getTableHeaders = useCallback(
+    () => [
       { field: 'id', headerName: 'ID', flex: 0.3, width: 50 },
       {
         field: 'image',
@@ -86,45 +77,36 @@ const Table = () => {
         flex: 0.5,
         width: 100
       }
-    ];
-  }, [renderImage, renderRowActions, renderStatusCell]);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
+    ],
+    [renderImage, renderRowActions, renderStatusCell]
+  );
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
-  // const renderSmall = useMemo(() => {
-  //   // TODO: work on the small layout
-  // }, []);
+  // Renderers Vars
+  const data = POSTS_TABLE_DATA,
+    columns = getTableHeaders();
 
-  const renderLarge = useMemo(() => {
-    const data = POSTS_TABLE_DATA,
-      columns = getTableHeaders();
+  const tableProps = {
+    data,
+    columns,
+    pageSize: 25
+  };
 
-    const tableProps = {
-      data,
-      columns,
-      pageSize: 25
-    };
+  // Renderers
+  return (
+    <>
+      <Box className={classes.header}>
+        <Typography variant="h5">Posts</Typography>
+      </Box>
 
-    return (
-      <>
-        <Box className={classes.header}>
-          <Typography variant="h5">Posts</Typography>
-        </Box>
-
-        <Card>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={12}>
-              <DataTable tableProps={tableProps} />
-            </Grid>
+      <Card>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={12} md={12}>
+            <DataTable tableProps={tableProps} />
           </Grid>
-        </Card>
-      </>
-    );
-  }, [classes.header, getTableHeaders]);
-
-  return renderLarge;
+        </Grid>
+      </Card>
+    </>
+  );
 };
 
 export default Table;

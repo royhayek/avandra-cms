@@ -1,65 +1,50 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useEffect, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import CustomArea from 'shared/components/Charts/CustomArea';
-import { Grid, Typography, useTheme } from '@mui/material';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import { useDispatch } from 'react-redux';
+import React, { useEffect, useMemo } from 'react';
+
+// Components
+import Card from 'shared/components/Card';
+import DnsIcon from '@mui/icons-material/Dns';
+import StatsCard from './components/StatsCard';
 import BarChart from 'shared/components/Charts/Bar';
 import DataTable from 'shared/components/DataTable';
 import PeopleIcon from '@mui/icons-material/People';
-import StatsCard from './components/StatsCard';
-import DnsIcon from '@mui/icons-material/Dns';
-import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { CHART_DATA, BAR_CHART_DATA, DASHBOARD_TABLE_DATA } from 'shared/constants/mock';
-import { getUserAuthenticated } from 'redux/services/auth/slice';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
-import { getDashboardList } from 'redux/dashboard/thunks';
-import { useCommonStyles } from 'shared/assets/styles';
-import { getDashboard } from 'redux/dashboard/slice';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import { Grid, Typography, useTheme } from '@mui/material';
+import CustomArea from 'shared/components/Charts/CustomArea';
+
+// Utilities
 import useStyles from './styles';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { getDashboard } from 'redux/dashboard/slice';
+import { useCommonStyles } from 'shared/assets/styles';
+import { getDashboardList } from 'redux/dashboard/thunks';
+import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { getUserAuthenticated } from 'redux/services/auth/slice';
+import { CHART_DATA, BAR_CHART_DATA, DASHBOARD_TABLE_DATA } from 'shared/constants/mock';
+
+// Component
 
 const Dashboard = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
+  // Redux
   const dispatch = useDispatch<AppThunkDispatch>();
 
   const authenticated = useAppSelector(getUserAuthenticated);
   const dashboard = useAppSelector(getDashboard);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
   const theme = useTheme();
   const styles = useStyles();
   const commonSyles = useCommonStyles();
   const classes = { ...styles, ...commonSyles };
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Effects ------------------------ //
+  // Effects
   useEffect(() => {
     authenticated && dispatch(getDashboardList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authenticated]);
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // --------------------- Renderers Vars -------------------- //
+  // Renderers Vars
   const tableHeaders = useMemo(
     () => [
       { field: 'id', headerName: 'ID', width: 70 },
@@ -108,11 +93,7 @@ const Dashboard = () => {
       }
     ];
   }, [dashboard, theme]);
-  // -------------------- /Renderers Vars -------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
   const tableProps = useMemo(
     () => ({
       data: DASHBOARD_TABLE_DATA,
@@ -124,6 +105,7 @@ const Dashboard = () => {
     [tableHeaders]
   );
 
+  // Renderers
   return (
     <>
       <Typography variant="h5" className={classes.header}>

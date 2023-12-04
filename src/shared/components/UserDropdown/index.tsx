@@ -1,36 +1,27 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useCallback, useState, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Avatar, Box, ButtonBase, Typography } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useHistory } from 'react-router-dom';
+import React, { useCallback, useState, useMemo } from 'react';
+
+// Components
 import Menu from '../Menu';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useCommonStyles } from 'shared/assets/styles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Avatar, Box, ButtonBase, Typography } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
+import { logout } from 'shared/utils';
 import { getUser } from 'redux/user/slice';
 import { useAppSelector } from 'app/store';
-import { logout } from 'shared/utils';
-import useStyles from './styles';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { useCommonStyles } from 'shared/assets/styles';
+
+// Component
 
 const UserDropdown = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
+  // Redux
   const user = useAppSelector(getUser);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = { ...styles, ...commonStyles };
@@ -38,11 +29,8 @@ const UserDropdown = () => {
   const history = useHistory();
 
   const [dropdownAnchorEl, setDropdownAnchorEl] = useState<HTMLElement | null>(null);
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  //----------------------------------------------------//
-  //------------------- CALLBACKS ----------------------//
+  // Callbacks
   const handleDropdownClose = useCallback(() => {
     setDropdownAnchorEl(null);
   }, []);
@@ -60,11 +48,7 @@ const UserDropdown = () => {
     logout('User logged out');
   }, []);
 
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
-
-  // --------------------------------------------------------- //
-  // --------------------- Renderers Vars -------------------- //
+  // Renderers Vars
   const getMenuItems = useMemo(
     () => [
       {
@@ -82,20 +66,16 @@ const UserDropdown = () => {
   );
 
   const open = Boolean(dropdownAnchorEl);
-  // -------------------- /Renderers Vars -------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   const renderDropDown = useMemo(
     () => (
-      // <Hidden smDown>
       <ButtonBase
         id="dropdown-button"
-        aria-controls={open ? 'dropdown-menu' : undefined}
         aria-haspopup="true"
+        onClick={handleDropdownClick}
         aria-expanded={open ? 'true' : undefined}
-        onClick={handleDropdownClick}>
+        aria-controls={open ? 'dropdown-menu' : undefined}>
         <Box className={classes.dropdownContainer}>
           <Avatar sx={{ width: 32, height: 32, mr: 1 }}>{_.slice(user?.name, 0, 1)}</Avatar>
           <Box className={classes.nameAndRole}>
@@ -109,7 +89,6 @@ const UserDropdown = () => {
           <ExpandMoreIcon fontSize="small" className={classes.icon} />
         </Box>
       </ButtonBase>
-      // </Hidden>
     ),
     [open, handleDropdownClick, classes.dropdownContainer, classes.nameAndRole, classes.role, classes.icon, user?.name]
   );

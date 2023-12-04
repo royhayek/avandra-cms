@@ -1,5 +1,8 @@
+// Packages
 import { Theme } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+
+// Common Styles
 
 export const useCommonStyles = makeStyles((theme: Theme) => ({
   row: {
@@ -35,6 +38,8 @@ export const useCommonStyles = makeStyles((theme: Theme) => ({
     }
   }
 }));
+
+// Common Form Styles
 
 export const useFormStyles = makeStyles(() => ({
   footer: {

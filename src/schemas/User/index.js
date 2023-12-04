@@ -1,10 +1,15 @@
+// Packages
 import Ajv from 'ajv';
 import _ from 'lodash';
-import SchemaHelpers from '../common';
 import SimpleSchema from 'simpl-schema';
+
+// Utilities
+import SchemaHelpers from '../common';
 import rolesList from 'shared/constants/roles';
 import providersList from 'shared/constants/providers';
 import { statusesList } from 'shared/constants/statuses';
+
+// Schema
 
 const ajv = new Ajv({ allErrors: true, useDefaults: true, $data: true });
 ajv.addKeyword('uniforms');

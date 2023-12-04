@@ -1,5 +1,10 @@
+// Packages
 import SimpleSchema from 'simpl-schema';
+
+// Utilities
 import SchemaHelpers from '../common';
+
+// Schema
 
 export const addNotificationSchema = (classes = {}) => {
   try {

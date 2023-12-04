@@ -1,56 +1,44 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useMemo, useCallback, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Box, Chip, Grid, IconButton, Typography } from '@mui/material';
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import Button from 'shared/components/Buttons/Primary';
-import DataTable from 'shared/components/DataTable';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import React, { useMemo, useCallback, useEffect } from 'react';
+
+// Components
 import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { getUsers, getUsersError, getUsersLoading } from 'redux/users/slice';
-import { deleteUserAction, getUsersList } from 'redux/users/thunks';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
-import { statusesList } from 'shared/constants/statuses';
-import { useCommonStyles } from 'shared/assets/styles';
+import DataTable from 'shared/components/DataTable';
+import Button from 'shared/components/Buttons/Primary';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import { Box, Chip, Grid, IconButton, Typography } from '@mui/material';
+
+// Utilities
 import useStyles from './styles';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { useCommonStyles } from 'shared/assets/styles';
+import { statusesList } from 'shared/constants/statuses';
+import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { deleteUserAction, getUsersList } from 'redux/users/thunks';
+import { getUsers, getUsersError, getUsersLoading } from 'redux/users/slice';
+
+// Component
 
 const Table = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
+  // Redux
   const dispatch = useDispatch<AppThunkDispatch>();
 
   const users = useAppSelector(getUsers);
   const usersError = useAppSelector(getUsersError);
   const isUsersLoading = useAppSelector(getUsersLoading);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const history = useHistory();
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = { ...styles, ...commonStyles };
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const fetchUsers = useCallback(() => {
     dispatch(getUsersList());
   }, [dispatch]);
@@ -143,47 +131,38 @@ const Table = () => {
       }
     ];
   }, [renderRoleCell, renderRowActions, renderStatusCell]);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Effects ------------------------ //
+  // Effects
   useEffect(() => {
     fetchUsers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
-  const renderLarge = useMemo(() => {
-    const columns = getTableHeaders();
+  // Renderers Vars
+  const columns = getTableHeaders();
 
-    const tableProps = {
-      data: users,
-      columns,
-      pageSize: 25
-    };
+  const tableProps = {
+    data: users,
+    columns,
+    pageSize: 25
+  };
 
-    return (
-      <>
-        <Box className={classes.header}>
-          <Typography variant="h5">Users</Typography>
-        </Box>
+  // Renderers
+  return (
+    <>
+      <Box className={classes.header}>
+        <Typography variant="h5">Users</Typography>
+      </Box>
 
-        <Card>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={12}>
-              <DataTable tableProps={tableProps} loading={isUsersLoading} error={usersError} />
-            </Grid>
+      <Card>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={12} md={12}>
+            <DataTable tableProps={tableProps} loading={isUsersLoading} error={usersError} />
           </Grid>
-        </Card>
-      </>
-    );
-  }, [classes.header, getTableHeaders, isUsersLoading, users, usersError]);
-
-  return renderLarge;
+        </Grid>
+      </Card>
+    </>
+  );
 };
 
 export default Table;

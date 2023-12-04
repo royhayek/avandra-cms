@@ -1,57 +1,46 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useCallback, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { AppBar, Badge, Box, Hidden, IconButton, Switch, Toolbar, Typography } from '@mui/material';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import NotificationsMenu from './components/NotificationsMenu';
-import SearchIcon from '@mui/icons-material/Search';
-import SearchMenu from './components/SearchMenu';
-import MenuIcon from '@mui/icons-material/Menu';
-import UserDropdown from '../UserDropdown';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from 'react';
+
+// Components
 import Menu from '../Menu';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
+import UserDropdown from '../UserDropdown';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchMenu from './components/SearchMenu';
+import SearchIcon from '@mui/icons-material/Search';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsMenuIcon from './components/NotificationsMenu';
+import { AppBar, Badge, Box, Hidden, IconButton, Switch, Toolbar, Typography } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
+import { useCommonStyles } from 'shared/assets/styles';
 import { getThemeType, uiActions } from 'redux/services/ui/slice';
-import { useCommonStyles } from 'shared/assets/styles/index.ts';
-import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Component
+
 interface CustomAppBarProps {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = { ...styles, ...commonStyles };
 
   const [notiAnchorEl, setNotiAnchorEl] = useState(null);
   const [searchAnchorEl, setSearchAnchorEl] = useState(null);
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
+  // Redux
   const dispatch = useDispatch();
   const updateUI = useCallback((payload) => dispatch(uiActions.update(payload)), [dispatch]);
 
   const theme = useSelector(getThemeType);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const handleDrawerOpen = useCallback(() => {
     setOpen((cur) => !cur);
   }, [setOpen]);
@@ -76,17 +65,11 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
     (event, checked) => updateUI({ theme: checked ? 'dark' : 'light' }),
     [updateUI]
   );
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // --------------------- Renderers Vars -------------------- //
+  // Renderers Vars
   const themeValue = useMemo(() => (_.isEqual(theme, 'dark') ? true : false), [theme]);
-  // -------------------- /Renderers Vars -------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   const renderDrawerMenuBtn = useMemo(
     () => (
       <IconButton size="large" edge="start" color="primary" aria-label="menu" sx={{ mr: 2 }} onClick={handleDrawerOpen}>
@@ -96,12 +79,10 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
     [handleDrawerOpen]
   );
 
-  const renderLogo = useMemo(() => {
-    return <Typography sx={{ flexGrow: 1 }}>AI TRAVEL PLANNER</Typography>;
-  }, []);
+  const renderLogo = useMemo(() => <Typography sx={{ flexGrow: 1 }}>AI TRAVEL PLANNER</Typography>, []);
 
-  const renderButtons = useMemo(() => {
-    return (
+  const renderButtons = useMemo(
+    () => (
       <Box sx={{ mr: 3 }}>
         <Switch color="primary" checked={themeValue} onChange={handleThemeSwitch} />
         <IconButton
@@ -125,8 +106,9 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
           </Badge>
         </IconButton>
       </Box>
-    );
-  }, [handleSearchClick, handleThemeSwitch, handleNotiClick, themeValue, open]);
+    ),
+    [handleSearchClick, handleThemeSwitch, handleNotiClick, themeValue, open]
+  );
 
   const renderDropDown = useMemo(
     () => (
@@ -159,7 +141,7 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
         anchorEl={notiAnchorEl}
         onClose={handleNotiClose}
         open={Boolean(notiAnchorEl)}
-        customContent={<NotificationsMenu />}
+        customContent={<NotificationsMenuIcon />}
       />
     </AppBar>
   );

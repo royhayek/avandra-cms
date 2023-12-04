@@ -1,33 +1,28 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
+// Packages
 import getSchema from 'schemas';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Box, Grid, IconButton, Typography } from '@mui/material';
-import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
+import { DeepPartial } from 'redux';
+import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
+
+// Components
+import Card from 'shared/components/Card';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import Button from 'shared/components/Buttons/Primary';
-import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useCommonStyles, useFormStyles } from 'shared/assets/styles/index.ts';
+import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
 import * as api from 'redux/category/api';
-import useStyles from './styles.ts';
-import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
-import { DeepPartial } from 'redux';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+
+// Component
 
 const Form = () => {
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
+  const history = useHistory();
   const styles = useStyles();
   const formStyles = useFormStyles();
   const commonStyles = useCommonStyles();
@@ -39,15 +34,10 @@ const Form = () => {
     BaseFormState<DeepPartial<unknown>>
   > | null>(null);
 
-  const history = useHistory();
-
   const [schema, setSchema] = useState<Bridge>();
   const [loading, setLoading] = useState<boolean>(false);
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const setSchemaDef = useCallback(() => {
     try {
       setSchema(getSchema('addCategorySchema', {}, {}, {}));
@@ -66,21 +56,15 @@ const Form = () => {
       .then(() => toast.success('Category created successfully'))
       .finally(() => setLoading(false));
   }, []);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Effects ------------------------ //
+  // Effects
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setSchemaDef();
   }, []);
   /* eslint-enable react-hooks/exhaustive-deps */
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <>
       <Box className={classes.header}>

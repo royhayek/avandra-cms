@@ -1,17 +1,19 @@
-import { appBarHeight } from '../CustomAppBar/styles';
-import { light_colors } from '../../assets/theme/colors';
-import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
+// Theme
+import { makeStyles, Theme } from '@mui/styles';
 
+// Utilities
+import { appBarHeight } from '../CustomAppBar/styles';
+import { light_colors } from 'shares/assets/theme/colors';
+
+// Styles
 const drawerWidth = 256;
 
 export default makeStyles((theme: Theme) => ({
   drawer: {
     overflowX: 'hidden',
     borderRight: 'none',
-    // borderRight: `1px solid ${theme.palette.divider}`,
-    background: theme.palette.background.default,
     marginTop: `${appBarHeight}px`,
+    background: theme.palette.background.default,
     width: `calc(${theme.spacing(7)} + 1px)`,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
@@ -31,9 +33,9 @@ export default makeStyles((theme: Theme) => ({
   },
   listItemButton: {
     minHeight: 50,
-    justifyContent: 'center',
-    margin: '10px 16px',
     borderRadius: '8px',
+    margin: '10px 16px',
+    justifyContent: 'center',
     '&.open': {
       justifyContent: 'initial'
     },

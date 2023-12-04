@@ -1,21 +1,18 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
 import { createElement } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
+
+// Utilities
 import * as Screens from './components';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Interfaces
 interface MatchParams {
   detail?: string;
 }
 
 type SettingsProps = RouteComponentProps<MatchParams>;
 
+// Component
 const Settings = (props: SettingsProps) => {
   const {
     match: {

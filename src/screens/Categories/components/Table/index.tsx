@@ -1,55 +1,43 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useMemo, useCallback, useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Avatar, Box, Chip, Grid, IconButton, Typography } from '@mui/material';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import React, { useMemo, useCallback, useEffect, useState } from 'react';
+
+// Components
+import Card from '../../../../shared/components/Card';
+import Button from 'shared/components/Buttons/Primary';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import DataTable from '../../../../shared/components/DataTable/index.tsx';
-import Button from 'shared/components/Buttons/Primary/index.tsx';
-import Card from '../../../../shared/components/Card/index.tsx';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { categoryActions, getCategories } from 'redux/category/slice';
-import { useCommonStyles } from 'shared/assets/styles/index.ts';
-import { CATEGORIES_TABLE_DATA } from 'shared/constants/mock.ts';
+import DataTable from '../../../../shared/components/DataTable';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { Avatar, Box, Chip, Grid, IconButton, Typography } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
 import * as api from 'redux/category/api';
+import { useCommonStyles } from 'shared/assets/styles';
 import { statusesList } from 'shared/constants/statuses';
-import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { CATEGORIES_TABLE_DATA } from 'shared/constants/mock';
+import { categoryActions, getCategories } from 'redux/category/slice';
+
+// Component
 
 const Table = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
+  // Redux
   const dispatch = useDispatch();
   const update = useCallback((payload) => dispatch(categoryActions.update(payload)), [dispatch]);
 
   const categories = useSelector(getCategories);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const history = useHistory();
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = useMemo(() => ({ ...commonStyles, ...styles }), [commonStyles, styles]);
 
   const [loading, setLoading] = useState(false);
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const fetchCategories = useCallback(() => {
     setLoading(true);
 
@@ -58,20 +46,14 @@ const Table = () => {
       .then(({ data }) => update({ categories: data?.data }))
       .finally(() => setLoading(false));
   }, [update]);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Effects ------------------------ //
+  // Effects
   useEffect(() => {
     fetchCategories();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const renderImage = useCallback(
     ({ value }) => (
       <Avatar
@@ -102,23 +84,21 @@ const Table = () => {
   const handleRowEdit = useCallback((row) => history.push(`/categories/form`, row), [history]);
 
   const renderRowActions = useCallback(
-    ({ row }) => {
-      return (
-        <Box className={classes.rowActionBtns}>
-          <IconButton className={classes.actionBtn}>
-            <DeleteRoundedIcon fontSize="small" color="error" />
-          </IconButton>
-          <IconButton className={classes.actionBtn} onClick={() => handleRowEdit(row)}>
-            <EditRoundedIcon fontSize="small" color="primary" />
-          </IconButton>
-        </Box>
-      );
-    },
+    ({ row }) => (
+      <Box className={classes.rowActionBtns}>
+        <IconButton className={classes.actionBtn}>
+          <DeleteRoundedIcon fontSize="small" color="error" />
+        </IconButton>
+        <IconButton className={classes.actionBtn} onClick={() => handleRowEdit(row)}>
+          <EditRoundedIcon fontSize="small" color="primary" />
+        </IconButton>
+      </Box>
+    ),
     [classes.actionBtn, classes.rowActionBtns, handleRowEdit]
   );
 
-  const getTableHeaders = useMemo(() => {
-    return [
+  const getTableHeaders = useMemo(
+    () => [
       { field: 'id', headerName: 'ID', flex: 0.5, minWidth: 50 },
       {
         flex: 1,
@@ -142,39 +122,33 @@ const Table = () => {
         headerName: '',
         renderCell: renderRowActions
       }
-    ];
-  }, [renderImage, renderRowActions, renderStatusCell]);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
+    ],
+    [renderImage, renderRowActions, renderStatusCell]
+  );
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
-  const renderContent = useMemo(() => {
-    const tableProps = {
-      data: categories ?? CATEGORIES_TABLE_DATA,
-      columns: getTableHeaders
-    };
+  // Renderers Vars
+  const tableProps = {
+    data: categories ?? CATEGORIES_TABLE_DATA,
+    columns: getTableHeaders
+  };
 
-    return (
-      <>
-        <Box className={classes.header}>
-          <Typography variant="h5">Categories</Typography>
-          <Button text="Add Category" onClick={() => history.push('/categories/form')} />
-        </Box>
+  // Renderers
+  return (
+    <>
+      <Box className={classes.header}>
+        <Typography variant="h5">Categories</Typography>
+        <Button text="Add Category" onClick={() => history.push('/categories/form')} />
+      </Box>
 
-        <Card>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={12} md={12}>
-              {/* <Form /> */}
-              <DataTable tableProps={tableProps} loading={loading} />
-            </Grid>
+      <Card>
+        <Grid container spacing={3}>
+          <Grid item xs={12} sm={12} md={12}>
+            <DataTable tableProps={tableProps} loading={loading} />
           </Grid>
-        </Card>
-      </>
-    );
-  }, [loading, categories, classes.header, getTableHeaders, history]);
-
-  return renderContent;
+        </Grid>
+      </Card>
+    </>
+  );
 };
 
 export default Table;

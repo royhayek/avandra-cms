@@ -1,4 +1,7 @@
+// Packages
 import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
+
+// Utilities
 import { RootState } from 'app/store';
 
 interface ConfigInitialState {

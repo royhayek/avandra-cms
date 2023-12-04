@@ -1,6 +1,10 @@
+// Packages
 import SimpleSchema from 'simpl-schema';
+
+// Utilities
 import SchemaHelpers from '../common';
 
+// Schema
 export const loginSchema = (classes = {}, { passwordVisible }, { togglePassVisibility }) => {
   try {
     return new SimpleSchema({

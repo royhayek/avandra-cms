@@ -1,12 +1,15 @@
-import { persistReducer, persistCombineReducers, persistStore } from 'redux-persist';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import { reducer as servicesReducer } from '../redux/services/reducer';
-import createFilter from 'redux-persist-transform-filter';
-import { Action, AnyAction, configureStore } from '@reduxjs/toolkit';
+// Packages
 import storage from 'redux-persist/lib/storage/session';
+import createFilter from 'redux-persist-transform-filter';
+import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { Action, AnyAction, configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { persistReducer, persistCombineReducers, persistStore } from 'redux-persist';
+
+// Reducers
 import authReducer from '../redux/services/auth/slice';
 import { reducer as dataReducers } from 'redux/reducer';
-import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk';
+import { reducer as servicesReducer } from '../redux/services/reducer';
 
 const localStorageFilter = createFilter('services', ['ui', 'config'], ['ui', 'config']);
 

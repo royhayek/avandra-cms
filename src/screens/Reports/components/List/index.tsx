@@ -1,39 +1,27 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useMemo, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Box, Grid, Typography } from '@mui/material';
+import { useHistory } from 'react-router-dom';
+import React, { useMemo, useCallback } from 'react';
+
+// Components
 import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { reportsList } from './config';
+import { Box, Grid, Typography } from '@mui/material';
+
+// Utilities
 import useStyles from './styles';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { reportsList } from './config';
+
+// Component
 
 const List = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const classes = useStyles();
   const history = useHistory();
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const handleItemClick = useCallback((key) => history.push(`/reports/${key}`), [history]);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   const renderItem = useCallback(
     ({ key, label, description }) => (
       <Grid item xs={12} sm={12} md={4} key={key} onClick={() => handleItemClick(key)}>
@@ -48,28 +36,19 @@ const List = () => {
     [classes.itemContainer, handleItemClick]
   );
 
-  // const renderSmall = useMemo(() => {
-  //   // TODO: work on the small layout
-  // }, []);
+  return (
+    <>
+      <Box className={classes.header}>
+        <Typography variant="h5">Reports</Typography>
+      </Box>
 
-  const renderLarge = useMemo(
-    () => (
-      <>
-        <Box className={classes.header}>
-          <Typography variant="h5">Reports</Typography>
-        </Box>
-
-        <Card>
-          <Grid container spacing={3}>
-            {_.map(reportsList, renderItem)}
-          </Grid>
-        </Card>
-      </>
-    ),
-    [classes.header, renderItem]
+      <Card>
+        <Grid container spacing={3}>
+          {_.map(reportsList, renderItem)}
+        </Grid>
+      </Card>
+    </>
   );
-
-  return renderLarge;
 };
 
 export default List;

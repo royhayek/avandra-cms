@@ -1,7 +1,10 @@
-import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
-import { customizer } from '../../../shared/utils';
-import { RootState } from 'app/store';
+// Packages
 import _ from 'lodash';
+import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
+
+// Utilities
+import { RootState } from 'app/store';
+import { customizer } from 'shared/utils';
 
 interface DrawerProps {
   selectedItem: string;

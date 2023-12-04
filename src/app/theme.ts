@@ -1,5 +1,8 @@
+// Packages
 import { TypographyOptions } from '@mui/material/styles/createTypography';
 import { PaletteOptions, PaletteMode, createTheme } from '@mui/material';
+
+// Utilities
 import { light_colors, dark_colors } from '../shared/assets/theme/colors';
 
 export const getCustomTheme = (isRTL = true, type: PaletteMode = 'light') => {

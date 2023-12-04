@@ -1,3 +1,5 @@
+// Interfaces
+
 declare module '@mui/material/styles' {
   interface Theme {
     isRTL: boolean;
@@ -27,6 +29,8 @@ declare module '@mui/material/styles' {
     };
   }
 }
+
+// Colors
 
 export const light_colors = {
   primary: '#33B37D',

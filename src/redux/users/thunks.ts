@@ -1,7 +1,12 @@
+// Packages
+import { toast } from 'react-toastify';
 import { createAsyncThunk } from '@reduxjs/toolkit';
+
+// Utilities
 import { UserProps } from 'shared/types/User';
 import { deleteUser, getUsers, updateUser } from './api';
-import { toast } from 'react-toastify';
+
+// Actions
 
 export const getUsersList = createAsyncThunk('user/getUsers', async (_, { rejectWithValue }) => {
   try {

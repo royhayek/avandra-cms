@@ -1,30 +1,24 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
+import getSchema from 'schemas';
+import { DeepPartial } from 'redux';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
-import { DeepPartial } from 'redux';
-import getSchema from 'schemas';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
+
+// Components
+import Card from 'shared/components/Card';
+import BackBtn from 'shared/components/Buttons/Back';
 import { Box, Grid, Typography } from '@mui/material';
 import Button from 'shared/components/Buttons/Primary';
-import BackBtn from 'shared/components/Buttons/Back';
-import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useFormStyles } from 'shared/assets/styles';
+import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
+
+// Utilities
 import useStyles from './styles';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { useFormStyles } from 'shared/assets/styles';
+
+// Component
 
 const Form = () => {
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
   const styles = useStyles();
   const formStyles = useFormStyles();
   const classes = { ...styles, ...formStyles };
@@ -36,11 +30,8 @@ const Form = () => {
   > | null>(null);
 
   const [schema, setSchema] = useState<Bridge>();
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const setSchemaDef = useCallback(() => {
     try {
       setSchema(getSchema('addNotificationSchema', {}, {}, {}));
@@ -52,21 +43,15 @@ const Form = () => {
   const handleSubmit = useCallback((model) => {
     console.debug('[handleSubmit] :: ', { model });
   }, []);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
+  // Effects
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setSchemaDef();
   }, []);
   /* eslint-enable react-hooks/exhaustive-deps */
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <>
       <Box className={classes.header}>

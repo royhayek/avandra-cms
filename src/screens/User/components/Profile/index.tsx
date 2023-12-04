@@ -1,45 +1,36 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
-import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
-import { toast } from 'react-toastify';
-import { DeepPartial } from 'redux';
+// Packages
+import _ from 'lodash';
 import getSchema from 'schemas';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
-import { Box, Grid, Typography } from '@mui/material';
+import { DeepPartial } from 'redux';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
+import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
+
+// Components
 import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+import { Box, Grid, Typography } from '@mui/material';
+import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
+import SubmitField from 'shared/components/Controls/SubmitField';
+
+// Utilities
+import useStyles from './styles';
+import { ProfileModelProps } from 'redux/user/types';
+import { updateProfileAction } from 'redux/user/thunks';
 import { getUser, getUserLoading } from 'redux/user/slice';
 import { AppThunkDispatch, useAppSelector } from 'app/store';
-import useStyles from './styles';
-import _ from 'lodash';
-import { useDispatch } from 'react-redux';
-import { updateProfileAction } from 'redux/user/thunks';
-import { ProfileModelProps } from 'redux/user/types';
-import SubmitField from 'shared/components/Controls/SubmitField';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+
+// Component
 
 const Profile = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
+  // Redux
   const dispatch = useDispatch<AppThunkDispatch>();
 
   const user = useAppSelector(getUser);
   const isUsersLoading = useAppSelector(getUserLoading);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
   const styles = useStyles();
   const formStyles = useFormStyles();
   const commonStyles = useCommonStyles();
@@ -59,11 +50,8 @@ const Profile = () => {
     name: user?.name,
     email: user?.email
   });
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const toggle = useCallback((name) => {
     switch (name) {
       case 'currentPassword':
@@ -114,21 +102,15 @@ const Profile = () => {
     },
     [dispatch]
   );
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Effects ------------------------ //
+  // Effects
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setSchemaDef();
   }, [showPassword]);
   /* eslint-enable react-hooks/exhaustive-deps */
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <>
       <Box className={classes.header}>

@@ -1,42 +1,32 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
-import { BaseForm, BaseFormProps, BaseFormState } from 'uniforms';
-import { useDispatch } from 'react-redux';
-import { DeepPartial } from 'redux';
+// Packages
 import getSchema from 'schemas';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import SubmitField from 'shared/components/Controls/SubmitField';
+import { DeepPartial } from 'redux';
+import { useDispatch } from 'react-redux';
+import { BaseForm, BaseFormProps, BaseFormState } from 'uniforms';
+import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+
+// Components
+import ResetPassword from './components/ResetPassword';
 import { Box, Button, Modal, Typography } from '@mui/material';
 import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
-import ResetPassword from './components/ResetPassword';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
-import { getAuthLoading } from 'redux/services/auth/slice';
-import { loginAction } from 'redux/services/auth/thunks';
+import SubmitField from 'shared/components/Controls/SubmitField';
+
+// Utilities
 import useStyles from './styles';
-//----------------------------------------------------//
-//------------------- COMPONENT ----------------------//
-//----------------------------------------------------//
+import { loginAction } from 'redux/services/auth/thunks';
+import { getAuthLoading } from 'redux/services/auth/slice';
+import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+// Component
 
 const Login = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
+  // Redux
   const dispatch = useDispatch<AppThunkDispatch>();
 
   const isAuthLoading = useAppSelector(getAuthLoading);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
   const form = useRef<BaseForm<
     DeepPartial<unknown>,
     BaseFormProps<DeepPartial<unknown>>,
@@ -51,11 +41,8 @@ const Login = () => {
   const [schema, setSchema] = useState<SimpleSchema2Bridge>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [openPasswordModal, setOpenPasswordModal] = useState(false);
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const togglePassVisibility = useCallback(
     (name) => {
       console.debug('[togglePassVisibility] :: ', { name });
@@ -82,21 +69,15 @@ const Login = () => {
   );
 
   const togglePasswordModal = useCallback(() => setOpenPasswordModal((cur) => !cur), []);
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
+  // Effects
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setSchemaDef();
   }, [passwordVisible]);
   /* eslint-enable react-hooks/exhaustive-deps */
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  //----------------------------------------------------//
-  //------------------- RENDERERES ---------------------//
+  // Renderers
   const renderHeader = useMemo(
     () => (
       <>
@@ -140,9 +121,7 @@ const Login = () => {
         onClose={togglePasswordModal}
         aria-labelledby="password-modal-title"
         aria-describedby="password-modal-description">
-        <Box>
-          <ResetPassword toggle={togglePasswordModal} />
-        </Box>
+        <ResetPassword toggle={togglePasswordModal} />
       </Modal>
     ),
     [openPasswordModal, togglePasswordModal]

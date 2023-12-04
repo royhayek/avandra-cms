@@ -1,19 +1,14 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
 import React, { MouseEvent, ReactNode } from 'react';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
+
+// Components
+import Card from 'shared/components/Card';
 import { Box, Typography } from '@mui/material';
-import Card from 'shared/components/Card/index.tsx';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
+
+// Utilities
 import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Interfaces
 interface StatsCardProps {
   icon: ReactNode;
   title: string;
@@ -22,15 +17,13 @@ interface StatsCardProps {
   padding?: string;
 }
 
-const StatsCard: React.FC<StatsCardProps> = ({ icon, title, value, onClick, padding }) => {
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
-  const classes = useStyles();
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
+// Component
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+const StatsCard: React.FC<StatsCardProps> = ({ icon, title, value, onClick, padding }) => {
+  // Statics
+  const classes = useStyles();
+
+  // Renderers
   return (
     <Card onClick={onClick}>
       <Box className={classes.container} style={{ padding }}>

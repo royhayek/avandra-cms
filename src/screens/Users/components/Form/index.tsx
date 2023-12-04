@@ -1,46 +1,38 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
+import _ from 'lodash';
+import getSchema from 'schemas';
+import { DeepPartial } from 'redux';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
 import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
-import { DeepPartial } from 'redux';
-import getSchema from 'schemas';
-import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Avatar, Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
-import SubmitField from 'shared/components/Controls/SubmitField';
-import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
-import ArrowBack from '@mui/icons-material/ArrowBack';
+
+// Components
 import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
-import { updateUserAction } from 'redux/users/thunks';
-import { getUserUpdating } from 'redux/users/slice';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
+import SubmitField from 'shared/components/Controls/SubmitField';
+import { Avatar, Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
 import { UserProps } from 'shared/types/User';
-import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { getUserUpdating } from 'redux/users/slice';
+import { updateUserAction } from 'redux/users/thunks';
+import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+
+// Component
 
 const Form = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Redux -------------------------- //
+  // Redux
   const dispatch = useDispatch<AppThunkDispatch>();
 
   const isUserUpdating = useAppSelector(getUserUpdating);
-  // ----------------------- /Redux -------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Statics ------------------------- //
+  // Statics
+  const history = useHistory();
   const theme = useTheme();
   const styles = useStyles();
   const formStyles = useFormStyles();
@@ -54,7 +46,6 @@ const Form = () => {
     BaseFormState<DeepPartial<unknown>>
   > | null>(null);
 
-  const history = useHistory();
   const user = history.location.state as UserProps;
   const { _id, name, email, status, role, provider } = user;
 
@@ -69,11 +60,8 @@ const Form = () => {
     status,
     provider
   });
-  // ---------------------- /Statics ------------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const toggle = useCallback((name) => {
     switch (name) {
       case 'currentPassword':
@@ -124,21 +112,15 @@ const Form = () => {
     },
     [dispatch, history]
   );
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ------------------------ Effects ------------------------ //
+  // Effects
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     setSchemaDef();
   }, [showPassword]);
   /* eslint-enable react-hooks/exhaustive-deps */
-  // ----------------------- /Effects ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
+  // Renderers
   return (
     <>
       <Box className={classes.header}>

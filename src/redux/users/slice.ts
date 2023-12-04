@@ -1,8 +1,11 @@
-import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
-import { getUsersList, updateUserAction } from './thunks';
-import { UserInitialState } from './types';
-import { RootState } from 'app/store';
+// Packages
 import _ from 'lodash';
+import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
+
+// Utilities
+import { RootState } from 'app/store';
+import { UserInitialState } from './types';
+import { getUsersList, updateUserAction } from './thunks';
 
 export const initialState: UserInitialState = {
   data: [],

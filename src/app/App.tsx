@@ -1,30 +1,29 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
+// Packages
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { useSelector } from 'react-redux';
 import React from 'react';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
+
+// Components
 import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import Router from './router';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
+
+// Utilities
 import { getUI } from '../redux/services/ui/slice';
-import { getCustomTheme } from './theme';
 import 'react-toastify/dist/ReactToastify.css';
+import { getCustomTheme } from './theme';
 import './api';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+
+// Component
 
 const App = () => {
+  // Redux
   const { lang, theme: themeType } = useSelector(getUI);
+
+  // Statics
   const theme = getCustomTheme(lang, themeType);
 
+  // Renderers
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -36,11 +35,11 @@ const App = () => {
         <ToastContainer
           draggable
           newestOnTop
+          closeOnClick
           hideProgressBar
           autoClose={2000}
           theme={themeType}
           closeButton={false}
-          closeOnClick={true}
         />
       </Box>
     </ThemeProvider>

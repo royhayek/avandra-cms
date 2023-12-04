@@ -1,7 +1,10 @@
+// Packages
 import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs/toolkit';
-import { DashboardInitialState } from './types';
-import { getDashboardList } from './thunks';
+
+// Utilities
 import { RootState } from 'app/store';
+import { getDashboardList } from './thunks';
+import { DashboardInitialState } from './types';
 
 export const initialState: DashboardInitialState = {
   data: [],

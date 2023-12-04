@@ -1,53 +1,45 @@
-// ------------------------------------------------------------ //
-// ------------------------- Packages ------------------------- //
-// ------------------------------------------------------------ //
-import React, { useCallback, useMemo } from 'react';
+// Packages
 import _ from 'lodash';
-// ------------------------------------------------------------ //
-// ------------------------ Components ------------------------ //
-// ------------------------------------------------------------ //
-import { Box, Chip, IconButton, Typography } from '@mui/material';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import BackButton from 'shared/components/Buttons/Back';
-import DataTable from 'shared/components/DataTable';
+import React, { useCallback, useMemo } from 'react';
+
+// Components
 import Card from 'shared/components/Card';
-// ------------------------------------------------------------ //
-// ------------------------- Utilities ------------------------ //
-// ------------------------------------------------------------ //
-import { ACCOUNNTS_REPORTS_DATA } from 'shared/constants/mock.ts';
-import { statusesList } from 'shared/constants/statuses';
+import DataTable from 'shared/components/DataTable';
+import BackButton from 'shared/components/Buttons/Back';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import { Box, Chip, IconButton, Typography } from '@mui/material';
+
+// Utilities
+import useStyles from './styles';
 import { useCommonStyles } from 'shared/assets/styles';
-import useStyles from './styles.ts';
-// ------------------------------------------------------------ //
-// ------------------------- Component ------------------------ //
-// ------------------------------------------------------------ //
+import { statusesList } from 'shared/constants/statuses';
+import { ACCOUNNTS_REPORTS_DATA } from 'shared/constants/mock';
+
+// Component
 
 const Accounts = () => {
-  // --------------------------------------------------------- //
-  // ------------------------ Statics ------------------------ //
+  // Statics
   const styles = useStyles();
   const commonStyles = useCommonStyles();
   const classes = { ...styles, ...commonStyles };
-  // ----------------------- /Statics ------------------------ //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Callbacks ----------------------- //
+  // Callbacks
   const renderStatusCell = useCallback(({ value }) => {
     const status = _.find(statusesList, { value });
 
     return <Chip size="small" label={status?.label} sx={{ color: status?.color }} />;
   }, []);
 
-  const renderRowActions = useCallback(() => {
-    return (
+  const renderRowActions = useCallback(
+    () => (
       <Box>
         <IconButton>
           <DeleteRoundedIcon fontSize="small" color="error" />
         </IconButton>
       </Box>
-    );
-  }, []);
+    ),
+    []
+  );
 
   const getTableHeaders = useMemo(
     () => [
@@ -71,39 +63,29 @@ const Accounts = () => {
     ],
     [renderRowActions, renderStatusCell]
   );
-  // ---------------------- /Callbacks ----------------------- //
-  // --------------------------------------------------------- //
 
-  // --------------------------------------------------------- //
-  // ----------------------- Renderers ----------------------- //
-  // const renderSmall = useMemo(() => {
-  //   // TODO: work on the small layout
-  // }, []);
+  // Renderers Vars
+  const data = ACCOUNNTS_REPORTS_DATA,
+    columns = getTableHeaders;
 
-  const renderLarge = useMemo(() => {
-    const data = ACCOUNNTS_REPORTS_DATA,
-      columns = getTableHeaders;
+  const tableProps = {
+    data,
+    columns
+  };
 
-    const tableProps = {
-      data,
-      columns
-    };
+  // Renderers
+  return (
+    <>
+      <Box className={classes.header}>
+        <BackButton />
+        <Typography variant="h5">Accounts Reports</Typography>
+      </Box>
 
-    return (
-      <>
-        <Box className={classes.header}>
-          <BackButton />
-          <Typography variant="h5">Accounts Reports</Typography>
-        </Box>
-
-        <Card>
-          <DataTable tableProps={tableProps} />
-        </Card>
-      </>
-    );
-  }, [classes.header, getTableHeaders]);
-
-  return renderLarge;
+      <Card>
+        <DataTable tableProps={tableProps} />
+      </Card>
+    </>
+  );
 };
 
 export default Accounts;
