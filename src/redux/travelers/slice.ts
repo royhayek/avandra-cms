@@ -3,13 +3,14 @@ import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs
 
 // Utilities
 import { RootState } from 'app/store';
-import { createTravelerAction, getTravelersAction } from './thunks';
+import { createTravelerAction, getBudgetsAction, getTravelersAction } from './thunks';
 
 // Interfaces
 import { TravelersInitialState } from './types';
 
 export const initialState: TravelersInitialState = {
-  data: [],
+  travelers: [],
+  budgets: [],
   loading: false,
   error: null
 };
@@ -33,7 +34,7 @@ export const travelersSlice = createSlice({
     builder.addCase(getTravelersAction.fulfilled, (state, action) => {
       state.error = null;
       state.loading = false;
-      state.data = action.payload;
+      state.travelers = action.payload;
     });
 
     builder.addCase(getTravelersAction.rejected, (state, action) => {
@@ -54,6 +55,21 @@ export const travelersSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     });
+
+    builder.addCase(getBudgetsAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getBudgetsAction.fulfilled, (state, action) => {
+      state.error = null;
+      state.loading = false;
+      state.budgets = action.payload;
+    });
+
+    builder.addCase(getBudgetsAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
   }
 });
 
@@ -67,7 +83,9 @@ export default travelersSlice.reducer;
 // ------------------------------------------------------------ //
 const _travelers = (state: RootState) => state.data.travelers;
 
-export const getTravelers = createSelector(_travelers, (data) => data?.data);
+export const getBudgets = createSelector(_travelers, (data) => data?.budgets);
+
+export const getTravelers = createSelector(_travelers, (data) => data?.travelers);
 
 export const getTravelersError = createSelector(_travelers, (data) => data?.error);
 

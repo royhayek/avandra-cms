@@ -39,9 +39,9 @@ export const routes = [
     hasSub: true
   },
   {
-    key: 'travelers',
-    path: '/travelers/:detail?',
-    component: Screens.Travelers,
+    key: 'travelOptions',
+    path: '/travelOptions/:detail?',
+    component: Screens.TravelOptions,
     hasSub: true
   },
   {
@@ -123,9 +123,9 @@ export const drawerItems = [
     icon: <PlaceIcon color="inherit" />
   },
   {
-    path: '/travelers',
-    key: 'travelers',
-    title: 'Travelers',
+    path: '/travelOptions',
+    key: 'travelOptions',
+    title: 'Travel Options',
     icon: <GroupsIcon color="inherit" />
   },
   {

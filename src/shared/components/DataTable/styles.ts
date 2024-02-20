@@ -6,6 +6,11 @@ import { Theme } from '@mui/material';
 
 const useStyles = makeStyles((theme: Theme) => ({
   // AG Grid //
+  container: {
+    height: 500,
+    display: 'flex',
+    flexDirection: 'column'
+  },
   table: {
     '& .ag-root-wrapper': {
       borderRadius: 8,

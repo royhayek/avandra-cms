@@ -11,15 +11,15 @@ import DataTable from 'shared/components/DataTable';
 import Button from 'shared/components/Buttons/Primary';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { Avatar, Box, Chip, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Chip, Grid, IconButton, Typography } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
 import { useCommonStyles } from 'shared/assets/styles';
 import { statusesList } from 'shared/constants/statuses';
 import { AppThunkDispatch, useAppSelector } from 'app/store';
-import { getTravelers, getTravelersLoading } from 'redux/travelers/slice';
-import { getTravelersAction, deleteTravelerAction } from 'redux/travelers/thunks';
+import { getBudgets, getTravelers, getTravelersLoading } from 'redux/travelers/slice';
+import { getTravelersAction, deleteTravelerAction, getBudgetsAction } from 'redux/travelers/thunks';
 
 // Component
 
@@ -27,6 +27,7 @@ const Table = () => {
   // Redux
   const dispatch = useDispatch<AppThunkDispatch>();
 
+  const budgets = useAppSelector(getBudgets);
   const travelers = useAppSelector(getTravelers);
   const areTravelersLoading = useAppSelector(getTravelersLoading);
 
@@ -37,29 +38,18 @@ const Table = () => {
   const classes = useMemo(() => ({ ...commonStyles, ...styles }), [commonStyles, styles]);
 
   // Callbacks
-  const fetchCities = useCallback(() => {
-    dispatch(getTravelersAction());
-  }, [dispatch]);
+  const fetchBudgets = useCallback(() => dispatch(getBudgetsAction()), [dispatch]);
+
+  const fetchTravelers = useCallback(() => dispatch(getTravelersAction()), [dispatch]);
 
   // Effects
   useEffect(() => {
-    fetchCities();
+    fetchTravelers();
+    fetchBudgets();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Callbacks
-  const renderImage = useCallback(
-    ({ value }) => (
-      <Avatar
-        alt="image"
-        variant="rounded"
-        sx={{ width: 65, height: 65 }}
-        src={`${process.env.REACT_APP_PUBLIC_URL}uploads/traveler/image/${value}`}
-      />
-    ),
-    []
-  );
-
   const renderTransText = useCallback(
     ({ value }) => <Typography variant="body2">{_.find(value, { type: 'en' })?.content}</Typography>,
     []
@@ -85,9 +75,9 @@ const Table = () => {
     async ({ closeToast, _id }) => {
       closeToast();
       const response = await dispatch(deleteTravelerAction(_id));
-      if (response.payload.success) fetchCities();
+      if (response.payload.success) fetchTravelers();
     },
-    [dispatch, fetchCities]
+    [dispatch, fetchTravelers]
   );
 
   const CloseButton = useCallback(
@@ -97,7 +87,7 @@ const Table = () => {
 
   const handleDeleteTraveler = useCallback(
     ({ _id }) => {
-      toast('Would you like to delete this traveler?', {
+      toast('Would you like to delete this option?', {
         autoClose: false,
         closeOnClick: true,
         position: 'top-center',
@@ -108,7 +98,7 @@ const Table = () => {
     [CloseButton]
   );
 
-  const handleRowEdit = useCallback((row) => history.push(`/travelers/form`, row), [history]);
+  const handleRowEdit = useCallback((row) => history.push(`/travelOptions/form`, row), [history]);
 
   const renderRowActions = useCallback(
     ({ data }) => (
@@ -148,28 +138,39 @@ const Table = () => {
   );
 
   // Renderers Vars
-  const tableProps = {
-    data: travelers,
+  const tableProps = (type) => ({
+    data: _.isEqual(type, 'travelers') ? travelers : budgets,
     columns: getTableHeaders,
     loading: areTravelersLoading,
     options: {
-      rowHeight: 80
+      rowHeight: 55,
+      withPagination: false
     }
-  };
+  });
 
   // Renderers
   return (
     <>
       <Box className={classes.header}>
-        <Typography variant="h5">Travelers</Typography>
-        <Button text="Add Traveler" onClick={() => history.push('/travelers/form')} />
+        <Typography variant="h5">Travel Options</Typography>
+        <Button text="Add Option" onClick={() => history.push('/travelOptions/form')} />
       </Box>
 
       <Card>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12}>
-            <DataTable tableProps={tableProps} />
+            <Typography variant="h6" mb={2} fontWeight="bold">
+              Travelers
+            </Typography>
+            <DataTable tableProps={tableProps('travelers')} customClass={classes.tableContainer} />
           </Grid>
+        </Grid>
+
+        <Grid item xs={12} sm={12} md={12}>
+          <Typography variant="h6" mt={4} mb={2} fontWeight="bold">
+            Budgets
+          </Typography>
+          <DataTable tableProps={tableProps('budgets')} customClass={classes.tableContainer} />
         </Grid>
       </Card>
     </>

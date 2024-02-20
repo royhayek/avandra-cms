@@ -102,16 +102,16 @@ const Form = () => {
       </Box>
 
       <Card>
-        {schema ? (
-          <AutoForm
-            ref={form}
-            placeholder
-            model={model}
-            schema={schema}
-            onSubmit={handleSubmit}
-            onChange={handleModelChange}>
-            <Grid container columnSpacing={4}>
-              <Grid item xs={12} sm={12} md={6}>
+        <Grid container columnSpacing={4}>
+          <Grid item xs={12} sm={12} md={6}>
+            {schema ? (
+              <AutoForm
+                ref={form}
+                placeholder
+                model={model}
+                schema={schema}
+                onSubmit={handleSubmit}
+                onChange={handleModelChange}>
                 <Typography mb={1}>Information</Typography>
 
                 <AutoField name="icon" />
@@ -125,35 +125,36 @@ const Form = () => {
 
                 <AutoField name="enabled" />
                 <ErrorField name="enabled" />
-              </Grid>
 
-              <Grid item xs={12} sm={12} md={6}>
-                <Typography mb={2} textAlign="center">
-                  In-App Preview
+                <Box className={classes.footer}>
+                  <SubmitField title="Submit" />
+                </Box>
+              </AutoForm>
+            ) : null}
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={6}>
+            <Typography mb={2} textAlign="center">
+              In-App Preview
+            </Typography>
+
+            <Card
+              sx={{
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'center'
+              }}>
+              <Box className={classes.previewButton}>
+                <Typography variant="body1" mb={0.6}>
+                  {model?.title ?? 'Lorem Ipsum'} {model?.icon ?? 'ℹ️'}
                 </Typography>
-
-                <Card
-                  sx={{
-                    flex: 1,
-                    display: 'flex',
-                    justifyContent: 'center'
-                  }}>
-                  <Box className={classes.previewButton}>
-                    <Typography variant="body1" mb={0.6}>
-                      {model?.title ?? 'Lorem Ipsum'} {model?.icon ?? 'ℹ️'}
-                    </Typography>
-                    <Typography variant="caption" my={0.2}>
-                      {model?.description ?? 'Lorem Ipsum is simply dummy text of the printing'}
-                    </Typography>
-                  </Box>
-                </Card>
-              </Grid>
-            </Grid>
-            <Box className={classes.footer}>
-              <SubmitField title="Submit" />
-            </Box>
-          </AutoForm>
-        ) : null}
+                <Typography variant="caption" my={0.2}>
+                  {model?.description ?? 'Lorem Ipsum is simply dummy text of the printing'}
+                </Typography>
+              </Box>
+            </Card>
+          </Grid>
+        </Grid>
       </Card>
     </>
   );

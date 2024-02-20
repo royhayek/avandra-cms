@@ -4,7 +4,7 @@ export { default as Users } from './Users';
 
 export { default as Destinations } from './Destinations';
 
-export { default as Travelers } from './Travelers';
+export { default as TravelOptions } from './Travelers';
 
 export { default as Trips } from './Trips';
 

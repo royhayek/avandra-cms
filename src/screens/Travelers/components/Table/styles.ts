@@ -14,6 +14,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(4),
     justifyContent: 'space-between'
   },
+  tableContainer: {
+    height: 300
+  },
   rowActionBtns: {
     gap: 4,
     display: 'flex'

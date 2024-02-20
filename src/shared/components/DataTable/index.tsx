@@ -12,6 +12,7 @@ import { AgGridReact, AgGridReactProps } from 'ag-grid-react';
 import useStyles from './styles';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-material.css';
+import classNames from 'classnames';
 
 // Component
 interface DataRow {
@@ -19,6 +20,7 @@ interface DataRow {
 }
 
 interface DataTableProps extends AgGridReactProps {
+  customClass?: string;
   tableProps: {
     data: DataRow[];
     columns: ColDef[] | null;
@@ -27,12 +29,13 @@ interface DataTableProps extends AgGridReactProps {
     options?: {
       rowHeight?: number;
       withoutHeader?: boolean;
+      withPagination?: boolean;
     };
   };
   onRowClick?: (rowData: any) => void;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ tableProps: { data, columns, options }, ...rest }) => {
+const DataTable: React.FC<DataTableProps> = ({ tableProps: { data, columns, options }, customClass, ...rest }) => {
   // Statics
   const classes = useStyles();
 
@@ -68,63 +71,19 @@ const DataTable: React.FC<DataTableProps> = ({ tableProps: { data, columns, opti
           )
         }}
       />
-      <div className="ag-theme-material" style={{ display: 'flex', flexDirection: 'column', height: 500 }}>
+      <div className={classNames(classes.container, customClass, 'ag-theme-material')}>
         <AgGridReact
-          pagination
           columnDefs={columns}
           rowData={filteredData}
           paginationPageSize={20}
           className={classes.table}
           rowHeight={options?.rowHeight ?? 60}
+          pagination={options?.withPagination}
           {...rest}
         />
       </div>
     </>
   );
-  // return (
-  //   <DataGrid
-  //     autoHeight
-  //     rows={data}
-  //     pageSize={10}
-  //     headerHeight={40}
-  //     columns={finalColumns}
-  //     disableSelectionOnClick
-  //     rowsPerPageOptions={[5]}
-  //     getRowId={(row) => row._id}
-  //     rowHeight={options?.rowHeight ?? 60}
-  //     localeText={{
-  //       toolbarExport: '',
-  //       toolbarColumns: '',
-  //       toolbarFilters: ''
-  //     }}
-  //     classes={{
-  //       row: classes.row,
-  //       root: classes.root,
-  //       cell: classes.cell,
-  //       filterForm: classes.filterForm,
-  //       columnHeader: classes.columnHeader,
-  //       columnHeaders: classes.columnHeaders,
-  //       columnSeparator: classes.columnSeparator,
-  //       footerContainer: classes.footerContainer,
-  //       toolbarContainer: classes.toolbarContainer,
-  //       columnHeaderTitle: classes.columnHeaderTitle,
-  //       filterFormValueInput: classes.filterFormValueInput,
-  //       filterFormColumnInput: classes.filterFormColumnInput,
-  //       filterFormOperatorInput: classes.filterFormOperatorInput
-  //     }}
-  //     components={{
-  //       Pagination: CustomPagination,
-  //       Toolbar: options?.withoutHeader ? null : CustomToolbar
-  //     }}
-  //     componentsProps={{
-  //       toolbar: {
-  //         showQuickFilter: true,
-  //         quickFilterProps: { debounceMs: 500 }
-  //       }
-  //     }}
-  //     {...rest}
-  //   />
-  // );
 };
 
 DataTable.defaultProps = {
@@ -133,7 +92,8 @@ DataTable.defaultProps = {
     columns: [],
     loading: false,
     options: {
-      withoutHeader: false
+      withoutHeader: false,
+      withPagination: true
     }
   }
 };
