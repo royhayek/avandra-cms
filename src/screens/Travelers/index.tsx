@@ -2,7 +2,7 @@
 import { createElement } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 
-// Components
+// Utilities
 import * as Screens from './components';
 
 // Interfaces
@@ -10,10 +10,11 @@ interface MatchParams {
   detail?: string;
 }
 
-type PostsProps = RouteComponentProps<MatchParams>;
+type TravelersProps = RouteComponentProps<MatchParams>;
 
 // Component
-const Posts = (props: PostsProps) => {
+
+const Travelers = (props: TravelersProps) => {
   const {
     match: {
       params: { detail = 'table' }
@@ -27,4 +28,4 @@ const Posts = (props: PostsProps) => {
   return Component;
 };
 
-export default Posts;
+export default Travelers;

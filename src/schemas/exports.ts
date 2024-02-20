@@ -4,7 +4,9 @@ export * from './User';
 
 export * from './Profile';
 
-export * from './Category';
+export * from './Destination';
+
+export * from './TravelOption';
 
 export * from './Notification';
 

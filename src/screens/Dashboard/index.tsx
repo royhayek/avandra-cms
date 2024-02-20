@@ -64,7 +64,7 @@ const Dashboard = () => {
   );
 
   const summaryCardsData = useMemo(() => {
-    const { usersCount } = dashboard;
+    const { usersCount, destinationsCount } = dashboard;
 
     return [
       {
@@ -74,13 +74,13 @@ const Dashboard = () => {
         value: usersCount
       },
       {
-        title: 'Categories',
+        title: 'Destinations',
         icon: <DnsIcon />,
         padding: theme.spacing(0),
-        value: 20
+        value: destinationsCount
       },
       {
-        title: 'Posts',
+        title: 'Trips',
         icon: <ListAltIcon />,
         padding: theme.spacing(0),
         value: 1000

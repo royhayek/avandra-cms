@@ -5,6 +5,49 @@ import { Theme } from '@mui/material';
 // Styles
 
 const useStyles = makeStyles((theme: Theme) => ({
+  // AG Grid //
+  table: {
+    '& .ag-root-wrapper': {
+      borderRadius: 8,
+      border: `1px solid ${theme.colors.divider}`,
+      backgroundColor: 'transparent'
+    },
+    '& .ag-header': {
+      color: theme.colors.secondary,
+      borderColor: theme.colors.divider,
+      backgroundColor: theme.colors.background
+    },
+    '& .ag-header-cell-text': {
+      color: theme.colors.secondary
+    },
+    '& .ag-row': {
+      backgroundColor: 'transparent',
+      color: theme.colors.textPrimary,
+      borderColor: theme.colors.divider
+    },
+    '& .ag-row-odd': {
+      backgroundColor: theme.colors.lightGray
+    },
+    '& .ag-cell': {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    '& .ag-paging-panel': {
+      borderColor: theme.colors.divider,
+      color: theme.colors.textPrimary
+    },
+    '& .ag-icon': {
+      color: theme.colors.secondary
+    },
+    '& .ag-picker-field-wrapper': {
+      backgroundColor: theme.colors.background
+    }
+  },
+  searchField: {
+    width: 300,
+    marginBottom: 24
+  },
+  // X Data Grid //
   root: {
     border: 'none',
     borderRadius: 0

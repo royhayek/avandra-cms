@@ -103,50 +103,50 @@ export const ACCOUNNTS_REPORTS_DATA = [
   }
 ];
 
-export const CATEGORIES_TABLE_DATA = [
+export const CITIES_TABLE_DATA = [
   {
     _id: 1,
-    name: 'Programming',
+    name: 'Dubai',
     image: {
       fileName: 'test1.png',
-      url: 'https://i.pravatar.cc/300'
+      url: 'https://picsum.photos/200'
     },
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-    status: 0
+    status: true
   },
   {
     _id: 2,
-    name: 'Technology',
+    name: 'Istanbul',
     image: {
       fileName: 'test2.png',
-      url: 'https://i.pravatar.cc/300'
+      url: 'https://picsum.photos/200'
     },
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-    status: 1
+    status: true
   },
   {
     _id: 3,
-    name: 'Trading',
+    name: 'London',
     image: {
       fileName: 'tes3.png',
-      url: 'https://i.pravatar.cc/300'
+      url: 'https://picsum.photos/200'
     },
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-    status: 0
+    status: true
   },
   {
     _id: 4,
-    name: 'Education',
+    name: 'Tokyo',
     image: {
       fileName: 'test4.png',
-      url: 'https://i.pravatar.cc/300'
+      url: 'https://picsum.photos/200'
     },
     description:
       "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-    status: 1
+    status: false
   }
 ];
 

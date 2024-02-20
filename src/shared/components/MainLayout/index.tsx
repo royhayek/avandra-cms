@@ -1,5 +1,5 @@
 // Packages
-import React, { useState, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
 // Components
 import { Box } from '@mui/material';
@@ -8,7 +8,6 @@ import CustomDrawer from '../CustomDrawer';
 
 // Utilities
 import useStyles from './styles';
-import { useIsSmall } from 'shared/utils';
 
 // Component
 interface MainLayoutProps {
@@ -18,15 +17,12 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   // Statics
   const classes = useStyles();
-  const isSmall = useIsSmall();
-
-  const [openDrawer, setOpenDrawer] = useState(isSmall ? false : true);
 
   // Renderers
   return (
     <div className={classes.root}>
-      <CustomAppBar open={openDrawer} setOpen={setOpenDrawer} />
-      <CustomDrawer open={openDrawer} setOpen={setOpenDrawer} />
+      <CustomAppBar />
+      <CustomDrawer />
       <Box component="main" className={classes.mainBox}>
         <Box className={classes.toolbar} />
         {children}

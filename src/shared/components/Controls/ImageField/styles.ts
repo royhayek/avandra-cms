@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   imageContainer: {
     flex: 1,
+    height: 60,
     padding: 8,
     display: 'flex',
     borderRadius: 4,
@@ -39,8 +40,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     background: theme.palette.background.default
   },
   previewImage: {
-    width: 35,
-    height: 35,
+    width: 50,
+    height: 50,
+    cursor: 'pointer'
+  },
+  smallPreviewImage: {
+    width: 25,
+    height: 20,
     cursor: 'pointer'
   },
   fileInput: {

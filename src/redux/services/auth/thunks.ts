@@ -15,13 +15,15 @@ export const loginAction = createAsyncThunk(
       const { email, password } = args;
       const response = await login({ email, password });
 
-      dispatch(userActions.update({ data: response.data.user }));
+      console.debug('response.data', response.data);
+      dispatch(userActions.update({ data: response.data.data.admin }));
 
-      return response.data;
+      return response.data.data;
     } catch (error: any) {
-      toast.error(error.response?.data?.error);
+      console.debug('error', error);
+      toast.error(error.response?.data?.message);
 
-      return rejectWithValue(error.response?.data?.error);
+      return rejectWithValue(error.response?.data?.message);
     }
   }
 );

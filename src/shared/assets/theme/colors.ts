@@ -12,6 +12,7 @@ declare module '@mui/material/styles' {
       paper: string;
       green: string;
       white: string;
+      lightGray: string;
     };
   }
   // allow configuration using `createTheme`
@@ -26,6 +27,7 @@ declare module '@mui/material/styles' {
       paper: string;
       green: string;
       white: string;
+      lightGray: string;
     };
   }
 }
@@ -40,7 +42,27 @@ export const light_colors = {
   divider: '#F7F7F7',
   paper: '#FFFFFF',
   green: '#0B5563',
-  white: '#FFFFFF'
+  white: '#FFFFFF',
+  lightGray: '#FBFBFB',
+  dark: {
+    1: '#181A20',
+    2: '#1E2025',
+    3: '#1F222A',
+    4: '#262A35',
+    5: '#35383F'
+  },
+  gray: {
+    900: '#212121',
+    800: '#424242',
+    700: '#616161',
+    600: '#757575',
+    500: '#9E9E9E',
+    400: '#BDBDBD',
+    300: '#E0E0E0',
+    200: '#EEEEEE',
+    100: '#F5F5F5',
+    50: '#FAFAFA'
+  }
 };
 
 export const dark_colors = {
@@ -50,6 +72,26 @@ export const dark_colors = {
   background: '#20222A',
   divider: '#272930',
   paper: '#181A21',
-  green: '#0b5563',
-  white: '#FFFFFF'
+  green: '#0B5563',
+  white: '#FFFFFF',
+  lightGray: '#1C1E24',
+  dark: {
+    1: '#181A20',
+    2: '#1E2025',
+    3: '#1F222A',
+    4: '#262A35',
+    5: '#35383F'
+  },
+  gray: {
+    900: '#212121',
+    800: '#424242',
+    700: '#616161',
+    600: '#757575',
+    500: '#9E9E9E',
+    400: '#BDBDBD',
+    300: '#E0E0E0',
+    200: '#EEEEEE',
+    100: '#F5F5F5',
+    50: '#FAFAFA'
+  }
 };

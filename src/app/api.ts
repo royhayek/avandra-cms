@@ -6,7 +6,7 @@ import 'moment-timezone';
 
 // Utilities
 import { store } from './store';
-import { logout } from 'shared/utils';
+// import { logout } from 'shared/utils';
 
 // import {ROUTES} from 'shared/constants/routes';
 
@@ -26,7 +26,7 @@ axios.interceptors.request.use((req) => {
   const storeState = store.getState();
   const authenticated = storeState?.auth.authenticated;
   const accessToken = storeState?.auth.token;
-  req.headers.Authorization = `Bearer ${authenticated ? accessToken : process.env.REACT_APP_TOKEN}`;
+  req.headers['x-auth-token'] = authenticated ? accessToken : process.env.REACT_APP_TOKEN;
 
   // Set language
   //   req.headers.language = i18n.language || process.env.REACT_APP_DEFAULT_LANGUAGE;

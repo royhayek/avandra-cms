@@ -19,9 +19,9 @@ import { Avatar, Box, Grid, IconButton, Typography, useTheme } from '@mui/materi
 import useStyles from './styles';
 import { UserProps } from 'shared/types/User';
 import { getUserUpdating } from 'redux/users/slice';
-import { updateUserAction } from 'redux/users/thunks';
 import { AppThunkDispatch, useAppSelector } from 'app/store';
 import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+import { createUserAction, updateUserAction } from 'redux/users/thunks';
 
 // Component
 
@@ -47,7 +47,8 @@ const Form = () => {
   > | null>(null);
 
   const user = history.location.state as UserProps;
-  const { _id, name, email, status, role, provider } = user;
+  const { _id, name, email, status, gender, country, role, provider } = user || {};
+  const modify = !_.isEmpty(user);
 
   const [schema, setSchema] = useState<Bridge>();
   const [showPassword, setShowPassword] = useState({ current: false, new: false, confirmation: false });
@@ -57,6 +58,8 @@ const Form = () => {
     role,
     name,
     email,
+    gender,
+    country,
     status,
     provider
   });
@@ -84,33 +87,39 @@ const Form = () => {
 
   const setSchemaDef = useCallback(() => {
     try {
-      setSchema(getSchema('editUserSchema', classes, { show: showPassword }, { toggle }));
+      setSchema(getSchema('userSchema', classes, { modify, show: showPassword }, { toggle }));
     } catch (err) {
       console.error('Error in [User Form - setSchemaDef] :: ', err);
     }
-  }, [classes, showPassword, toggle]);
+  }, [classes, modify, showPassword, toggle]);
 
   const handleSubmit = useCallback(
-    (model) => {
-      const { _id, email, name, role, status, currentPassword, confPassword, password } = model;
+    async (model) => {
+      console.debug('[handleSubmit] :: ', model);
+      const { _id, email, name, role, enabled, currentPassword, confPassword, password } = model;
 
-      if (password && confPassword && !currentPassword) {
+      if (password && user && confPassword && !currentPassword) {
         toast.error('Current password cannot be empty');
 
         return;
       }
 
       if ((currentPassword && !password && !confPassword) || !_.isEqual(password, confPassword)) {
-        toast.error("New Password and Confirmed Password doesn't match");
+        toast.error(
+          modify
+            ? "Password and password confirmation doesn't match"
+            : "New Password and password confirmation doesn't match"
+        );
 
         return;
       }
 
-      dispatch(updateUserAction({ _id, email, name, role, status, currentPassword, password }));
-
-      setTimeout(() => history.goBack(), 500);
+      const payload = { _id, email, name, role, enabled, currentPassword, password };
+      const response = await dispatch(user ? updateUserAction(payload) : createUserAction(payload));
+      console.debug('response.payload', response.payload);
+      if (response.payload.success) history.goBack();
     },
-    [dispatch, history]
+    [dispatch, history, modify, user]
   );
 
   // Effects
@@ -146,20 +155,28 @@ const Form = () => {
 
             <Grid container columnSpacing={2}>
               <Grid item xs={12} sm={12} md={6}>
-                <AutoField name="_id" />
-                <ErrorField name="_id" />
+                {user ? (
+                  <>
+                    <AutoField name="_id" />
+                    <ErrorField name="_id" />
+                  </>
+                ) : null}
                 <AutoField name="name" />
                 <ErrorField name="name" />
                 <AutoField name="email" />
                 <ErrorField name="email" />
+                <AutoField name="gender" />
+                <ErrorField name="gender" />
               </Grid>
               <Grid item xs={12} sm={12} md={6}>
+                <AutoField name="country" />
+                <ErrorField name="country" />
                 <AutoField name="provider" />
                 <ErrorField name="provider" />
                 <AutoField name="role" />
                 <ErrorField name="role" />
-                <AutoField name="status" />
-                <ErrorField name="status" />
+                <AutoField name="enabled" />
+                <ErrorField name="enabled" />
               </Grid>
             </Grid>
 
@@ -168,8 +185,12 @@ const Form = () => {
             </Typography>
 
             <Grid item xs={12} sm={12} md={6}>
-              <AutoField name="currentPassword" />
-              <ErrorField name="currentPassword" />
+              {user ? (
+                <>
+                  <AutoField name="currentPassword" />
+                  <ErrorField name="currentPassword" />
+                </>
+              ) : null}
               <AutoField name="password" />
               <ErrorField name="password" />
               <AutoField name="confPassword" />

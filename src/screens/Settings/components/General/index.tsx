@@ -3,7 +3,6 @@ import getSchema from 'schemas';
 import { DeepPartial } from 'redux';
 import { toast } from 'react-toastify';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
 
 // Components
 import Card from 'shared/components/Card';
@@ -14,6 +13,7 @@ import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
 // Utilities
 import useStyles from './styles';
 import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
+import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
 
 // Component
 

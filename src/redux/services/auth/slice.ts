@@ -35,8 +35,7 @@ export const authSlice = createSlice({
       state.error = null;
       state.loading = false;
       state.authenticated = true;
-      state.token = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+      state.token = action.payload.token;
     });
 
     builder.addCase(loginAction.rejected, (state, action) => {

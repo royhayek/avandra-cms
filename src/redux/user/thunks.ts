@@ -16,11 +16,11 @@ export const updateProfileAction = createAsyncThunk(
 
       if (response.data.success) toast.success(response.data.message);
 
-      return response.data;
+      return response.data.result;
     } catch (error: any) {
-      toast.error(error.response?.data?.error);
+      toast.error(error.response?.data?.message);
 
-      return rejectWithValue(error.response?.data?.error);
+      return rejectWithValue(error.response?.data?.message);
     }
   }
 );

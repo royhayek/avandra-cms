@@ -6,6 +6,6 @@ import { LoginProps } from './types';
 
 // Calls
 
-export const login = ({ email, password }: LoginProps) => axios.post('auth/login', { email, password });
+export const login = ({ email, password }: LoginProps) => axios.post('login', { email, password });
 
-export const logout = ({ refreshToken }) => axios.post('auth/logoutAll', { refreshToken });
+export const logout = ({ refreshToken }) => axios.post('logoutAll', { refreshToken });

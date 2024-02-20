@@ -52,13 +52,13 @@ const Accounts = () => {
         flex: 1,
         field: 'status',
         headerName: 'Status',
-        renderCell: renderStatusCell
+        cellRenderer: renderStatusCell
       },
       {
         flex: 0.5,
         field: 'actions',
         headerName: '',
-        renderCell: renderRowActions
+        cellRenderer: renderRowActions
       }
     ],
     [renderRowActions, renderStatusCell]

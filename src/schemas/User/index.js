@@ -14,24 +14,30 @@ import { statusesList } from 'shared/constants/statuses';
 const ajv = new Ajv({ allErrors: true, useDefaults: true, $data: true });
 ajv.addKeyword('uniforms');
 
-export const editUserSchema = (classes = {}, { show }, { toggle }) => {
+export const userSchema = (classes = {}, { modify, show }, { toggle }) => {
   try {
     return new SimpleSchema({
-      _id: SchemaHelpers.text(classes, { label: 'Id', optional: false }, { disabled: true }),
+      _id: SchemaHelpers.text(classes, { label: 'Id', optional: true }, { disabled: true }),
       name: SchemaHelpers.text(classes, { label: 'Name', optional: false }, {}),
       email: SchemaHelpers.text(classes, { label: 'Email', optional: false }, {}),
+      gender: SchemaHelpers.text(classes, { label: 'Gender', optional: false }, {}),
+      country: SchemaHelpers.text(classes, { label: 'Country', optional: false }, {}),
       provider: SchemaHelpers.text(
         classes,
-        { label: 'Provider', optional: false },
+        { label: 'Provider', optional: false, defaultValue: 'email' },
         { disabled: true, options: providersList }
       ),
-      role: SchemaHelpers.select(classes, { label: 'Role', optional: false }, { options: rolesList }),
-      status: SchemaHelpers.select(
+      role: SchemaHelpers.select(
+        classes,
+        { label: 'Role', optional: false, defaultValue: 'admin' },
+        { options: rolesList }
+      ),
+      enabled: SchemaHelpers.select(
         classes,
         {
           label: 'Status',
           optional: false,
-          defaultValue: 1
+          defaultValue: true
         },
         {
           options: statusesList
@@ -45,12 +51,12 @@ export const editUserSchema = (classes = {}, { show }, { toggle }) => {
       ),
       password: SchemaHelpers.password(
         classes,
-        { label: 'New Password', optional: true },
+        { label: modify ? 'New Password' : 'Password', optional: modify ? true : false },
         { show: show?.new, name: 'password', toggle }
       ),
       confPassword: SchemaHelpers.password(
         classes,
-        { label: 'Confirm New Password', optional: true },
+        { label: modify ? 'New Password Confirmation' : 'Password Confirmation', optional: modify ? true : false },
         { show: show?.confirmation, name: 'confPassword', toggle }
       )
     });

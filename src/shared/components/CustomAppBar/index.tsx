@@ -1,6 +1,6 @@
 // Packages
 import _ from 'lodash';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import React, { useCallback, useMemo, useState } from 'react';
 
 // Components
@@ -16,16 +16,18 @@ import { AppBar, Badge, Box, Hidden, IconButton, Switch, Toolbar, Typography } f
 // Utilities
 import useStyles from './styles';
 import { useCommonStyles } from 'shared/assets/styles';
-import { getThemeType, uiActions } from 'redux/services/ui/slice';
+import { getIsDrawerOpen, getThemeType, uiActions } from 'redux/services/ui/slice';
+import { useAppDispatch } from 'app/store';
 
 // Component
 
-interface CustomAppBarProps {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+const CustomAppBar = () => {
+  // Redux
+  const dispatch = useAppDispatch();
 
-const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
+  const theme = useSelector(getThemeType);
+  const isDrawerOpen = useSelector(getIsDrawerOpen);
+
   // Statics
   const styles = useStyles();
   const commonStyles = useCommonStyles();
@@ -34,16 +36,13 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
   const [notiAnchorEl, setNotiAnchorEl] = useState(null);
   const [searchAnchorEl, setSearchAnchorEl] = useState(null);
 
-  // Redux
-  const dispatch = useDispatch();
-  const updateUI = useCallback((payload) => dispatch(uiActions.update(payload)), [dispatch]);
-
-  const theme = useSelector(getThemeType);
+  const open = isDrawerOpen;
 
   // Callbacks
-  const handleDrawerOpen = useCallback(() => {
-    setOpen((cur) => !cur);
-  }, [setOpen]);
+  const toggleDrawer = useCallback(
+    () => dispatch(uiActions.updateLayout({ isDrawerOpen: !isDrawerOpen })),
+    [dispatch, isDrawerOpen]
+  );
 
   const handleNotiClose = useCallback(() => {
     setNotiAnchorEl(null);
@@ -62,8 +61,8 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
   }, []);
 
   const handleThemeSwitch = useCallback(
-    (event, checked) => updateUI({ theme: checked ? 'dark' : 'light' }),
-    [updateUI]
+    (event, checked) => dispatch(uiActions.update({ theme: checked ? 'dark' : 'light' })),
+    [dispatch]
   );
 
   // Renderers Vars
@@ -72,11 +71,11 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
   // Renderers
   const renderDrawerMenuBtn = useMemo(
     () => (
-      <IconButton size="large" edge="start" color="primary" aria-label="menu" sx={{ mr: 2 }} onClick={handleDrawerOpen}>
+      <IconButton size="large" edge="start" color="primary" aria-label="menu" sx={{ mr: 2 }} onClick={toggleDrawer}>
         <MenuIcon color="primary" />
       </IconButton>
     ),
-    [handleDrawerOpen]
+    [toggleDrawer]
   );
 
   const renderLogo = useMemo(() => <Typography sx={{ flexGrow: 1 }}>AI TRAVEL PLANNER</Typography>, []);
@@ -87,9 +86,9 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
         <Switch color="primary" checked={themeValue} onChange={handleThemeSwitch} />
         <IconButton
           id="search-button"
-          aria-controls={open ? 'search-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
+          aria-controls={open ? 'search-menu' : undefined}
           onClick={handleSearchClick}>
           <Badge color="primary" variant="dot" invisible={true}>
             <SearchIcon fontSize="small" />
@@ -97,9 +96,9 @@ const CustomAppBar = ({ open, setOpen }: CustomAppBarProps) => {
         </IconButton>
         <IconButton
           id="notifications-button"
-          aria-controls={open ? 'notifications-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
+          aria-controls={open ? 'notifications-menu' : undefined}
           onClick={handleNotiClick}>
           <Badge color="primary" variant="dot" invisible={false}>
             <NotificationsIcon fontSize="small" />

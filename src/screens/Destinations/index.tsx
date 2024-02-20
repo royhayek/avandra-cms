@@ -10,11 +10,11 @@ interface MatchParams {
   detail?: string;
 }
 
-type CategoriesProps = RouteComponentProps<MatchParams>;
+type DestinationsProps = RouteComponentProps<MatchParams>;
 
 // Component
 
-const Categories = (props: CategoriesProps) => {
+const Destinations = (props: DestinationsProps) => {
   const {
     match: {
       params: { detail = 'table' }
@@ -28,4 +28,4 @@ const Categories = (props: CategoriesProps) => {
   return Component;
 };
 
-export default Categories;
+export default Destinations;

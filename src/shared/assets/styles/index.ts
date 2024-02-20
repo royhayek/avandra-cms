@@ -25,6 +25,7 @@ export const useCommonStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     alignItems: 'center',
     marginBottom: theme.spacing(4),
+    justifyContent: 'space-between',
     [theme.breakpoints.down('md')]: {
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(2)
@@ -45,6 +46,6 @@ export const useFormStyles = makeStyles(() => ({
   footer: {
     marginTop: 40,
     display: 'flex',
-    justifyContent: 'end'
+    justifyContent: 'center'
   }
 }));

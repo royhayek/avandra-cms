@@ -22,7 +22,9 @@ interface UIInitialState {
 }
 
 export const initialState: UIInitialState = {
-  layout: {},
+  layout: {
+    isDrawerOpen: true
+  },
   lang: 'ar',
   dir: 'ltr', // isDev ? true : false
   api: 'local', // !TESTING
@@ -78,9 +80,10 @@ export default uiSlice.reducer;
 // ------------------------ Selectors ------------------------- //
 // ------------------------------------------------------------ //
 const _ui = (state: RootState) => state.services.ui;
-const _drawer = (state: RootState) => state.services.ui.drawer;
+const _layout = (state: RootState) => state.services.ui.layout;
 const _rehydrated = (state: RootState) => state._persist.rehydrated;
 
+// *** UI *** //
 export const getUI = createSelector(_ui, (data) => data);
 
 export const getLayout = createSelector(_ui, (data) => data.layout);
@@ -89,10 +92,14 @@ export const getLanguage = createSelector(_ui, (data) => data.lang);
 
 export const getThemeType = createSelector(_ui, (data) => data.theme);
 
+export const getInitialAction = createSelector(_ui, (data) => data.initialAction);
+
+export const getDrawerSelectedItem = createSelector(_ui, (data) => data?.drawer?.selectedItem);
+
+// *** Layout *** //
+export const getIsDrawerOpen = createSelector(_layout, (data) => data?.isDrawerOpen);
+
+// *** Rehydrated *** //
 export const emptySelector = createSelector(_rehydrated, () => null);
 
 export const getRehydrated = createSelector(_rehydrated, (data) => data);
-
-export const getInitialAction = createSelector(_ui, (data) => data.initialAction);
-
-export const getDrawerSelectedItem = createSelector(_drawer, (data) => data?.selectedItem);

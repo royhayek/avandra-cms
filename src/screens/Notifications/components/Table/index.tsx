@@ -52,7 +52,7 @@ const Table = () => {
       {
         field: 'image',
         headerName: 'Image',
-        renderCell: renderImage,
+        cellRenderer: renderImage,
         flex: 0.3,
         minWidth: 120
       },
@@ -61,7 +61,7 @@ const Table = () => {
       {
         field: 'actions',
         headerName: '',
-        renderCell: renderRowActions,
+        cellRenderer: renderRowActions,
         flex: 0.4,
         minWidth: 200
       }

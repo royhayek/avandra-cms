@@ -12,7 +12,6 @@ import { authActions } from 'redux/services/auth/slice';
 import { logout as logoutApi } from 'redux/services/auth/api';
 
 // Helpers
-
 export const useWidth = () => {
   const theme = useTheme();
   const keys = [...theme.breakpoints.keys].reverse();

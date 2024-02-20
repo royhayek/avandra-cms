@@ -43,7 +43,7 @@ const SchemaHelpers = {
     }
   }),
   image: (_, schemaProps = {}, uniformsProps = {}) => ({
-    type: Object,
+    type: Object | String,
     ...schemaProps,
     uniforms: {
       component: ImageField,

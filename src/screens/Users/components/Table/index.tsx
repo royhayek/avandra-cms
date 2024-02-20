@@ -22,7 +22,7 @@ import { UserProps } from 'shared/types/User';
 import { useCommonStyles } from 'shared/assets/styles';
 import { statusesList } from 'shared/constants/statuses';
 import { AppThunkDispatch, useAppSelector } from 'app/store';
-import { getUsers, getUsersError, getUsersLoading } from 'redux/users/slice';
+import { getUsers, getUsersLoading } from 'redux/users/slice';
 import { deleteUserAction, getUsersList, updateUserAction } from 'redux/users/thunks';
 
 // Component
@@ -32,7 +32,7 @@ const Table = () => {
   const dispatch = useDispatch<AppThunkDispatch>();
 
   const users = useAppSelector(getUsers);
-  const usersError = useAppSelector(getUsersError);
+  // const usersError = useAppSelector(getUsersError);
   const isUsersLoading = useAppSelector(getUsersLoading);
 
   // Statics
@@ -42,7 +42,17 @@ const Table = () => {
   const classes = { ...styles, ...commonStyles };
 
   const [menuData, setMenuData] = useState<UserProps>();
-  const [actionsAnchorEl, setActionsAnchorEl] = useState<HTMLElement | null | undefined>();
+  const [actionsAnchorEl, setActionsAnchorEl] = useState<null | HTMLElement>(null);
+
+  const openActionsMenu = Boolean(actionsAnchorEl);
+
+  const genderOptions = useMemo(
+    () => [
+      { key: 'male', title: 'Male' },
+      { key: 'female', title: 'Female' }
+    ],
+    []
+  );
 
   // Callbacks
   const fetchUsers = useCallback(() => {
@@ -52,10 +62,10 @@ const Table = () => {
   const handleEditUser = useCallback((row) => history.push(`/users/form`, row), [history]);
 
   const handleDelete = useCallback(
-    ({ closeToast, _id }) => {
+    async ({ closeToast, _id }) => {
       closeToast();
-      dispatch(deleteUserAction(_id));
-      fetchUsers();
+      const response = await dispatch(deleteUserAction(_id));
+      if (response.payload.success) fetchUsers();
     },
     [dispatch, fetchUsers]
   );
@@ -67,7 +77,7 @@ const Table = () => {
 
   const handleActionsMenuClose = useCallback(() => setActionsAnchorEl(null), []);
 
-  const handleActionsMenuClick = useCallback((row, event) => {
+  const handleActionsMenuClick = useCallback((row: UserProps, event: React.MouseEvent<HTMLButtonElement>) => {
     setMenuData(row);
     setActionsAnchorEl(event.currentTarget);
   }, []);
@@ -107,40 +117,59 @@ const Table = () => {
   );
 
   const renderRowActions = useCallback(
-    ({ row }) => (
+    ({ data }) => (
       <Box className={classes.rowActionBtns}>
-        <IconButton className={classes.actionBtn} onClick={() => handleDeleteUser(row)}>
+        <IconButton className={classes.actionBtn} onClick={() => handleDeleteUser(data)}>
           <DeleteRoundedIcon fontSize="small" color="error" />
         </IconButton>
-        <IconButton className={classes.actionBtn} onClick={() => handleEditUser(row)}>
+        <IconButton className={classes.actionBtn} onClick={() => handleEditUser(data)}>
           <EditRoundedIcon fontSize="small" color="primary" />
         </IconButton>
-        <IconButton className={classes.actionBtn} onClick={(event) => handleActionsMenuClick(row, event)}>
+        <IconButton
+          id="actions-button"
+          aria-haspopup="true"
+          className={classes.actionBtn}
+          aria-expanded={openActionsMenu ? 'true' : undefined}
+          aria-controls={openActionsMenu ? 'actions-menu' : undefined}
+          onClick={(event) => handleActionsMenuClick(data, event)}>
           <MoreVertRoundedIcon fontSize="small" color="primary" />
         </IconButton>
       </Box>
     ),
-    [classes.actionBtn, classes.rowActionBtns, handleActionsMenuClick, handleDeleteUser, handleEditUser]
+    [
+      openActionsMenu,
+      classes.actionBtn,
+      classes.rowActionBtns,
+      handleEditUser,
+      handleDeleteUser,
+      handleActionsMenuClick
+    ]
   );
 
-  const getTableHeaders = useCallback(() => {
+  const tableData = useMemo(
+    () => _.map(users, (user) => ({ ...user, gender: _.find(genderOptions, { key: user?.gender })?.title })),
+    [genderOptions, users]
+  );
+
+  const tableHeaders = useMemo(() => {
     return [
-      { field: '_id', headerName: 'ID', flex: 0.7 },
       { field: 'name', headerName: 'Name', flex: 1 },
       { field: 'email', headerName: 'Email', flex: 1 },
-      { field: 'role', headerName: 'Role', flex: 0.5, renderCell: renderRoleCell },
+      { field: 'gender', headerName: 'Gender', flex: 1 },
+      { field: 'country', headerName: 'Country', flex: 1 },
+      { field: 'role', headerName: 'Role', flex: 0.5, cellRenderer: renderRoleCell },
       {
         flex: 0.5,
-        field: 'status',
+        field: 'enabled',
         headerName: 'Status',
-        renderCell: renderStatusCell
+        cellRenderer: renderStatusCell
       },
       {
         flex: 0.7,
         minWidth: 170,
         field: 'actions',
         headerName: '',
-        renderCell: renderRowActions
+        cellRenderer: renderRowActions
       }
     ];
   }, [renderRoleCell, renderRowActions, renderStatusCell]);
@@ -164,12 +193,12 @@ const Table = () => {
   }, []);
 
   // Renderers Vars
-  const columns = getTableHeaders();
 
   const tableProps = {
-    data: users,
-    columns,
-    pageSize: 25
+    data: tableData,
+    columns: tableHeaders,
+    pageSize: 25,
+    loading: isUsersLoading
   };
 
   const actionsMenuItems = useMemo(() => {
@@ -196,22 +225,26 @@ const Table = () => {
     <>
       <Box className={classes.header}>
         <Typography variant="h5">Users</Typography>
+        <Button text="Add User" onClick={() => history.push('/users/form')} />
       </Box>
 
       <Card>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={12} md={12}>
-            <DataTable tableProps={tableProps} loading={isUsersLoading} error={usersError} />
+            <DataTable tableProps={tableProps} />
           </Grid>
         </Grid>
       </Card>
 
       <Menu
         id="actions-menu"
+        open={openActionsMenu}
         items={actionsMenuItems}
         anchorEl={actionsAnchorEl}
-        open={Boolean(actionsAnchorEl)}
         onClose={handleActionsMenuClose}
+        MenuListProps={{
+          'aria-labelledby': 'actions-button'
+        }}
       />
     </>
   );

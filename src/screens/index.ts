@@ -2,9 +2,11 @@ export { default as Dashboard } from './Dashboard';
 
 export { default as Users } from './Users';
 
-export { default as Categories } from './Categories';
+export { default as Destinations } from './Destinations';
 
-export { default as Posts } from './Posts';
+export { default as Travelers } from './Travelers';
+
+export { default as Trips } from './Trips';
 
 export { default as Reports } from './Reports';
 

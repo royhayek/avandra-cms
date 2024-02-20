@@ -3,13 +3,14 @@ import React from 'react';
 
 // Components
 import * as Screens from 'screens';
-import DnsIcon from '@mui/icons-material/Dns';
+import PlaceIcon from '@mui/icons-material/Place';
+import GroupsIcon from '@mui/icons-material/Groups2';
 import PeopleIcon from '@mui/icons-material/People';
-import ListAltIcon from '@mui/icons-material/ListAlt';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 
 export const routes = [
   {
@@ -32,15 +33,21 @@ export const routes = [
     hasSub: true
   },
   {
-    key: 'categories',
-    path: '/categories/:detail?',
-    component: Screens.Categories,
+    key: 'destinations',
+    path: '/destinations/:detail?',
+    component: Screens.Destinations,
     hasSub: true
   },
   {
-    key: 'posts',
-    path: '/posts/:detail?',
-    component: Screens.Posts,
+    key: 'travelers',
+    path: '/travelers/:detail?',
+    component: Screens.Travelers,
+    hasSub: true
+  },
+  {
+    key: 'trips',
+    path: '/trips/:detail?',
+    component: Screens.Trips,
     hasSub: true
   },
   {
@@ -110,16 +117,22 @@ export const drawerItems = [
     icon: <PeopleIcon color="inherit" />
   },
   {
-    path: '/categories',
-    key: 'categories',
-    title: 'Categories',
-    icon: <DnsIcon color="inherit" />
+    path: '/destinations',
+    key: 'destinations',
+    title: 'Destinations',
+    icon: <PlaceIcon color="inherit" />
   },
   {
-    path: '/posts',
-    key: 'posts',
-    title: 'Posts',
-    icon: <ListAltIcon color="inherit" />
+    path: '/travelers',
+    key: 'travelers',
+    title: 'Travelers',
+    icon: <GroupsIcon color="inherit" />
+  },
+  {
+    path: '/trips',
+    key: 'trips',
+    title: 'Trips',
+    icon: <FlightTakeoffIcon color="inherit" />
   },
   {
     path: '/reports',

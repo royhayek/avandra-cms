@@ -53,7 +53,7 @@ const Table = () => {
       {
         field: 'image',
         headerName: 'Image',
-        renderCell: renderImage,
+        cellRenderer: renderImage,
         flex: 0.5,
         width: 120
       },
@@ -66,14 +66,14 @@ const Table = () => {
       {
         field: 'status',
         headerName: 'Status',
-        renderCell: renderStatusCell,
+        cellRenderer: renderStatusCell,
         flex: 0.7,
         width: 140
       },
       {
         field: 'actions',
         headerName: '',
-        renderCell: renderRowActions,
+        cellRenderer: renderRowActions,
         flex: 0.5,
         width: 100
       }
@@ -95,7 +95,7 @@ const Table = () => {
   return (
     <>
       <Box className={classes.header}>
-        <Typography variant="h5">Posts</Typography>
+        <Typography variant="h5">Trips</Typography>
       </Box>
 
       <Card>

@@ -31,7 +31,7 @@ export const userSlice = createSlice({
     builder.addCase(updateProfileAction.fulfilled, (state, action) => {
       state.error = null;
       state.loading = false;
-      state.data = action.payload.user;
+      state.data = action.payload;
     });
 
     builder.addCase(updateProfileAction.rejected, (state, action) => {
