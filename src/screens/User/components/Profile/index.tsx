@@ -3,7 +3,6 @@ import _ from 'lodash';
 import getSchema from 'schemas';
 import { DeepPartial } from 'redux';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
 import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 
@@ -18,14 +17,14 @@ import useStyles from './styles';
 import { ProfileModelProps } from 'redux/user/types';
 import { updateProfileAction } from 'redux/user/thunks';
 import { getUser, getUserLoading } from 'redux/user/slice';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { useAppSelector, useAppThunkDispatch } from 'app/store';
 import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
 
 // Component
 
 const Profile = () => {
   // Redux
-  const dispatch = useDispatch<AppThunkDispatch>();
+  const dispatch = useAppThunkDispatch();
 
   const user = useAppSelector(getUser);
   const isUsersLoading = useAppSelector(getUserLoading);

@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
-import { DestinationProps } from 'shared/types/Destination';
 import { createDestination, deleteDestination, getDestinations, modifyDestination } from './api';
 
 // Actions
@@ -22,7 +21,7 @@ export const getDestinationsAction = createAsyncThunk('destination/getDestinatio
 
 export const createDestinationAction = createAsyncThunk(
   'destination/create',
-  async (payload: DestinationProps, { rejectWithValue }) => {
+  async (payload: FormData, { rejectWithValue }) => {
     try {
       const response = await createDestination(payload);
 
@@ -39,7 +38,7 @@ export const createDestinationAction = createAsyncThunk(
 
 export const modifyDestinationAction = createAsyncThunk(
   'destination/update',
-  async (payload: DestinationProps, { rejectWithValue }) => {
+  async (payload: FormData, { rejectWithValue }) => {
     try {
       const response = await modifyDestination(payload);
 

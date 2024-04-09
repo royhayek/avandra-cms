@@ -1,94 +1,126 @@
 // Packages
 import _ from 'lodash';
-import React, { useCallback } from 'react';
+import { toast } from 'react-toastify';
+import React, { useCallback, useEffect } from 'react';
 
 // Components
 import Card from 'shared/components/Card';
 import DataTable from 'shared/components/DataTable';
+import Button from 'shared/components/Buttons/Primary';
+import StatusCell from 'shared/components/DataTable/Cells/Status';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { Avatar, Box, Chip, Grid, IconButton, Typography } from '@mui/material';
+import { Box, Chip, Grid, IconButton, Typography } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
-import { statusesList } from 'shared/constants/statuses';
-import { POSTS_TABLE_DATA } from 'shared/constants/mock';
+import { deleteTripAction, getTripsAction } from 'redux/trips/thunks';
+import { tripStatusesList } from 'shared/constants/statuses';
+import { useAppSelector, useAppThunkDispatch } from 'app/store';
+import { getTrips, getTripsLoading } from 'redux/trips/slice';
 
 // Component
 
 const Table = () => {
+  // Redux
+  const dispatch = useAppThunkDispatch();
+
+  const trips = useAppSelector(getTrips);
+  const areTripsLoading = useAppSelector(getTripsLoading);
+
   // Statics
   const classes = useStyles();
 
   // Callbacks
-  const renderImage = useCallback(({ value }) => <Avatar alt="image" src={value.url} />, []);
+  const fetchTrips = useCallback(() => {
+    dispatch(getTripsAction());
+  }, [dispatch]);
 
-  const renderStatusCell = useCallback(
-    ({ value }) => {
-      const status = _.find(statusesList, { value });
-
-      return (
-        <Chip
-          size="small"
-          label={status?.label}
-          sx={{ color: status?.color }}
-          classes={{ label: classes.statusLabel }}
-        />
-      );
+  const handleDelete = useCallback(
+    async ({ closeToast, _id }) => {
+      closeToast();
+      const response = await dispatch(deleteTripAction(_id));
+      if (response.payload.success) fetchTrips();
     },
-    [classes.statusLabel]
+    [dispatch, fetchTrips]
+  );
+
+  const CloseButton = useCallback(
+    (props) => <Button onClick={() => handleDelete(props)} sx={{ padding: '4px 12px' }} text="Yes" />,
+    [handleDelete]
+  );
+
+  const handleDeleteTrip = useCallback(
+    ({ _id }) => {
+      toast('Would you like to delete this trip?', {
+        autoClose: false,
+        closeOnClick: true,
+        position: 'top-center',
+        style: { alignItems: 'center', width: 400 },
+        closeButton: (props) => <CloseButton _id={_id} {...props} />
+      });
+    },
+    [CloseButton]
   );
 
   const renderRowActions = useCallback(
-    () => (
-      <IconButton className={classes.actionBtn}>
+    ({ data }) => (
+      <IconButton className={classes.actionBtn} onClick={() => handleDeleteTrip(data)}>
         <DeleteRoundedIcon fontSize="small" color="error" />
       </IconButton>
     ),
-    [classes.actionBtn]
+    [classes.actionBtn, handleDeleteTrip]
+  );
+
+  const renderTraveler = useCallback(
+    ({ value }) => value && <Chip variant="outlined" label={`${value.title} ${value.icon}`} />,
+    []
+  );
+
+  const renderBudget = useCallback(
+    ({ value }) => value && <Chip variant="outlined" label={`${value.title} ${value.icon}`} />,
+    []
   );
 
   const getTableHeaders = useCallback(
     () => [
-      { field: 'id', headerName: 'ID', flex: 0.3, width: 50 },
-      {
-        field: 'image',
-        headerName: 'Image',
-        cellRenderer: renderImage,
-        flex: 0.5,
-        width: 120
-      },
-      { field: 'title', headerName: 'Title', flex: 1, width: 250 },
-      { field: 'views', headerName: 'Views', flex: 0.5, width: 100 },
-      { field: 'likes', headerName: 'Likes', flex: 0.5, width: 100 },
-      { field: 'reposts', headerName: 'Reposts', flex: 0.5, width: 100 },
-      { field: 'replies', headerName: 'Replies', flex: 0.7, width: 100 },
-      { field: 'date', headerName: 'Date', flex: 1, width: 180 },
+      { field: 'language.label', headerName: 'Language', flex: 0.5, width: 120 },
+      { field: 'name', headerName: 'Name', flex: 0.5, width: 100 },
+      { field: 'country', headerName: 'Country', flex: 0.5, width: 100 },
+      { field: 'fromDate', headerName: 'From Date', flex: 0.5, width: 120 },
+      { field: 'toDate', headerName: 'To Date', flex: 0.5, width: 120 },
+      { field: 'traveler', headerName: 'Traveler', flex: 0.5, width: 120, cellRenderer: renderTraveler },
+      { field: 'budget', headerName: 'Budget', flex: 0.5, width: 120, cellRenderer: renderBudget },
+      { field: 'user.name', headerName: 'User', flex: 0.7, width: 150 },
       {
         field: 'status',
         headerName: 'Status',
-        cellRenderer: renderStatusCell,
         flex: 0.7,
-        width: 140
+        width: 140,
+        cellRenderer: ({ value }) => <StatusCell value={value} statuses={tripStatusesList} />
       },
-      {
-        field: 'actions',
-        headerName: '',
-        cellRenderer: renderRowActions,
-        flex: 0.5,
-        width: 100
-      }
+      { field: 'actions', headerName: '', flex: 0.5, width: 100, cellRenderer: renderRowActions }
     ],
-    [renderImage, renderRowActions, renderStatusCell]
+    [renderBudget, renderRowActions, renderTraveler]
   );
 
+  // Effects
+  useEffect(() => {
+    dispatch(getTripsAction());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Renderers Vars
-  const data = POSTS_TABLE_DATA,
+  const data = trips,
     columns = getTableHeaders();
 
   const tableProps = {
     data,
     columns,
-    pageSize: 25
+    pageSize: 25,
+    loading: areTripsLoading,
+    options: {
+      rowHeight: 80
+    }
   };
 
   // Renderers

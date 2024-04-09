@@ -1,7 +1,6 @@
 // Packages
 import getSchema from 'schemas';
 import { DeepPartial } from 'redux';
-import { useDispatch } from 'react-redux';
 import { BaseForm, BaseFormProps, BaseFormState } from 'uniforms';
 import { SimpleSchema2Bridge } from 'uniforms-bridge-simple-schema-2';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -16,13 +15,13 @@ import SubmitField from 'shared/components/Controls/SubmitField';
 import useStyles from './styles';
 import { loginAction } from 'redux/services/auth/thunks';
 import { getAuthLoading } from 'redux/services/auth/slice';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { useAppSelector, useAppThunkDispatch } from 'app/store';
 import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
 // Component
 
 const Login = () => {
   // Redux
-  const dispatch = useDispatch<AppThunkDispatch>();
+  const dispatch = useAppThunkDispatch();
 
   const isAuthLoading = useAppSelector(getAuthLoading);
 

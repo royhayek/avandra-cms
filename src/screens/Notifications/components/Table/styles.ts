@@ -2,9 +2,6 @@
 import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
 
-// Colors
-import { light_colors } from 'shared/assets/theme/colors';
-
 // Styles
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -20,10 +17,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   actionBtn: {
     background: theme.palette.mode === 'light' ? '#f8f9fe' : '#252836'
-  },
-  statusLabel: {
-    fontWeight: 'bold',
-    color: light_colors.white
   }
 }));
 

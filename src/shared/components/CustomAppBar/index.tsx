@@ -78,7 +78,7 @@ const CustomAppBar = () => {
     [toggleDrawer]
   );
 
-  const renderLogo = useMemo(() => <Typography sx={{ flexGrow: 1 }}>AI TRAVEL PLANNER</Typography>, []);
+  const renderLogo = useMemo(() => <Typography sx={{ flexGrow: 1 }}>Trippify</Typography>, []);
 
   const renderButtons = useMemo(
     () => (

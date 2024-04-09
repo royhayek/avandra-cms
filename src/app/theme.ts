@@ -8,7 +8,7 @@ import { light_colors, dark_colors } from '../shared/assets/theme/colors';
 export const getCustomTheme = (isRTL = true, type: PaletteMode = 'light') => {
   const defaultTheme = createTheme(); // Default MUI theme
 
-  const fontFamily = ['Mulish', 'arial', 'sans-serif'].join(',');
+  const fontFamily = ['Urbanist', 'sans-serif'].join(',');
   const isDark = !!String(type).match(/dark/i);
   const colors = isDark ? dark_colors : light_colors;
 
@@ -60,22 +60,6 @@ export const getCustomTheme = (isRTL = true, type: PaletteMode = 'light') => {
     components: {
       MuiCssBaseline: {
         styleOverrides: `
-        @font-face {
-          font-family: 'Mulish';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: local('Mulish'), local('Mulish-Regular'), url('../fonts/Mulish-Regular.ttf') format('ttf');
-        }
-
-        @font-face {
-          font-family: 'Mulish';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 600;
-          src: local('Mulish'), local('Mulish-Bold'), url('../fonts/Mulish-Bold.ttf') format('ttf');
-        }
-
         body {
           background-color: ${type === 'light' ? light_colors.background : dark_colors.background};
         }

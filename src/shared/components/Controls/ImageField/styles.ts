@@ -10,9 +10,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     borderRadius: 4,
     margin: '10px 0',
+    cursor: 'pointer',
     alignItems: 'center',
     justifyContent: 'center',
-    border: '1px dashed ActiveBorder',
+    border: `1px dashed ${theme.colors.secondary}`,
     '&.error': {
       border: '1px dashed red'
     },
@@ -51,6 +52,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   fileInput: {
     display: 'none'
+  },
+  formControl: {
+    width: '100%'
   }
 }));
 

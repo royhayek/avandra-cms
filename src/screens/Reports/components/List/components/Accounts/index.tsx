@@ -6,14 +6,14 @@ import React, { useCallback, useMemo } from 'react';
 import Card from 'shared/components/Card';
 import DataTable from 'shared/components/DataTable';
 import BackButton from 'shared/components/Buttons/Back';
+import { Box, IconButton, Typography } from '@mui/material';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { Box, Chip, IconButton, Typography } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
 import { useCommonStyles } from 'shared/assets/styles';
-import { statusesList } from 'shared/constants/statuses';
 import { ACCOUNNTS_REPORTS_DATA } from 'shared/constants/mock';
+import StatusCell from 'shared/components/DataTable/Cells/Status';
 
 // Component
 
@@ -24,12 +24,6 @@ const Accounts = () => {
   const classes = { ...styles, ...commonStyles };
 
   // Callbacks
-  const renderStatusCell = useCallback(({ value }) => {
-    const status = _.find(statusesList, { value });
-
-    return <Chip size="small" label={status?.label} sx={{ color: status?.color }} />;
-  }, []);
-
   const renderRowActions = useCallback(
     () => (
       <Box>
@@ -52,7 +46,7 @@ const Accounts = () => {
         flex: 1,
         field: 'status',
         headerName: 'Status',
-        cellRenderer: renderStatusCell
+        cellRenderer: ({ value }) => <StatusCell value={value} />
       },
       {
         flex: 0.5,
@@ -61,7 +55,7 @@ const Accounts = () => {
         cellRenderer: renderRowActions
       }
     ],
-    [renderRowActions, renderStatusCell]
+    [renderRowActions]
   );
 
   // Renderers Vars

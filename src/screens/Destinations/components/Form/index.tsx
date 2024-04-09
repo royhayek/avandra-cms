@@ -3,9 +3,8 @@ import _ from 'lodash';
 import getSchema from 'schemas';
 import { DeepPartial } from 'redux';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
 
 // Components
@@ -17,8 +16,10 @@ import { Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
-import { AppThunkDispatch } from 'app/store';
+import { getDataLanguage } from 'redux/services/ui/slice';
+import { getLanguages } from 'redux/services/config/slice';
 import { DestinationProps } from 'shared/types/Destination';
+import { useAppSelector, useAppThunkDispatch } from 'app/store';
 import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
 import { createDestinationAction, modifyDestinationAction } from 'redux/destinations/thunks';
 
@@ -26,7 +27,10 @@ import { createDestinationAction, modifyDestinationAction } from 'redux/destinat
 
 const Form = () => {
   // Redux
-  const dispatch = useDispatch<AppThunkDispatch>();
+  const dispatch = useAppThunkDispatch();
+
+  const languages = useAppSelector(getLanguages);
+  const dataLang = useAppSelector(getDataLanguage);
 
   // Statics
   const theme = useTheme();
@@ -34,7 +38,7 @@ const Form = () => {
   const styles = useStyles();
   const formStyles = useFormStyles();
   const commonStyles = useCommonStyles();
-  const classes = { ...commonStyles, ...formStyles, ...styles };
+  const classes = useMemo(() => ({ ...commonStyles, ...formStyles, ...styles }), [commonStyles, formStyles, styles]);
 
   const form = useRef<BaseForm<
     DeepPartial<unknown>,
@@ -43,6 +47,7 @@ const Form = () => {
   > | null>(null);
 
   const city = history.location.state as DestinationProps;
+
   const [schema, setSchema] = useState<Bridge>();
   const [model, setModel] = useState<DestinationProps | undefined>();
 
@@ -51,29 +56,44 @@ const Form = () => {
   // Callbacks
   const setSchemaDef = useCallback(() => {
     try {
-      setSchema(getSchema('destinationSchema', {}, {}, {}));
+      setSchema(getSchema('destinationSchema', classes, { languages, defaultLang: dataLang }, {}));
     } catch (err) {
       console.error('Error in [User Form - setSchemaDef] :: ', err);
     }
-  }, []);
+  }, [classes, dataLang, languages]);
 
   const handleSubmit = useCallback(
     async (model) => {
       console.debug('[handleSubmit] :: ', { model });
-      const { _id, name, country, image, enabled } = model;
+      const { _id, language, name, country, continent, currency, description, image, flag, gallery, enabled } = model;
 
-      const payload = { _id, name, country, enabled, image: _.isString(image) ? null : image };
-      const response = await dispatch(modify ? modifyDestinationAction(payload) : createDestinationAction(payload));
+      const formData = new FormData();
+      modify && formData.append('_id', _id);
+      formData.append('language', language);
+      formData.append('name', name);
+      formData.append('country', country);
+      formData.append('continent', continent);
+      formData.append('currency', currency);
+      formData.append('description', description);
+      formData.append('image', image);
+      formData.append('flag', flag);
+      gallery.forEach((file) => formData.append('gallery', file));
+      formData.append('enabled', enabled);
+
+      const response = await dispatch(modify ? modifyDestinationAction(formData) : createDestinationAction(formData));
 
       if (response.payload.success) history.goBack();
     },
     [dispatch, history, modify]
   );
 
-  const handleModelChange = useCallback((key: string, value: any) => {
-    console.debug('[handleModelChange] :: ', { key, value });
-    setModel((prevModel) => _.merge({}, prevModel, { [key]: value }));
-  }, []);
+  const handleModelChange = useCallback(
+    (key: string, value: any) => {
+      const newModel = _.set(structuredClone(model) as DestinationProps, key, value);
+      setModel(newModel);
+    },
+    [model]
+  );
 
   // Effects
   useEffect(() => {
@@ -84,15 +104,11 @@ const Form = () => {
   useEffect(() => {
     setModel({
       ...city,
-      name: _.find(city?.name, { type: 'en' })?.content,
-      country: _.find(city?.country, { type: 'en' })?.content,
-      continent: _.find(city?.continent, { type: 'en' })?.content,
-      currency: _.find(city?.currency, { type: 'en' })?.content
+      language:
+        !city?.language && _.isEqual(dataLang, 'all') ? _.find(languages, { value: 'en' })?._id : city?.language?._id
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [city]);
-
-  console.debug('model', model);
 
   // Renderers
   return (
@@ -117,7 +133,28 @@ const Form = () => {
               <Grid item xs={12} sm={12} md={6}>
                 <Typography mb={1}>Information</Typography>
 
-                <Grid container spacing={2}>
+                <AutoField name="language" />
+                <ErrorField name="language" />
+
+                <AutoField name="name" />
+                <ErrorField name="name" />
+
+                <AutoField name="description" />
+                <ErrorField name="description" />
+
+                <AutoField name="country" />
+                <ErrorField name="country" />
+
+                <AutoField name="continent" />
+                <ErrorField name="continent" />
+
+                <AutoField name="currency" />
+                <ErrorField name="currency" />
+
+                <AutoField name="enabled" />
+                <ErrorField name="enabled" />
+
+                <Grid container spacing={2} mt={1}>
                   <Grid item xs={12} sm={12} md={6}>
                     <AutoField name="image" />
                     <ErrorField name="image" />
@@ -131,17 +168,6 @@ const Form = () => {
                     <ErrorField name="gallery" />
                   </Grid>
                 </Grid>
-
-                <AutoField name="name" />
-                <ErrorField name="name" />
-                <AutoField name="country" />
-                <ErrorField name="country" />
-                <AutoField name="continent" />
-                <ErrorField name="continent" />
-                <AutoField name="currency" />
-                <ErrorField name="currency" />
-                <AutoField name="enabled" />
-                <ErrorField name="enabled" />
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>

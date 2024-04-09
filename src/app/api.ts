@@ -1,4 +1,5 @@
 // Packages
+import _ from 'lodash';
 import axios from 'axios';
 import moment from 'moment';
 import { stringify } from 'qs';
@@ -6,6 +7,7 @@ import 'moment-timezone';
 
 // Utilities
 import { store } from './store';
+import { logout } from 'shared/utils';
 // import { logout } from 'shared/utils';
 
 // import {ROUTES} from 'shared/constants/routes';
@@ -37,6 +39,12 @@ axios.interceptors.request.use((req) => {
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.debug('API ERROR ::: ', error);
+
+    if (error.response && _.isEqual(error.response.status, 500) && error.response.data.jwtExpired) {
+      logout('Session expired, forced logout');
+    }
+
     if (error.response && [401, 403].includes(error.response.status)) {
       const storeState = store.getState();
       const authenticated = storeState?.auth.authenticated;

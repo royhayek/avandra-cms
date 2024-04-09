@@ -20,14 +20,17 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   // Renderers
   return (
-    <div className={classes.root}>
+    <>
       <CustomAppBar />
-      <CustomDrawer />
-      <Box component="main" className={classes.mainBox}>
-        <Box className={classes.toolbar} />
-        {children}
+
+      <Box className={classes.root}>
+        <CustomDrawer />
+
+        <Box component="main" className={classes.mainBox}>
+          {children}
+        </Box>
       </Box>
-    </div>
+    </>
   );
 };
 

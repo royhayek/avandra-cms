@@ -8,9 +8,10 @@ import { statusesList } from 'shared/constants/statuses';
 
 // Schema
 
-export const destinationSchema = (classes = {}) => {
+export const destinationSchema = (classes = {}, { languages, defaultLang }) => {
   try {
     const config = {
+      languages: _.map(languages, (lang) => ({ label: lang.label, value: lang._id })),
       statusesList: _.map(statusesList, ({ value, label }) => ({
         value,
         label
@@ -18,6 +19,17 @@ export const destinationSchema = (classes = {}) => {
     };
 
     return new SimpleSchema({
+      language: SchemaHelpers.select(
+        classes,
+        {
+          label: 'Language',
+          optional: false,
+          defaultValue: _.find(languages, { value: defaultLang })?._id
+        },
+        {
+          options: config.languages
+        }
+      ),
       flag: SchemaHelpers.image(
         classes,
         {
@@ -60,6 +72,14 @@ export const destinationSchema = (classes = {}) => {
           optional: false
         },
         {}
+      ),
+      description: SchemaHelpers.text(
+        classes,
+        { label: 'Description', optional: false },
+        {
+          rows: 5,
+          InputProps: { multiline: true, disableUnderline: true }
+        }
       ),
       country: SchemaHelpers.text(classes, { label: 'Country', optional: false }, {}),
       continent: SchemaHelpers.text(classes, { label: 'Continent', optional: false }, {}),

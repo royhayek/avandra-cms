@@ -9,7 +9,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   container: {
     height: 500,
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    fontFamily: theme.typography.fontFamily
   },
   table: {
     '& .ag-root-wrapper': {
@@ -46,11 +47,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '& .ag-picker-field-wrapper': {
       backgroundColor: theme.colors.background
+    },
+    '& .ag-overlay-wrapper': {
+      color: theme.colors.white
     }
   },
   searchField: {
     width: 300,
-    marginBottom: 24
+    marginBottom: 16
   },
   // X Data Grid //
   root: {
@@ -113,6 +117,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '100%',
       marginTop: theme.spacing(1)
     }
+  },
+  paginationBar: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
   }
 }));
 

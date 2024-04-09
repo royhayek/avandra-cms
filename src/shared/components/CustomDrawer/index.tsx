@@ -1,12 +1,13 @@
 // Packages
 import _ from 'lodash';
 import classNames from 'classnames';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 // Components
 import UserDropdown from 'shared/components/UserDropdown';
-import { Drawer, Hidden, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Collapse, Drawer, Hidden, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
@@ -31,6 +32,9 @@ const CustomDrawer = () => {
   const history = useHistory();
   const isSmall = useIsSmall();
 
+  // State for collapsible items
+  const [openSubDrawers, setOpenSubDrawers] = useState({});
+
   const _routes = config[role].drawerItems;
 
   // Callbacks
@@ -43,6 +47,30 @@ const CustomDrawer = () => {
     () => dispatch(uiActions.updateLayout({ isDrawerOpen: !isDrawerOpen })),
     [dispatch, isDrawerOpen]
   );
+
+  // Toggles sub drawer open state
+  const toggleSubDrawer = (key) => {
+    setOpenSubDrawers((prevOpenSubDrawers) => ({
+      ...prevOpenSubDrawers,
+      [key]: !prevOpenSubDrawers[key]
+    }));
+  };
+
+  // Modified click handler that prevents event propagation and navigation for items with children
+  const handleItemClick = (item, event) => {
+    if (item.children) {
+      event.stopPropagation();
+      toggleSubDrawer(item.key);
+    } else {
+      history.push(item.path);
+      handleListItemClick(item.key);
+    }
+  };
+
+  const handleChildItemClick = (child) => {
+    handleListItemClick(child.key);
+    history.push(child.path);
+  };
 
   const open = isDrawerOpen;
 
@@ -62,17 +90,33 @@ const CustomDrawer = () => {
           </ListItem>
         </Hidden>
         {_routes.map((item) => (
-          <ListItem key={item.key} onClick={() => history.push(item.path)} sx={{ display: 'block' }} disablePadding>
-            <ListItemButton
-              selected={_.isEqual(selectItem, item?.key)}
-              onClick={() => handleListItemClick(item.key)}
-              className={classNames(classes.listItemButton, { open })}>
-              <ListItemIcon color="inherit" className={classNames(classes.listItemIcon, { open })}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.title} className={classNames(classes.listItemText, { open })} />
-            </ListItemButton>
-          </ListItem>
+          <React.Fragment key={item.key}>
+            <ListItem disablePadding onClick={(event) => handleItemClick(item, event)}>
+              <ListItemButton
+                selected={_.isEqual(selectItem, item.key)}
+                className={classNames(classes.listItemButton, { open })}>
+                <ListItemIcon className={classNames(classes.listItemIcon, { open })}>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.title} className={classNames(classes.listItemText, { open })} />
+                {item.children ? openSubDrawers[item.key] ? <ExpandLess /> : <ExpandMore /> : null}
+              </ListItemButton>
+            </ListItem>
+            {item.children && (
+              <Collapse in={openSubDrawers[item.key]} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                  {item.children.map((child) => (
+                    <ListItemButton
+                      key={child.key}
+                      onClick={() => handleChildItemClick(child)}
+                      selected={_.isEqual(selectItem, child.key)}
+                      className={classNames(classes.listItemButton, 'child', { open })}>
+                      <ListItemIcon className={classNames(classes.listItemIcon, { open })}>{child.icon}</ListItemIcon>
+                      <ListItemText primary={child.title} className={classNames(classes.listItemText, { open })} />
+                    </ListItemButton>
+                  ))}
+                </List>
+              </Collapse>
+            )}
+          </React.Fragment>
         ))}
       </List>
     </Drawer>

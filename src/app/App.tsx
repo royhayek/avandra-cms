@@ -1,47 +1,63 @@
 // Packages
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { useSelector } from 'react-redux';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 // Components
-import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import Router from './router';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 
 // Utilities
-import { getUI } from '../redux/services/ui/slice';
-import 'react-toastify/dist/ReactToastify.css';
-import { getCustomTheme } from './theme';
 import './api';
+import { getCustomTheme } from './theme';
+import 'react-toastify/dist/ReactToastify.css';
+import { getUI } from '../redux/services/ui/slice';
+import { useAppSelector, useAppThunkDispatch } from './store';
+import { getConfigAction } from 'redux/services/config/thunks';
+import { getUserAuthenticated } from 'redux/services/auth/slice';
 
 // Component
 
 const App = () => {
   // Redux
-  const { lang, theme: themeType } = useSelector(getUI);
+  const dispatch = useAppThunkDispatch();
+
+  const { lang, theme: themeType } = useAppSelector(getUI);
+  const isAuthenticated = useAppSelector(getUserAuthenticated);
 
   // Statics
   const theme = getCustomTheme(lang, themeType);
+
+  // Callbacks
+  const initConfig = useCallback(() => {
+    dispatch(getConfigAction());
+  }, [dispatch]);
+
+  // Effects
+  useEffect(() => {
+    isAuthenticated && initConfig();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated]);
 
   // Renderers
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box style={{ display: 'flex', flex: 1, width: '100%' }}>
-        <BrowserRouter basename="">
-          <Router />
-        </BrowserRouter>
 
-        <ToastContainer
-          draggable
-          newestOnTop
-          closeOnClick
-          hideProgressBar
-          autoClose={2000}
-          theme={themeType}
-          closeButton={false}
-        />
-      </Box>
+      <BrowserRouter basename="">
+        <Router />
+      </BrowserRouter>
+
+      <ToastContainer
+        draggable
+        newestOnTop
+        closeOnClick
+        hideProgressBar
+        autoClose={2000}
+        theme={themeType}
+        closeButton={false}
+        bodyStyle={{ fontFamily: theme.typography.fontFamily }}
+      />
     </ThemeProvider>
   );
 };

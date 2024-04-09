@@ -6,9 +6,7 @@ import { Theme } from '@mui/material';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
-    flex: 1,
-    display: 'flex',
-    paddingTop: theme.spacing(1)
+    display: 'flex'
   },
   page: {
     margin: 16,
@@ -16,6 +14,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   toolbar: {
     ...theme.mixins.toolbar
+  },
+  mainContent: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'row'
   },
   mainBox: {
     flexGrow: 1,

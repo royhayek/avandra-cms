@@ -3,14 +3,25 @@ import React from 'react';
 
 // Components
 import * as Screens from 'screens';
+import ChatIcon from '@mui/icons-material/Chat';
+import QuizIcon from '@mui/icons-material/Quiz';
+import TuneIcon from '@mui/icons-material/Tune';
 import PlaceIcon from '@mui/icons-material/Place';
-import GroupsIcon from '@mui/icons-material/Groups2';
+import ImageIcon from '@mui/icons-material/Image';
 import PeopleIcon from '@mui/icons-material/People';
+import RowingIcon from '@mui/icons-material/Rowing';
+import GroupsIcon from '@mui/icons-material/Groups2';
+import ArticleIcon from '@mui/icons-material/Article';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AssessmentIcon from '@mui/icons-material/Assessment';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
+import ViewCarouselIcon from '@mui/icons-material/ViewCarousel';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
+
+const hasUnreadMessages = true; // Replace with actual unread messages boolean
 
 export const routes = [
   {
@@ -33,15 +44,33 @@ export const routes = [
     hasSub: true
   },
   {
+    key: 'walkthrough',
+    path: '/walkthrough/:detail?',
+    component: Screens.Walkthrough,
+    hasSub: true
+  },
+  {
     key: 'destinations',
     path: '/destinations/:detail?',
     component: Screens.Destinations,
     hasSub: true
   },
   {
+    key: 'articles',
+    path: '/articles/:detail?',
+    component: Screens.Articles,
+    hasSub: true
+  },
+  {
     key: 'travelOptions',
     path: '/travelOptions/:detail?',
     component: Screens.TravelOptions,
+    hasSub: true
+  },
+  {
+    key: 'interests',
+    path: '/interests/:detail?',
+    component: Screens.Interests,
     hasSub: true
   },
   {
@@ -54,6 +83,24 @@ export const routes = [
     key: 'reports',
     path: '/reports/:detail?',
     component: Screens.Reports,
+    hasSub: true
+  },
+  {
+    key: 'messages',
+    path: '/messages/:detail?',
+    component: Screens.Messages,
+    hasSub: true
+  },
+  {
+    key: 'faqs',
+    path: '/faqs/:detail?',
+    component: Screens.Faqs,
+    hasSub: true
+  },
+  {
+    key: 'faq',
+    path: '/faq/:detail?',
+    component: Screens.Faq,
     hasSub: true
   },
   {
@@ -117,16 +164,42 @@ export const drawerItems = [
     icon: <PeopleIcon color="inherit" />
   },
   {
-    path: '/destinations',
-    key: 'destinations',
-    title: 'Destinations',
-    icon: <PlaceIcon color="inherit" />
-  },
-  {
-    path: '/travelOptions',
-    key: 'travelOptions',
-    title: 'Travel Options',
-    icon: <GroupsIcon color="inherit" />
+    path: '/content',
+    key: 'content',
+    title: 'Content',
+    icon: <ImageIcon color="inherit" />,
+    children: [
+      {
+        path: '/walkthrough',
+        key: 'walkthrough',
+        title: 'Walkthrough',
+        icon: <ViewCarouselIcon color="inherit" />
+      },
+      {
+        path: '/destinations',
+        key: 'destinations',
+        title: 'Destinations',
+        icon: <PlaceIcon color="inherit" />
+      },
+      {
+        path: '/articles',
+        key: 'articles',
+        title: 'Articles',
+        icon: <ArticleIcon color="inherit" />
+      },
+      {
+        path: '/travelOptions',
+        key: 'travelOptions',
+        title: 'Travel Options',
+        icon: <GroupsIcon color="inherit" />
+      },
+      {
+        path: '/interests',
+        key: 'interests',
+        title: 'Interests',
+        icon: <RowingIcon color="inherit" />
+      }
+    ]
   },
   {
     path: '/trips',
@@ -147,9 +220,41 @@ export const drawerItems = [
     icon: <NotificationsIcon color="inherit" />
   },
   {
+    path: '/app-settings',
+    key: 'app-settings',
+    title: 'App Settings',
+    icon: <SmartphoneIcon color="inherit" />,
+    children: [
+      {
+        path: '/messages',
+        key: 'messages',
+        title: 'Messages',
+        icon: hasUnreadMessages ? <MarkUnreadChatAltIcon color="inherit" /> : <ChatIcon color="inherit" />
+      },
+      {
+        path: '/faqs',
+        key: 'faqs',
+        title: 'FAQs',
+        icon: <QuizIcon color="inherit" />
+      },
+      {
+        path: '/config',
+        key: 'config',
+        title: 'Config',
+        icon: <TuneIcon color="inherit" />
+      },
+      {
+        path: '/help-and-support',
+        key: 'support',
+        title: 'Support',
+        icon: <SettingsIcon color="inherit" />
+      }
+    ]
+  },
+  {
     path: '/settings',
     key: 'settings',
-    title: 'Settings',
+    title: 'General Settings',
     icon: <SettingsIcon color="inherit" />
   }
 ];

@@ -1,35 +1,34 @@
 // Packages
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import Card from 'shared/components/Card';
 import Menu from 'shared/components/Menu';
+import { Block, Check } from '@mui/icons-material';
 import DataTable from 'shared/components/DataTable';
 import Button from 'shared/components/Buttons/Primary';
-import { Block, Check /* Visibility */ } from '@mui/icons-material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
+import StatusCell from 'shared/components/DataTable/Cells/Status';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import { Box, Chip, Grid, IconButton, Typography } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
 import { UserProps } from 'shared/types/User';
 import { useCommonStyles } from 'shared/assets/styles';
-import { statusesList } from 'shared/constants/statuses';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
 import { getUsers, getUsersLoading } from 'redux/users/slice';
+import { useAppSelector, useAppThunkDispatch } from 'app/store';
 import { deleteUserAction, getUsersList, updateUserAction } from 'redux/users/thunks';
 
 // Component
 
 const Table = () => {
   // Redux
-  const dispatch = useDispatch<AppThunkDispatch>();
+  const dispatch = useAppThunkDispatch();
 
   const users = useAppSelector(getUsers);
   // const usersError = useAppSelector(getUsersError);
@@ -42,9 +41,8 @@ const Table = () => {
   const classes = { ...styles, ...commonStyles };
 
   const [menuData, setMenuData] = useState<UserProps>();
+  const [openActionsMenu, setOpenActionsMenu] = useState<boolean>(false);
   const [actionsAnchorEl, setActionsAnchorEl] = useState<null | HTMLElement>(null);
-
-  const openActionsMenu = Boolean(actionsAnchorEl);
 
   const genderOptions = useMemo(
     () => [
@@ -75,11 +73,11 @@ const Table = () => {
     [handleDelete]
   );
 
-  const handleActionsMenuClose = useCallback(() => setActionsAnchorEl(null), []);
+  const handleActionsMenuClose = useCallback(() => setOpenActionsMenu(false), []);
 
-  const handleActionsMenuClick = useCallback((row: UserProps, event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleActionsMenuClick = useCallback((row: UserProps) => {
     setMenuData(row);
-    setActionsAnchorEl(event.currentTarget);
+    setOpenActionsMenu(true);
   }, []);
 
   const handleDeleteUser = useCallback(
@@ -100,22 +98,6 @@ const Table = () => {
     []
   );
 
-  const renderStatusCell = useCallback(
-    ({ value }) => {
-      const status = _.find(statusesList, { value });
-
-      return (
-        <Chip
-          size="small"
-          label={status?.label}
-          classes={{ label: classes.statusLabel }}
-          sx={{ backgroundColor: status?.color, color: 'white' }}
-        />
-      );
-    },
-    [classes.statusLabel]
-  );
-
   const renderRowActions = useCallback(
     ({ data }) => (
       <Box className={classes.rowActionBtns}>
@@ -128,10 +110,11 @@ const Table = () => {
         <IconButton
           id="actions-button"
           aria-haspopup="true"
+          ref={setActionsAnchorEl}
           className={classes.actionBtn}
           aria-expanded={openActionsMenu ? 'true' : undefined}
           aria-controls={openActionsMenu ? 'actions-menu' : undefined}
-          onClick={(event) => handleActionsMenuClick(data, event)}>
+          onClick={() => handleActionsMenuClick(data)}>
           <MoreVertRoundedIcon fontSize="small" color="primary" />
         </IconButton>
       </Box>
@@ -151,28 +134,18 @@ const Table = () => {
     [genderOptions, users]
   );
 
-  const tableHeaders = useMemo(() => {
-    return [
+  const tableHeaders = useMemo(
+    () => [
       { field: 'name', headerName: 'Name', flex: 1 },
-      { field: 'email', headerName: 'Email', flex: 1 },
+      { field: 'email', headerName: 'Email', flex: 1.5 },
       { field: 'gender', headerName: 'Gender', flex: 1 },
       { field: 'country', headerName: 'Country', flex: 1 },
       { field: 'role', headerName: 'Role', flex: 0.5, cellRenderer: renderRoleCell },
-      {
-        flex: 0.5,
-        field: 'enabled',
-        headerName: 'Status',
-        cellRenderer: renderStatusCell
-      },
-      {
-        flex: 0.7,
-        minWidth: 170,
-        field: 'actions',
-        headerName: '',
-        cellRenderer: renderRowActions
-      }
-    ];
-  }, [renderRoleCell, renderRowActions, renderStatusCell]);
+      { flex: 0.5, field: 'enabled', headerName: 'Status', cellRenderer: ({ value }) => <StatusCell value={value} /> },
+      { flex: 0.7, minWidth: 170, field: 'actions', headerName: '', cellRenderer: renderRowActions }
+    ],
+    [renderRoleCell, renderRowActions]
+  );
 
   const handleSuspendClick = useCallback(() => {
     dispatch(updateUserAction({ ...menuData, status: !menuData?.status }));

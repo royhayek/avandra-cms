@@ -8,9 +8,10 @@ import { statusesList } from 'shared/constants/statuses';
 
 // Schema
 
-export const travelOptionSchema = (classes = {}) => {
+export const travelOptionSchema = (classes = {}, { languages, defaultLang }) => {
   try {
     const config = {
+      languages: _.map(languages, (lang) => ({ label: lang.label, value: lang._id })),
       statusesList: _.map(statusesList, ({ value, label }) => ({
         value,
         label
@@ -18,6 +19,17 @@ export const travelOptionSchema = (classes = {}) => {
     };
 
     return new SimpleSchema({
+      language: SchemaHelpers.select(
+        classes,
+        {
+          label: 'Language',
+          optional: false,
+          defaultValue: _.find(languages, { value: defaultLang })?._id
+        },
+        {
+          options: config.languages
+        }
+      ),
       icon: SchemaHelpers.text(classes, { label: 'Icon', optional: false }, {}),
       title: SchemaHelpers.text(classes, { label: 'Title', optional: false }, {}),
       description: SchemaHelpers.text(classes, { label: 'Description', optional: false }, {}),

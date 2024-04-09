@@ -44,6 +44,7 @@ export const light_colors = {
   green: '#0B5563',
   white: '#FFFFFF',
   lightGray: '#FBFBFB',
+  greenBg: '#EFF9F5',
   dark: {
     1: '#181A20',
     2: '#1E2025',
@@ -75,6 +76,7 @@ export const dark_colors = {
   green: '#0B5563',
   white: '#FFFFFF',
   lightGray: '#1C1E24',
+  greenBg: '#EFF9F5',
   dark: {
     1: '#181A20',
     2: '#1E2025',

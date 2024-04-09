@@ -12,9 +12,10 @@ export default makeStyles((theme: Theme) => ({
   drawer: {
     overflowX: 'hidden',
     borderRight: 'none',
+    overflowY: 'auto',
+    background: theme.palette.mode === 'dark' ? theme.colors.background : 'transparent',
     marginTop: `${appBarHeight}px`,
-    background: theme.palette.background.default,
-    width: `calc(${theme.spacing(7)} + 1px)`,
+    width: `calc(${theme.spacing(8)} + 1px)`,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
@@ -25,6 +26,7 @@ export default makeStyles((theme: Theme) => ({
     '&.open': {
       width: drawerWidth,
       overflowX: 'hidden',
+      overflowY: 'auto',
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
@@ -42,6 +44,10 @@ export default makeStyles((theme: Theme) => ({
     '&.Mui-selected': {
       color: theme.colors.white,
       background: theme.palette.primary.main
+    },
+    '&.child': {
+      marginInlineStart: 24,
+      minHeight: 40
     }
   },
   listItemIcon: {

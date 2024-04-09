@@ -10,3 +10,39 @@ export const statusesList = [
     color: 'red'
   }
 ];
+
+export const messageStatusesList = [
+  {
+    value: 'unread',
+    label: 'Unread',
+    color: 'red'
+  },
+  {
+    value: 'read',
+    label: 'Read',
+    color: 'green'
+  },
+  {
+    value: 'archived',
+    label: 'Archived',
+    color: 'blue'
+  }
+];
+
+export const tripStatusesList = [
+  {
+    value: 'upcoming',
+    label: 'Upcoming',
+    color: 'darkgreen'
+  },
+  {
+    value: 'active',
+    label: 'Active',
+    color: 'green'
+  },
+  {
+    value: 'expired',
+    label: 'Expired',
+    color: 'red'
+  }
+];

@@ -1,7 +1,6 @@
 // Packages
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import React, { useMemo, useCallback, useEffect } from 'react';
 
@@ -11,13 +10,13 @@ import DataTable from 'shared/components/DataTable';
 import Button from 'shared/components/Buttons/Primary';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { Avatar, Box, Chip, Grid, IconButton, Typography } from '@mui/material';
+import StatusCell from 'shared/components/DataTable/Cells/Status';
+import { Avatar, Box, Grid, IconButton, Typography } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
 import { useCommonStyles } from 'shared/assets/styles';
-import { statusesList } from 'shared/constants/statuses';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { useAppSelector, useAppThunkDispatch } from 'app/store';
 import { getDestinations, getDestinationsLoading } from 'redux/destinations/slice';
 import { deleteDestinationAction, getDestinationsAction } from 'redux/destinations/thunks';
 
@@ -25,7 +24,7 @@ import { deleteDestinationAction, getDestinationsAction } from 'redux/destinatio
 
 const Table = () => {
   // Redux
-  const dispatch = useDispatch<AppThunkDispatch>();
+  const dispatch = useAppThunkDispatch();
 
   const cities = useAppSelector(getDestinations);
   const areCitiesLoading = useAppSelector(getDestinationsLoading);
@@ -70,27 +69,6 @@ const Table = () => {
       />
     ),
     []
-  );
-
-  const renderTransText = useCallback(
-    ({ value }) => <Typography variant="body2">{_.find(value, { type: 'en' })?.content}</Typography>,
-    []
-  );
-
-  const renderStatusCell = useCallback(
-    ({ value }) => {
-      const status = _.find(statusesList, { value });
-
-      return (
-        <Chip
-          size="small"
-          label={status?.label}
-          sx={{ backgroundColor: status?.color }}
-          classes={{ label: classes.statusLabel }}
-        />
-      );
-    },
-    [classes.statusLabel]
   );
 
   const handleDelete = useCallback(
@@ -138,39 +116,23 @@ const Table = () => {
 
   const getTableHeaders = useMemo(
     () => [
-      {
-        flex: 1,
-        minWidth: 100,
-        field: 'image',
-        headerName: 'Image',
-        cellRenderer: renderImage
-      },
-      {
-        minWidth: 100,
-        field: 'flag',
-        headerName: 'Flag',
-        cellRenderer: renderFlag
-      },
-      { field: 'name', headerName: 'Name', flex: 1, minWidth: 150, cellRenderer: renderTransText },
-      { field: 'country', headerName: 'Country', flex: 1, minWidth: 150, cellRenderer: renderTransText },
-      { field: 'continent', headerName: 'Continent', flex: 1, minWidth: 150, cellRenderer: renderTransText },
-      { field: 'currency', headerName: 'Currency', flex: 1, minWidth: 150, cellRenderer: renderTransText },
+      { field: 'language.label', headerName: 'Language', flex: 0.5, minWidth: 120 },
+      { field: 'image', headerName: 'Image', cellRenderer: renderImage, flex: 1, minWidth: 100 },
+      { field: 'flag', headerName: 'Flag', cellRenderer: renderFlag, flex: 0.5, minWidth: 80 },
+      { field: 'name', headerName: 'Name', flex: 1, minWidth: 150 },
+      { field: 'country', headerName: 'Country', flex: 1, minWidth: 150 },
+      { field: 'continent', headerName: 'Continent', flex: 1, minWidth: 150 },
+      { field: 'currency', headerName: 'Currency', flex: 1, minWidth: 150 },
       {
         flex: 1,
         minWidth: 150,
         field: 'enabled',
         headerName: 'Status',
-        cellRenderer: renderStatusCell
+        cellRenderer: ({ value }) => <StatusCell value={value} />
       },
-      {
-        flex: 0.5,
-        minWidth: 120,
-        field: 'actions',
-        headerName: '',
-        cellRenderer: renderRowActions
-      }
+      { flex: 0.5, minWidth: 120, field: 'actions', headerName: '', cellRenderer: renderRowActions }
     ],
-    [renderFlag, renderImage, renderRowActions, renderStatusCell, renderTransText]
+    [renderFlag, renderImage, renderRowActions]
   );
 
   // Renderers Vars
@@ -179,7 +141,8 @@ const Table = () => {
     columns: getTableHeaders,
     loading: areCitiesLoading,
     options: {
-      rowHeight: 80
+      rowHeight: 80,
+      hasLanguages: true
     }
   };
 

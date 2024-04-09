@@ -1,25 +1,27 @@
 // Packages
 import _ from 'lodash';
-import { useDispatch } from 'react-redux';
 import React, { useEffect, useMemo } from 'react';
 
 // Components
 import Card from 'shared/components/Card';
-import DnsIcon from '@mui/icons-material/Dns';
 import StatsCard from './components/StatsCard';
+import PlaceIcon from '@mui/icons-material/Place';
 import BarChart from 'shared/components/Charts/Bar';
 import DataTable from 'shared/components/DataTable';
 import PeopleIcon from '@mui/icons-material/People';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import FlightIcon from '@mui/icons-material/Flight';
 import { Grid, Typography, useTheme } from '@mui/material';
+import SmartphoneIcon from '@mui/icons-material/Smartphone';
 import CustomArea from 'shared/components/Charts/CustomArea';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 
 // Utilities
 import useStyles from './styles';
 import { getDashboard } from 'redux/dashboard/slice';
 import { useCommonStyles } from 'shared/assets/styles';
 import { getDashboardList } from 'redux/dashboard/thunks';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { useAppSelector, useAppThunkDispatch } from 'app/store';
 import { getUserAuthenticated } from 'redux/services/auth/slice';
 import { CHART_DATA, BAR_CHART_DATA, DASHBOARD_TABLE_DATA } from 'shared/constants/mock';
 
@@ -27,10 +29,10 @@ import { CHART_DATA, BAR_CHART_DATA, DASHBOARD_TABLE_DATA } from 'shared/constan
 
 const Dashboard = () => {
   // Redux
-  const dispatch = useDispatch<AppThunkDispatch>();
+  const dispatch = useAppThunkDispatch();
 
-  const authenticated = useAppSelector(getUserAuthenticated);
   const dashboard = useAppSelector(getDashboard);
+  const authenticated = useAppSelector(getUserAuthenticated);
 
   // Statics
   const theme = useTheme();
@@ -47,24 +49,24 @@ const Dashboard = () => {
   // Renderers Vars
   const tableHeaders = useMemo(
     () => [
-      { field: 'id', headerName: 'ID', width: 70 },
-      { field: 'firstName', headerName: 'First name', width: 130 },
-      { field: 'lastName', headerName: 'Last name', width: 130 },
-      { field: 'age', headerName: 'Age', type: 'number', width: 90 },
+      { field: 'firstName', headerName: 'First name', flex: 1, width: 130 },
+      { field: 'lastName', headerName: 'Last name', flex: 1, width: 130 },
+      { field: 'age', headerName: 'Age', type: 'number', flex: 1, width: 90 },
       {
         field: 'fullName',
         headerName: 'Full name',
         description: 'This column has a value getter and is not sortable.',
         sortable: false,
+        flex: 1,
         width: 160,
-        valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}`
+        valueGetter: (params) => `${params.data.firstName || ''} ${params.data.lastName || ''}`
       }
     ],
     []
   );
 
   const summaryCardsData = useMemo(() => {
-    const { usersCount, destinationsCount } = dashboard;
+    const { usersCount, adminsCount, destinationsCount, tripsCount, unreadMessagesCount } = dashboard;
 
     return [
       {
@@ -74,36 +76,46 @@ const Dashboard = () => {
         value: usersCount
       },
       {
+        title: 'Admins',
+        icon: <SupervisorAccountIcon />,
+        padding: theme.spacing(0),
+        value: adminsCount
+      },
+      {
         title: 'Destinations',
-        icon: <DnsIcon />,
+        icon: <PlaceIcon />,
         padding: theme.spacing(0),
         value: destinationsCount
       },
       {
         title: 'Trips',
-        icon: <ListAltIcon />,
+        icon: <FlightIcon />,
         padding: theme.spacing(0),
-        value: 1000
+        value: tripsCount
       },
       {
-        title: 'Reports',
-        icon: <DnsIcon />,
+        title: 'Unread Messages',
+        icon: <MarkUnreadChatAltIcon />,
         padding: theme.spacing(0),
-        value: 10
+        value: unreadMessagesCount
+      },
+      {
+        title: 'Devices',
+        icon: <SmartphoneIcon />,
+        padding: theme.spacing(0),
+        value: 205
       }
     ];
   }, [dashboard, theme]);
 
-  const tableProps = useMemo(
-    () => ({
-      data: DASHBOARD_TABLE_DATA,
-      columns: tableHeaders,
-      options: {
-        withoutHeader: true
-      }
-    }),
-    [tableHeaders]
-  );
+  const tableProps = {
+    data: DASHBOARD_TABLE_DATA,
+    columns: tableHeaders,
+    loading: false,
+    options: {
+      withoutHeader: true
+    }
+  };
 
   // Renderers
   return (
@@ -112,13 +124,15 @@ const Dashboard = () => {
         Dashboard
       </Typography>
 
-      <Grid container spacing={4}>
+      <Grid container spacing={4} mb={4}>
         {_.map(summaryCardsData, ({ title, icon, padding, value }) => (
           <Grid item key={title} xs={12} sm={12} md={3}>
             <StatsCard icon={icon} title={title} value={value} padding={padding} />
           </Grid>
         ))}
+      </Grid>
 
+      <Grid container spacing={4}>
         <Grid item xs={12} sm={12} md={8}>
           <Card>
             <Typography variant="subtitle1">Traffic</Typography>
@@ -134,7 +148,7 @@ const Dashboard = () => {
         <Grid item xs={12} sm={12} md={12}>
           <Card>
             <Typography variant="subtitle1">Latest Posts</Typography>
-            <DataTable {...tableProps} />
+            <DataTable tableProps={tableProps} />
           </Card>
         </Grid>
       </Grid>

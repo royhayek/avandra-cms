@@ -3,23 +3,13 @@ import { createDraftSafeSelector as createSelector, createSlice } from '@reduxjs
 
 // Utilities
 import { RootState } from 'app/store';
-
-interface ConfigInitialState {
-  connected: boolean;
-  streamer_host: string;
-  streamer_port: string;
-  interrupted: boolean;
-  streamer_adabter: string;
-  streamer_protocol: string;
-}
+import { getConfigAction } from './thunks';
+import { ConfigInitialState } from './types';
 
 const initialState: ConfigInitialState = {
-  connected: false,
-  streamer_host: '',
-  streamer_port: '',
-  interrupted: false,
-  streamer_adabter: '',
-  streamer_protocol: ''
+  data: null,
+  error: null,
+  loading: false
 };
 
 export const configSlice = createSlice({
@@ -36,6 +26,22 @@ export const configSlice = createSlice({
     reset: () => {
       return initialState;
     }
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getConfigAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    builder.addCase(getConfigAction.fulfilled, (state, action) => {
+      state.error = null;
+      state.loading = false;
+      state.data = action.payload;
+    });
+
+    builder.addCase(getConfigAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
   }
 });
 
@@ -47,6 +53,8 @@ export default configSlice.reducer;
 // ------------------------------------------------------------ //
 // ------------------------ Selectors ------------------------- //
 // ------------------------------------------------------------ //
-const _config = (state: RootState) => state.data.config;
+const _config = (state: RootState) => state.services.config.data;
 
 export const getConfig = createSelector(_config, (data) => data);
+
+export const getLanguages = createSelector(_config, (data) => data?.languages);

@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import ImageField from 'shared/components/Controls/ImageField';
+import HtmlField from 'shared/components/Controls/HtmlField';
 
 // Helpers
 
@@ -47,6 +48,15 @@ const SchemaHelpers = {
     ...schemaProps,
     uniforms: {
       component: ImageField,
+      ...uniformsProps
+    }
+  }),
+  html: (classes = {}, schemaProps, uniformsProps) => ({
+    type: String,
+    ...schemaProps,
+    uniforms: {
+      component: HtmlField,
+      className: classNames(classes.formControl),
       ...uniformsProps
     }
   }),

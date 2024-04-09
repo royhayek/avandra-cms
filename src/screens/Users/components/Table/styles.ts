@@ -1,6 +1,6 @@
 // Theme
-import { makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) => ({
   header: {
@@ -19,10 +19,6 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.colors.white,
       background: theme.colors.primary
     }
-  },
-  statusLabel: {
-    fontSize: 11,
-    fontWeight: 'bold'
   }
 }));
 

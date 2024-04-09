@@ -1,4 +1,5 @@
 // Packages
+import PT from 'prop-types';
 import classNames from 'classnames';
 import React, { ReactNode } from 'react';
 
@@ -17,7 +18,7 @@ interface ButtonProps extends MuiButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button = ({ variant = 'contained', text = 'Submit', loading, onClick, ...props }: ButtonProps) => {
+const Button = ({ color, variant, text, loading, onClick, ...props }: ButtonProps) => {
   // Statics
   const classes = useStyles();
   const isSmall = useIsSmall();
@@ -25,16 +26,32 @@ const Button = ({ variant = 'contained', text = 'Submit', loading, onClick, ...p
   // Renderers
   return (
     <MUIButton
+      color={color}
       disableElevation
       variant={variant}
       onClick={onClick}
       disabled={loading}
       size={isSmall ? 'small' : 'large'}
-      className={classNames(classes.button, variant)}
+      classes={{ root: classNames(classes.button, variant), containedSecondary: classes.containedSecondary }}
       {...props}>
       {loading ? <CircularProgress color="inherit" size={27} /> : text}
     </MUIButton>
   );
+};
+
+Button.propTypes = {
+  text: PT.string,
+  color: PT.string,
+  variant: PT.string,
+  loading: PT.bool,
+  onClick: PT.func
+};
+
+Button.defaultProps = {
+  text: 'Submit',
+  color: 'primary',
+  variant: 'contained',
+  loading: false
 };
 
 export default Button;

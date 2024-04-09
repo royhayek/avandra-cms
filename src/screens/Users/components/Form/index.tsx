@@ -3,7 +3,6 @@ import _ from 'lodash';
 import getSchema from 'schemas';
 import { DeepPartial } from 'redux';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { BaseForm, BaseFormProps, BaseFormState, Bridge } from 'uniforms';
 import React, { useState, useRef, useCallback, useEffect, useMemo } from 'react';
@@ -13,13 +12,13 @@ import Card from 'shared/components/Card';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import { AutoField, AutoForm, ErrorField } from 'uniforms-mui';
 import SubmitField from 'shared/components/Controls/SubmitField';
-import { Avatar, Box, Grid, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, Grid, IconButton, Typography } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
 import { UserProps } from 'shared/types/User';
 import { getUserUpdating } from 'redux/users/slice';
-import { AppThunkDispatch, useAppSelector } from 'app/store';
+import { useAppSelector, useAppThunkDispatch } from 'app/store';
 import { useCommonStyles, useFormStyles } from 'shared/assets/styles';
 import { createUserAction, updateUserAction } from 'redux/users/thunks';
 
@@ -27,13 +26,12 @@ import { createUserAction, updateUserAction } from 'redux/users/thunks';
 
 const Form = () => {
   // Redux
-  const dispatch = useDispatch<AppThunkDispatch>();
+  const dispatch = useAppThunkDispatch();
 
   const isUserUpdating = useAppSelector(getUserUpdating);
 
   // Statics
   const history = useHistory();
-  const theme = useTheme();
   const styles = useStyles();
   const formStyles = useFormStyles();
   const commonStyles = useCommonStyles();
@@ -142,35 +140,20 @@ const Form = () => {
       <Card>
         {schema ? (
           <AutoForm ref={form} schema={schema} model={model} onSubmit={handleSubmit} placeholder>
-            <Grid container flexDirection="row" justifyContent="center">
-              <Avatar
-                alt={name}
-                variant="rounded"
-                src="/static/images/avatar/1.jpg"
-                sx={{ fontSize: theme.typography.h4.fontSize, color: theme.colors.white, width: 100, height: 100 }}
-              />
-            </Grid>
-
             <Typography my={2}>Information</Typography>
 
             <Grid container columnSpacing={2}>
               <Grid item xs={12} sm={12} md={6}>
-                {user ? (
-                  <>
-                    <AutoField name="_id" />
-                    <ErrorField name="_id" />
-                  </>
-                ) : null}
                 <AutoField name="name" />
                 <ErrorField name="name" />
                 <AutoField name="email" />
                 <ErrorField name="email" />
                 <AutoField name="gender" />
                 <ErrorField name="gender" />
-              </Grid>
-              <Grid item xs={12} sm={12} md={6}>
                 <AutoField name="country" />
                 <ErrorField name="country" />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6}>
                 <AutoField name="provider" />
                 <ErrorField name="provider" />
                 <AutoField name="role" />
@@ -184,17 +167,19 @@ const Form = () => {
               Password
             </Typography>
 
-            <Grid item xs={12} sm={12} md={6}>
-              {user ? (
-                <>
-                  <AutoField name="currentPassword" />
-                  <ErrorField name="currentPassword" />
-                </>
-              ) : null}
-              <AutoField name="password" />
-              <ErrorField name="password" />
-              <AutoField name="confPassword" />
-              <ErrorField name="confPassword" />
+            <Grid container columnSpacing={2}>
+              <Grid item xs={12} sm={12} md={6}>
+                {user ? (
+                  <>
+                    <AutoField name="currentPassword" />
+                    <ErrorField name="currentPassword" />
+                  </>
+                ) : null}
+                <AutoField name="password" />
+                <ErrorField name="password" />
+                <AutoField name="confPassword" />
+                <ErrorField name="confPassword" />
+              </Grid>
             </Grid>
 
             <Box className={classes.footer}>

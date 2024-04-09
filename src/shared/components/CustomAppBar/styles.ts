@@ -8,6 +8,7 @@ export const appBarHeight = 64;
 
 const useStyles = makeStyles((theme: Theme) => ({
   appbar: {
+    position: 'sticky',
     zIndex: theme.zIndex.drawer + 1,
     height: `${appBarHeight}px !important`,
     borderBottom: `1px solid ${theme.palette.divider}`,

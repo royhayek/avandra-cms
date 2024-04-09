@@ -9,14 +9,16 @@ import App from 'app/App';
 
 // Utilities
 import { persistor, store } from 'app/store';
+import { StyledEngineProvider } from '@mui/material';
 
 // Main Render
-
 render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
-  </Provider>,
+  <StyledEngineProvider injectFirst>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </Provider>
+  </StyledEngineProvider>,
   document.getElementById('root')
 );

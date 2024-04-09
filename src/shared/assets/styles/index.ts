@@ -10,6 +10,9 @@ export const useCommonStyles = makeStyles((theme: Theme) => ({
     '&.expand': {
       flex: 1
     },
+    '&.away': {
+      justifyContent: 'space-between'
+    },
     '&.center': {
       alignItems: 'center'
     },
@@ -44,7 +47,7 @@ export const useCommonStyles = makeStyles((theme: Theme) => ({
 
 export const useFormStyles = makeStyles(() => ({
   footer: {
-    marginTop: 40,
+    margin: 24,
     display: 'flex',
     justifyContent: 'center'
   }

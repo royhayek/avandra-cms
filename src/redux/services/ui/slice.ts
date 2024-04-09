@@ -10,11 +10,12 @@ interface DrawerProps {
   selectedItem: string;
 }
 interface UIInitialState {
-  layout: object;
-  lang: string;
   dir: string;
   api: string;
+  lang: string;
   theme: string;
+  layout: object;
+  dataLang: string;
   showTour: boolean;
   tourFirstTime: boolean;
   initialAction: string;
@@ -27,8 +28,9 @@ export const initialState: UIInitialState = {
   },
   lang: 'ar',
   dir: 'ltr', // isDev ? true : false
-  api: 'local', // !TESTING
+  api: 'local',
   theme: 'dark', // [light || dark]
+  dataLang: 'all',
   showTour: true,
   tourFirstTime: true,
   initialAction: 'Login',
@@ -91,6 +93,8 @@ export const getLayout = createSelector(_ui, (data) => data.layout);
 export const getLanguage = createSelector(_ui, (data) => data.lang);
 
 export const getThemeType = createSelector(_ui, (data) => data.theme);
+
+export const getDataLanguage = createSelector(_ui, (data) => data.dataLang);
 
 export const getInitialAction = createSelector(_ui, (data) => data.initialAction);
 

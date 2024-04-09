@@ -24,10 +24,7 @@ const Router = () => {
 
   // Renderers
   const renderRoute = useMemo(() => {
-    console.debug('role', role);
-
     try {
-      // TODO: replace "admin" with the dynamic role
       const _routes = config[role ?? 'anonymous'].routes;
 
       const _router = (
