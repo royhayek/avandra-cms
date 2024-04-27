@@ -82,6 +82,8 @@ export const destinationSchema = (classes = {}, { languages, defaultLang }) => {
         }
       ),
       country: SchemaHelpers.text(classes, { label: 'Country', optional: false }, {}),
+      bestTime: SchemaHelpers.text(classes, { label: 'Best Time to Go', optional: false }, {}),
+      spokenLang: SchemaHelpers.text(classes, { label: 'Language(s)', optional: false }, {}),
       continent: SchemaHelpers.text(classes, { label: 'Continent', optional: false }, {}),
       currency: SchemaHelpers.text(classes, { label: 'Currency', optional: false }, {}),
       enabled: SchemaHelpers.select(

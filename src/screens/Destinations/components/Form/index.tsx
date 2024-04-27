@@ -65,7 +65,22 @@ const Form = () => {
   const handleSubmit = useCallback(
     async (model) => {
       console.debug('[handleSubmit] :: ', { model });
-      const { _id, language, name, country, continent, currency, description, image, flag, gallery, enabled } = model;
+
+      const {
+        _id,
+        language,
+        name,
+        country,
+        continent,
+        bestTime,
+        spokenLang,
+        currency,
+        description,
+        image,
+        flag,
+        gallery,
+        enabled
+      } = model;
 
       const formData = new FormData();
       modify && formData.append('_id', _id);
@@ -73,6 +88,8 @@ const Form = () => {
       formData.append('name', name);
       formData.append('country', country);
       formData.append('continent', continent);
+      formData.append('bestTime', bestTime);
+      formData.append('spokenLang', spokenLang);
       formData.append('currency', currency);
       formData.append('description', description);
       formData.append('image', image);
@@ -144,6 +161,12 @@ const Form = () => {
 
                 <AutoField name="country" />
                 <ErrorField name="country" />
+
+                <AutoField name="bestTime" />
+                <ErrorField name="bestTime" />
+
+                <AutoField name="spokenLang" />
+                <ErrorField name="spokenLang" />
 
                 <AutoField name="continent" />
                 <ErrorField name="continent" />

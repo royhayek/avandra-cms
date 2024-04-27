@@ -6,6 +6,8 @@ export interface DestinationProps {
   country: object;
   enabled: boolean;
   image: File | null;
+  bestTime: string;
+  spokenLang: string;
   flag: File | null;
   gallery: File[] | null;
   language: LanguageProps;
