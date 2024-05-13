@@ -84,12 +84,12 @@ const Table = () => {
   const getTableHeaders = useCallback(
     () => [
       { field: 'language.label', headerName: 'Language', flex: 0.5, width: 120 },
-      { field: 'name', headerName: 'Name', flex: 0.5, width: 100 },
-      { field: 'country', headerName: 'Country', flex: 0.5, width: 100 },
-      { field: 'fromDate', headerName: 'From Date', flex: 0.5, width: 120 },
-      { field: 'toDate', headerName: 'To Date', flex: 0.5, width: 120 },
-      { field: 'traveler', headerName: 'Traveler', flex: 0.5, width: 120, cellRenderer: renderTraveler },
-      { field: 'budget', headerName: 'Budget', flex: 0.5, width: 120, cellRenderer: renderBudget },
+      { field: 'payload.name', headerName: 'Name', flex: 0.5, width: 100 },
+      { field: 'payload.country', headerName: 'Country', flex: 0.5, width: 100 },
+      { field: 'payload.fromDate', headerName: 'From Date', flex: 0.5, width: 120 },
+      { field: 'payload.toDate', headerName: 'To Date', flex: 0.5, width: 120 },
+      { field: 'payload.traveler', headerName: 'Traveler', flex: 0.5, width: 120, cellRenderer: renderTraveler },
+      { field: 'payload.budget', headerName: 'Budget', flex: 0.5, width: 120, cellRenderer: renderBudget },
       { field: 'user.name', headerName: 'User', flex: 0.7, width: 150 },
       {
         field: 'status',
