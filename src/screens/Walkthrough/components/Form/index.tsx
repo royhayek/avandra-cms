@@ -151,7 +151,7 @@ const Form = () => {
                           alt="Image"
                           src={
                             _.isString(model?.image)
-                              ? `${process.env.REACT_APP_PUBLIC_URL}uploads/walkthrough/image/${model?.image}`
+                              ? `${process.env.REACT_APP_PUBLIC_URL}/uploads/walkthrough/image/${model?.image}`
                               : URL.createObjectURL(model?.image)
                           }
                           className={classes.previewImage}

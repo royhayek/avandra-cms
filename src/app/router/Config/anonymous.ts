@@ -8,5 +8,11 @@ export const routes = [
     component: Screens.Login,
     hasSub: false,
     exact: true
+  },
+  {
+    key: 'share',
+    path: '/share/:path/:id',
+    component: Screens.DeepLinkRedirect,
+    hasSub: false
   }
 ];

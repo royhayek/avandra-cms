@@ -211,7 +211,7 @@ const Form = () => {
                         alt="Destination"
                         src={
                           _.isString(model?.image)
-                            ? `${process.env.REACT_APP_PUBLIC_URL}uploads/destination/image/${model?.image}`
+                            ? `${process.env.REACT_APP_PUBLIC_URL}/uploads/destination/image/${model?.image}`
                             : URL.createObjectURL(model?.image)
                         }
                         className={classes.previewImage}
@@ -225,7 +225,7 @@ const Form = () => {
                             alt="Flag"
                             src={
                               _.isString(model?.flag)
-                                ? `${process.env.REACT_APP_PUBLIC_URL}uploads/destination/flag/${model?.flag}`
+                                ? `${process.env.REACT_APP_PUBLIC_URL}/uploads/destination/flag/${model?.flag}`
                                 : URL.createObjectURL(model?.flag)
                             }
                             className={classes.previewFlag}

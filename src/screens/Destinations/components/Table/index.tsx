@@ -53,7 +53,7 @@ const Table = () => {
         alt="image"
         variant="rounded"
         sx={{ width: 65, height: 65 }}
-        src={`${process.env.REACT_APP_PUBLIC_URL}uploads/destination/image/${value}`}
+        src={`${process.env.REACT_APP_PUBLIC_URL}/uploads/destination/image/${value}`}
       />
     ),
     []
@@ -65,7 +65,7 @@ const Table = () => {
         alt="image"
         variant="square"
         sx={{ width: 30, height: 20 }}
-        src={`${process.env.REACT_APP_PUBLIC_URL}uploads/destination/flag/${value}`}
+        src={`${process.env.REACT_APP_PUBLIC_URL}/uploads/destination/flag/${value}`}
       />
     ),
     []

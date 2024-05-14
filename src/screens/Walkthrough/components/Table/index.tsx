@@ -52,7 +52,7 @@ const Table = () => {
         alt="image"
         variant="rounded"
         sx={{ width: 80, height: 180 }}
-        src={`${process.env.REACT_APP_PUBLIC_URL}uploads/walkthrough/image/${value}`}
+        src={`${process.env.REACT_APP_PUBLIC_URL}/uploads/walkthrough/image/${value}`}
       />
     ),
     []

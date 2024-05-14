@@ -67,7 +67,7 @@ const ImageField = ({
             src={
               file
                 ? _.isString(file)
-                  ? `${process.env.REACT_APP_PUBLIC_URL}uploads/${path}/${file}`
+                  ? `${process.env.REACT_APP_PUBLIC_URL}/uploads/${path}/${file}`
                   : URL.createObjectURL(file)
                 : null
             }

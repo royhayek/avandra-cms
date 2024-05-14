@@ -29,3 +29,5 @@ export { default as User } from './User';
 export { default as Faqs } from './Faqs';
 
 export { default as Faq } from './Faq';
+
+export { default as DeepLinkRedirect } from './DeepLinkRedirect';
