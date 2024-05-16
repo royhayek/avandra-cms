@@ -78,7 +78,7 @@ const CustomAppBar = () => {
     [toggleDrawer]
   );
 
-  const renderLogo = useMemo(() => <Typography sx={{ flexGrow: 1 }}>Trippify</Typography>, []);
+  const renderLogo = useMemo(() => <Typography sx={{ flexGrow: 1 }}>Avandra</Typography>, []);
 
   const renderButtons = useMemo(
     () => (
