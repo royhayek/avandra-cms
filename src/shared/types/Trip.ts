@@ -7,4 +7,5 @@ export interface TripProps {
   enabled: boolean;
   image: File | null;
   flag: File | null;
+  imagePath: string | null;
 }

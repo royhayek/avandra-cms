@@ -4,9 +4,10 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
 import {
+  getArticle,
+  getArticles as getArticles,
   createArticle as createArticle,
   deleteArticle as deleteArticle,
-  getArticles as getArticles,
   modifyArticle as modifyArticle
 } from './api';
 
@@ -18,6 +19,18 @@ import { ArticleProps } from 'shared/types/Article';
 export const getArticlesAction = createAsyncThunk('artiles/getArticles', async (_, { rejectWithValue }) => {
   try {
     const response = await getArticles();
+
+    return response.data.result;
+  } catch (error: any) {
+    toast.error(error.response?.data?.error);
+
+    return rejectWithValue(error.response?.data?.error);
+  }
+});
+
+export const getArticleAction = createAsyncThunk('article/get', async (_id: string, { rejectWithValue }) => {
+  try {
+    const response = await getArticle(_id);
 
     return response.data.result;
   } catch (error: any) {

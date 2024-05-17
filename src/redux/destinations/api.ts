@@ -5,6 +5,8 @@ import axios from 'axios';
 
 export const getDestinations = () => axios.get('destination/list');
 
+export const getDestination = (_id: string) => axios.get(`destination/read/${_id}`);
+
 export const modifyDestination = (payload: FormData) => {
   return axios.patch(`destination/update/${payload.get('_id')}`, payload, {
     headers: { 'Content-Type': 'multipart/form-data' }

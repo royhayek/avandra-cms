@@ -10,14 +10,23 @@ import { Box, Container, Typography, Button, CircularProgress } from '@mui/mater
 import useStyles from './styles';
 import { useAppThunkDispatch } from 'app/store';
 import { getTripAction } from 'redux/trips/thunks';
+import { getDestinationAction } from 'redux/destinations/thunks';
 import { APP_STORE_URL, GOOGLE_PLAY_STORE_URL } from 'shared/constants/variables';
 
 // Interfaces
 import { TripProps } from 'shared/types/Trip';
+import { getArticleAction } from 'redux/articles/thunks';
 
 interface RouteParams {
   id: string;
   path: string;
+}
+
+interface DataProps {
+  name: string;
+  image: string;
+  imagePath: string;
+  payload?: TripProps;
 }
 
 // Component
@@ -29,26 +38,87 @@ const DeepLinkRedirect = () => {
   const classes = useStyles();
   const { path, id } = useParams() as RouteParams;
 
+  const [data, setData] = useState<DataProps>();
   const [loading, setLoading] = useState<boolean>();
-  const [trip, setTrip] = useState<TripProps>();
-  const { payload, image, imagePath } = trip || {};
-  const { name } = payload || {};
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   // Callbacks
+  const formatData = useCallback(() => {
+    switch (path) {
+      case 'trip':
+        return { image: data?.image, name: data?.payload?.name, imagePath: data?.imagePath };
+
+      case 'destination':
+        return { name: data?.name, image: data?.image };
+
+      case 'article':
+        return { name: data?.name, image: data?.image };
+
+      default:
+        break;
+    }
+  }, [data, path]);
+
+  const { name, image, imagePath } = formatData();
+
   const fetchTrip = useCallback(async () => {
     setLoading(true);
     const response = await disptachThunk(getTripAction(id));
-    setTrip(response?.payload);
+    setData(response?.payload);
     setLoading(false);
   }, [disptachThunk, id]);
+
+  const fetchDestination = useCallback(async () => {
+    setLoading(true);
+    const response = await disptachThunk(getDestinationAction(id));
+    setData(response?.payload);
+    setLoading(false);
+  }, [disptachThunk, id]);
+
+  const fetchArticle = useCallback(async () => {
+    setLoading(true);
+    const response = await disptachThunk(getArticleAction(id));
+    setData(response?.payload);
+    setLoading(false);
+  }, [disptachThunk, id]);
+
+  const fetchData = useCallback(() => {
+    switch (path) {
+      case 'trip':
+        fetchTrip();
+        break;
+
+      case 'destination':
+        fetchDestination();
+        break;
+
+      case 'article':
+        fetchArticle();
+        break;
+
+      default:
+        break;
+    }
+  }, [fetchDestination, fetchArticle, fetchTrip, path]);
 
   const getTripDisplayInfo = () => {
     switch (path) {
       case 'trip':
         return {
           title: `Join my planned trip to ${name}!`,
+          description: `Check out this ${path} on Avandra, the ultimate app for AI trip creation.`
+        };
+
+      case 'destination':
+        return {
+          title: `Generate a trip to ${name}!`,
+          description: `Check out this ${path} on Avandra, the ultimate app for AI trip creation.`
+        };
+
+      case 'article':
+        return {
+          title: `Read this article "${name}"!`,
           description: `Check out this ${path} on Avandra, the ultimate app for AI trip creation.`
         };
 
@@ -59,19 +129,21 @@ const DeepLinkRedirect = () => {
 
   // Effects
   useEffect(() => {
-    fetchTrip();
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (isMobile) {
       // Redirect to the app on mobile devices
-      window.location.href = `avandra://${path}/${id}`;
+      window.location.href = `avandra://share/${path}/${id}`;
     }
   }, [id, isMobile, path]);
 
   // Renderers Vars
   const { title, description } = getTripDisplayInfo();
+
+  // console.debug('[DeepLinkRedirect] trip:', { trip: data, imagePath, image, title, description, path, id });
 
   return (
     <Container className={classes.root}>
@@ -107,7 +179,7 @@ const DeepLinkRedirect = () => {
             <RegularButton
               text="Open"
               className={classes.openButton}
-              onClick={() => (window.location.href = `avandra://${path}/${id}`)}
+              onClick={() => (window.location.href = `avandra://share/${path}/${id}`)}
             />
           ) : null}
 

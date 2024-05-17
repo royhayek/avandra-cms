@@ -3,13 +3,25 @@ import { toast } from 'react-toastify';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 // Utilities
-import { createDestination, deleteDestination, getDestinations, modifyDestination } from './api';
+import { createDestination, deleteDestination, getDestination, getDestinations, modifyDestination } from './api';
 
 // Actions
 
 export const getDestinationsAction = createAsyncThunk('destination/getDestinations', async (_, { rejectWithValue }) => {
   try {
     const response = await getDestinations();
+
+    return response.data.result;
+  } catch (error: any) {
+    toast.error(error.response?.data?.error);
+
+    return rejectWithValue(error.response?.data?.error);
+  }
+});
+
+export const getDestinationAction = createAsyncThunk('destination/get', async (_id: string, { rejectWithValue }) => {
+  try {
+    const response = await getDestination(_id);
 
     return response.data.result;
   } catch (error: any) {
