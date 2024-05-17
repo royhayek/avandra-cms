@@ -31,7 +31,7 @@ const DeepLinkRedirect = () => {
 
   const [loading, setLoading] = useState<boolean>();
   const [trip, setTrip] = useState<TripProps>();
-  const { payload, image } = trip || {};
+  const { payload, image, imagePath } = trip || {};
   const { name } = payload || {};
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -86,7 +86,7 @@ const DeepLinkRedirect = () => {
           <img
             alt="image"
             className={classes.tripImage}
-            src={`${process.env.REACT_APP_PUBLIC_URL}/uploads/trip/image/${image}`}
+            src={`${process.env.REACT_APP_PUBLIC_URL}/uploads/${imagePath ?? path}/image/${image}`}
           />
 
           <Typography className={classes.tripTitle} color="textPrimary" variant="body1">
