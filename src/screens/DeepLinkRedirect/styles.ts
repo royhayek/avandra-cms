@@ -1,10 +1,9 @@
 // Theme
 import { makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material';
 
 // Styles
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
