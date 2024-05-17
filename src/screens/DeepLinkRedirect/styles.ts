@@ -8,6 +8,7 @@ const useStyles = makeStyles(() => ({
     padding: 24,
     display: 'flex',
     height: '100vh',
+    alignItems: 'center',
     boxSizing: 'border-box',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -25,31 +26,35 @@ const useStyles = makeStyles(() => ({
   },
   tripImage: {
     width: 115,
-    height: 90,
-    alignSelf: 'center'
+    height: 90
   },
   tripTitle: {
-    marginTop: 24
+    marginTop: 24,
+    color: 'black'
   },
   tripDescription: {
     marginTop: 8,
-    fontWeight: 500
+    fontWeight: 500,
+    textAlign: 'center'
   },
   redirectText: {
     marginTop: 40,
-    marginBottom: 16,
+    color: 'black',
     fontWeight: 600,
+    marginBottom: 16,
     textAlign: 'center'
   },
   openButton: {
-    alignSelf: 'center',
     paddingInline: 40
   },
   storeButtons: {
     gap: 16,
-    marginTop: 8,
+    marginTop: 28,
     display: 'flex',
     justifyContent: 'center'
+  },
+  storeButton: {
+    width: 160
   }
 }));
 

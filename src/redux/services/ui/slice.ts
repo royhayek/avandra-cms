@@ -29,7 +29,7 @@ export const initialState: UIInitialState = {
   lang: 'ar',
   dir: 'ltr', // isDev ? true : false
   api: 'local',
-  theme: 'dark', // [light || dark]
+  theme: 'light', // [light || dark]
   dataLang: 'all',
   showTour: true,
   tourFirstTime: true,

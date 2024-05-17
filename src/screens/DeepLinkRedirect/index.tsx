@@ -1,22 +1,23 @@
 // Packages
-import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // Components
-import { Avatar, Box, Container, Typography } from '@mui/material';
-import Button from 'shared/components/Buttons/Primary';
+import RegularButton from 'shared/components/Buttons/Primary';
+import { Avatar, Box, Container, Typography, Button, CircularProgress } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
 import { useAppThunkDispatch } from 'app/store';
 import { getTripAction } from 'redux/trips/thunks';
+import { APP_STORE_URL, GOOGLE_PLAY_STORE_URL } from 'shared/constants/variables';
 
 // Interfaces
 import { TripProps } from 'shared/types/Trip';
 
 interface RouteParams {
-  path: string;
   id: string;
+  path: string;
 }
 
 // Component
@@ -28,15 +29,19 @@ const DeepLinkRedirect = () => {
   const classes = useStyles();
   const { path, id } = useParams() as RouteParams;
 
+  const [loading, setLoading] = useState<boolean>();
   const [trip, setTrip] = useState<TripProps>();
-  const { payload: { name, image } = {} } = trip || {};
+  const { payload, image } = trip || {};
+  const { name } = payload || {};
 
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   // Callbacks
   const fetchTrip = useCallback(async () => {
+    setLoading(true);
     const response = await disptachThunk(getTripAction(id));
     setTrip(response?.payload);
+    setLoading(false);
   }, [disptachThunk, id]);
 
   const getTripDisplayInfo = () => {
@@ -70,51 +75,62 @@ const DeepLinkRedirect = () => {
 
   return (
     <Container className={classes.root}>
-      <Typography className={classes.title} variant="h6">
-        Open link in App?
-      </Typography>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <>
+          <Typography className={classes.title} variant="h6">
+            Open link in App?
+          </Typography>
 
-      <Avatar
-        alt="image"
-        variant="rounded"
-        className={classes.tripImage}
-        src={`${process.env.REACT_APP_PUBLIC_URL}/uploads/trip/image/${image}`}
-      />
+          <Avatar
+            alt="image"
+            variant="rounded"
+            className={classes.tripImage}
+            src={`${process.env.REACT_APP_PUBLIC_URL}/uploads/trip/image/${image}`}
+          />
 
-      <Typography className={classes.tripTitle} color="textPrimary" variant="body1">
-        {title}
-      </Typography>
+          <Typography className={classes.tripTitle} color="textPrimary" variant="body1">
+            {title}
+          </Typography>
 
-      <Typography className={classes.tripDescription} color="secondary" variant="body1">
-        {description}
-      </Typography>
+          <Typography className={classes.tripDescription} color="secondary" variant="body1">
+            {description}
+          </Typography>
 
-      <Typography className={classes.redirectText} variant="body2">
-        {isMobile
-          ? 'If you are not redirected, click the button below:'
-          : 'Please open this link on your mobile device to be redirected to the app.'}
-      </Typography>
+          <Typography className={classes.redirectText} variant="body2">
+            {isMobile
+              ? 'If you are not redirected, click the button below:'
+              : 'Please open this link on your mobile device to be redirected to the app.'}
+          </Typography>
 
-      {isMobile ? (
-        <Button
-          text="Open"
-          className={classes.openButton}
-          onClick={() => (window.location.href = `avandra://${path}/${id}`)}
-        />
-      ) : null}
+          {isMobile ? (
+            <RegularButton
+              text="Open"
+              className={classes.openButton}
+              onClick={() => (window.location.href = `avandra://${path}/${id}`)}
+            />
+          ) : null}
 
-      <Box className={classes.storeButtons}>
-        <img
-          alt="applestore"
-          style={{ width: 150, marginTop: 20 }}
-          src={require('../../shared//assets/images/appstore.png')}
-        />
-        <img
-          alt="applestore"
-          style={{ width: 150, marginTop: 20 }}
-          src={require('../../shared//assets/images/playstore.png')}
-        />
-      </Box>
+          <Box className={classes.storeButtons}>
+            <Button onClick={() => window.open(APP_STORE_URL)}>
+              <img
+                alt="applestore"
+                className={classes.storeButton}
+                src={require('../../shared//assets/images/appstore.png')}
+              />
+            </Button>
+
+            <Button onClick={() => window.open(GOOGLE_PLAY_STORE_URL)}>
+              <img
+                alt="applestore"
+                className={classes.storeButton}
+                src={require('../../shared//assets/images/playstore.png')}
+              />
+            </Button>
+          </Box>
+        </>
+      )}
     </Container>
   );
 };
