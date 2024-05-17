@@ -26,7 +26,8 @@ const useStyles = makeStyles(() => ({
   },
   tripImage: {
     width: 115,
-    height: 90
+    height: 90,
+    borderRadius: 6
   },
   tripTitle: {
     marginTop: 24,

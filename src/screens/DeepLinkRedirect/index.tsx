@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 // Components
 import RegularButton from 'shared/components/Buttons/Primary';
-import { Avatar, Box, Container, Typography, Button, CircularProgress } from '@mui/material';
+import { Box, Container, Typography, Button, CircularProgress } from '@mui/material';
 
 // Utilities
 import useStyles from './styles';
@@ -83,9 +83,8 @@ const DeepLinkRedirect = () => {
             Open link in App?
           </Typography>
 
-          <Avatar
+          <img
             alt="image"
-            variant="rounded"
             className={classes.tripImage}
             src={`${process.env.REACT_APP_PUBLIC_URL}/uploads/trip/image/${image}`}
           />
