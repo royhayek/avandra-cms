@@ -27,7 +27,7 @@ const DeepLinkRedirect = () => {
 
     if (isMobile) {
       // Redirect to the app on mobile devices
-      window.location.href = `wondrous://${path}/${id}`;
+      window.location.href = `avandra://${path}/${id}`;
     } else {
       // Show a message or button for desktop users
       alert('Please open this link on your mobile device to be redirected to the app.');
@@ -42,7 +42,7 @@ const DeepLinkRedirect = () => {
       <Typography className={classes.text} variant="body1">
         If you are not redirected, click the button below:
       </Typography>
-      <Button onClick={() => (window.location.href = `wondrous://${path}/${id}`)} text="Open the APP" />
+      <Button onClick={() => (window.location.href = `avandra://${path}/${id}`)} text="Open the APP" />
     </Container>
   );
 };
