@@ -47,9 +47,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     '& .ag-picker-field-wrapper': {
       backgroundColor: theme.colors.background
-    },
-    '& .ag-overlay-wrapper': {
-      color: theme.colors.white
     }
   },
   searchField: {

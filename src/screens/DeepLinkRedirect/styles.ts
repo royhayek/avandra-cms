@@ -5,23 +5,51 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
   root: {
+    padding: 24,
     display: 'flex',
+    height: '100vh',
+    boxSizing: 'border-box',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    height: '100vh',
-    backgroundColor: '#f0f0f0',
-    padding: '20px',
-    boxSizing: 'border-box'
+    backgroundColor: '#f0f0f0'
   },
   title: {
-    marginBottom: '20px',
-    color: 'black'
+    color: 'black',
+    marginBottom: 20,
+    textAlign: 'center'
   },
   text: {
-    marginBottom: '40px',
-    textAlign: 'center',
-    color: 'black'
+    color: 'black',
+    marginBottom: 40,
+    textAlign: 'center'
+  },
+  tripImage: {
+    width: 115,
+    height: 90,
+    alignSelf: 'center'
+  },
+  tripTitle: {
+    marginTop: 24
+  },
+  tripDescription: {
+    marginTop: 8,
+    fontWeight: 500
+  },
+  redirectText: {
+    marginTop: 40,
+    marginBottom: 16,
+    fontWeight: 600,
+    textAlign: 'center'
+  },
+  openButton: {
+    alignSelf: 'center',
+    paddingInline: 40
+  },
+  storeButtons: {
+    gap: 16,
+    marginTop: 8,
+    display: 'flex',
+    justifyContent: 'center'
   }
 }));
 

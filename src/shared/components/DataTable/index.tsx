@@ -1,7 +1,7 @@
 // Packages
 import _ from 'lodash';
-import { ColDef } from 'ag-grid-community';
-import React, { useCallback, useMemo, useState } from 'react';
+import { ColDef, GridApi } from 'ag-grid-community';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 // Components
 import CustomPagination from './CustomPagination';
@@ -40,7 +40,7 @@ interface DataTableProps extends AgGridReactProps {
       hasLanguages?: boolean;
       withoutHeader?: boolean;
       withPagination?: boolean;
-      pagination: PaginationProps;
+      pagination: PaginationProps | null;
     };
   };
   onRowClick?: (rowData: any) => void;
@@ -62,6 +62,7 @@ const DataTable: React.FC<DataTableProps> = ({
   const theme = useTheme();
 
   const [searchText, setSearchText] = useState<string>('');
+  const [gridApi, setGridApi] = useState<GridApi>();
 
   // Callbacks
   const onLanguageChange = useCallback(
@@ -76,6 +77,19 @@ const DataTable: React.FC<DataTableProps> = ({
   }, []);
 
   const handlePageChange = useCallback((page) => onRefresh(parseInt(page)), [onRefresh]);
+
+  const onGridReady = (params) => {
+    setGridApi(params.api);
+  };
+
+  // Effects
+  useEffect(() => {
+    if (loading) {
+      gridApi?.showLoadingOverlay();
+    } else {
+      gridApi?.hideOverlay();
+    }
+  }, [gridApi, loading]);
 
   // Renderers Vars
   const headerTabs = useMemo(
@@ -146,6 +160,7 @@ const DataTable: React.FC<DataTableProps> = ({
         <AgGridReact
           columnDefs={columns}
           rowData={filteredData}
+          onGridReady={onGridReady}
           paginationPageSize={TABLE_PAGE_SIZE}
           className={classes.table}
           suppressPaginationPanel={true}
@@ -154,6 +169,7 @@ const DataTable: React.FC<DataTableProps> = ({
           pagination={options?.withPagination ?? true}
           {...rest}
         />
+
         <CustomPagination
           pageSize={TABLE_PAGE_SIZE}
           onPageChange={handlePageChange}
@@ -176,7 +192,7 @@ DataTable.defaultProps = {
       hasLanguages: false,
       withoutHeader: false,
       withPagination: true,
-      pagination: {}
+      pagination: null
     }
   }
 };

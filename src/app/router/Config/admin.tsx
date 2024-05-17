@@ -120,6 +120,12 @@ export const routes = [
     path: '/login/:detail?',
     component: Screens.Login,
     hasSub: true
+  },
+  {
+    key: 'share',
+    path: '/share/:path/:id',
+    component: Screens.DeepLinkRedirect,
+    hasSub: false
   }
 ];
 

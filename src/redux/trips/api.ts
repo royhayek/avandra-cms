@@ -5,4 +5,6 @@ import axios from 'axios';
 
 export const getTrips = () => axios.get('trip/list');
 
-export const deleteTrip = (_id: number) => axios.delete(`trip/delete/${_id}`, {});
+export const getTrip = (_id: string) => axios.get(`trip/read/${_id}`);
+
+export const deleteTrip = (_id: string) => axios.delete(`trip/delete/${_id}`, {});
